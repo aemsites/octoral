@@ -1,12 +1,4 @@
-/*
- * Accordion Block
- * Recreate an accordion
- * https://www.hlx.live/developer/block-collection/accordion
- */
-
-function hasWrapper(el) {
-  return !!el.firstElementChild && window.getComputedStyle(el.firstElementChild).display === 'block';
-}
+import { div } from '../../scripts/dom-helpers.js';
 
 export default function decorate(block) {
   [...block.children].forEach((row) => {
@@ -15,17 +7,27 @@ export default function decorate(block) {
     const summary = document.createElement('summary');
     summary.className = 'accordion-item-label';
     summary.append(...label.childNodes);
-    if (!hasWrapper(summary)) {
-      summary.innerHTML = `<p>${summary.innerHTML}</p>`;
-    }
     // decorate accordion item body
     const check = !!row.children[1];
     const body = row.children[1];
     if (body) {
       body.className = 'accordion-item-body';
-      if (!hasWrapper(body)) {
-        body.innerHTML = `<p>${body.innerHTML}</p>`;
-      }
+      body.querySelectorAll('p').forEach((p) => {
+        if (p.nextElementSibling && p.nextElementSibling.tagName === 'UL') {
+          const childDetails = document.createElement('details');
+          childDetails.className = 'child-accordion-item';
+          const childSummary = document.createElement('summary');
+          childSummary.className = 'child-accordion-item-label';
+          childSummary.innerHTML = `<p>${p.innerHTML}</p>`;
+          const childBody = div();
+          p.nextElementSibling.querySelectorAll('li').forEach((li) => {
+            childBody.innerHTML += `<p>${li.innerHTML}</p>`;
+          });
+          childDetails.append(childSummary, childBody);
+          p.nextElementSibling.remove();
+          p.replaceWith(childDetails);
+        }
+      });
     }
     // decorate accordion item
     const details = document.createElement('details');
