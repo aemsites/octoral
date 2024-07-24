@@ -38,6 +38,11 @@ export default function decorate(block) {
       summary.classList.add('accordion-item-no-body');
       details.append(summary);
     }
+    details.querySelectorAll('a').forEach((a) => {
+      if (a.classList.contains('button')) {
+        a.classList.remove('button');
+      }
+    });
     row.replaceWith(details);
   });
 }

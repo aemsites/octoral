@@ -1,5 +1,5 @@
 .accordion details {
-    /* border: 1px solid var(--dark-color); */
+    width: 500px;
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
@@ -25,7 +25,7 @@
     background-color: #69c7e9
   }
 
-  .accordion details summary p a.button:any-link {
+  .accordion details summary p a:any-link {
     position: relative;
     padding: 20px;
     color: #fff;
@@ -48,7 +48,7 @@
     background-color: #7c7d7e;
   }
 
-  .accordion details .accordion-item-body p a.button:any-link {
+  .accordion details .accordion-item-body p a:any-link {
     background-color: transparent;
     padding: 7px 20px;
     text-transform: uppercase;
