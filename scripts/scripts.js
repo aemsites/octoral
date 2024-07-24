@@ -114,17 +114,6 @@ export async function loadTemplate(doc, templateName) {
   }
 }
 
-async function loadTopBanner(doc) {
-  const topBannerFragment = await loadFragment('/fragments/top-banner');
-  if (topBannerFragment) {
-    const topBanner = topBannerFragment.querySelector('.top-banner');
-    if (topBanner) {
-      const header = doc.querySelector('header');
-      header?.prepend(topBanner);
-    }
-  }
-}
-
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
