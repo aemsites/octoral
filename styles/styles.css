@@ -12,17 +12,19 @@
 
 :root {
   /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
-  --background-color: white;
-  --light-color: #eee;
-  --dark-color: #ccc;
-  --text-color: black;
+  --text-color: #343534;
+  --background-color: #f9f9f9;
+  --light-blue: #69c7e9;
+  --blue: #00b0f0;
+  --light-gray: #eee;
+  --light-gray-2: #ddd;
+  --gray: #a9aaab;
+  --dark-gray: #7c7d7e;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback;
-  --heading-font-family: var(--body-font-family);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --body-font-family: frutiger, arial, serif;
+  --heading-font-family: frutiger-bold, frutiger, arial, serif;
+  --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -39,13 +41,6 @@
 
   /* nav height */
   --nav-height: 64px;
-}
-
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 100.06%;
-  ascent-override: 95%;
-  src: local('Arial');
 }
 
 @media (width >= 900px) {
@@ -123,7 +118,6 @@ pre {
 }
 
 main pre {
-  background-color: var(--light-color);
   padding: 1em;
   border-radius: 0.25em;
   overflow-x: auto;
@@ -132,13 +126,12 @@ main pre {
 
 /* links */
 a:any-link {
-  color: var(--link-color);
+  color: var(--blue);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
+  text-decoration: none;
 }
 
 /* buttons */
@@ -154,8 +147,8 @@ button {
   font-style: normal;
   font-weight: 600;
   cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
+  color: #fff;
+  background-color: var(--blue);
   margin: 16px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -167,13 +160,13 @@ a.button:hover,
 a.button:focus,
 button:hover,
 button:focus {
-  background-color: var(--link-hover-color);
+  background-color: var(--blue);
   cursor: pointer;
 }
 
 button:disabled,
 button:disabled:hover {
-  background-color: var(--light-color);
+  background-color: var(--gray);
   cursor: unset;
 }
 
@@ -214,13 +207,15 @@ main .section {
 
 @media (width >= 900px) {
   .section > div {
-    max-width: 1200px;
+    max-width: 960px;
     margin: auto;
+    background: #fff;
+    border: 1px solid var(--light-gray);
   }
 }
 
 /* section metadata */
 main .section.light,
 main .section.highlight {
-  background-color: var(--light-color);
+  /* TBD */
 }
