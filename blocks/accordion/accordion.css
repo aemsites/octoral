@@ -1,9 +1,7 @@
 .accordion details {
-    border: 1px solid var(--dark-color);
+    /* border: 1px solid var(--dark-color); */
   }
 
-
-  
   /* stylelint-disable-next-line no-descending-specificity */
   .accordion details + details {
     margin-top: 16px;
@@ -18,14 +16,71 @@
     overflow: auto;
     transition: background-color 0.2s;
   }
+
+  .accordion details summary:not(.child-accordion-item-label) {
+    background-color: #00b0f0;
+  }
+
+  .accordion details summary:not(.child-accordion-item-label):hover {
+    background-color: #69c7e9
+  }
+
+  .accordion details summary p a.button:any-link {
+    position: relative;
+    padding: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 18.33px;
+    font-family: FrutigerBold, Arial, serif;
+    background-color: transparent;
+  }
+
+  .accordion details .accordion-item-body p:not(.child-accordion-item-body p) {
+    background-color: #a9aaab;
+  }
+
+  .accordion details[open] .accordion-item-body p:not(.child-accordion-item-body p):hover {
+    background-color: #7c7d7e;
+  }
+
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] p:not(.child-accordion-item-body p) {
+    background-color: #7c7d7e;
+  }
+
+  .accordion details .accordion-item-body p a.button:any-link {
+    background-color: transparent;
+    padding: 7px 20px;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 13px;
+    font-family: Frutiger, Arial, serif;
+  }
+  
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #666;
+    font-family: FrutigerBold, Arial, serif;
+    font-size: 13px;
+  }
+
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a:hover {
+    color: #00b0f0;
+    text-decoration: none;
+  }
   
   /* .accordion details[open] summary {
-    background-color: var(--light-color);
+    background-color: #69c7e9;
   } */
   
-  .accordion details summary:focus,
+  /* .accordion details summary:focus,
   .accordion details summary:hover {
     background-color: var(--dark-color);
+  } */
+
+  .accordion details[open] summary:not(.child-accordion-item-label) {
+    background-color: #69c7e9;
   }
   
   .accordion details summary::-webkit-details-marker {
@@ -43,6 +98,7 @@
     border: 2px solid;
     border-width: 2px 2px 0 0;
     transition: transform 0.2s;
+    color: white;
   }
   
   .accordion details[open] summary:not(.accordion-item-no-body)::after {
@@ -66,9 +122,9 @@
     transform: translateY(-50%) rotate(-45deg);
   }
   
-  .accordion details .accordion-item-body {
+  /* .accordion details .accordion-item-body {
     padding: 0 16px;
-  }
+  } */
   
   .accordion details[open] .accordion-item-body {
     border-top: 1px solid var(--dark-color);

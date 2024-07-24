@@ -19,7 +19,7 @@ export default function decorate(block) {
           const childSummary = document.createElement('summary');
           childSummary.className = 'child-accordion-item-label';
           childSummary.innerHTML = `<p>${p.innerHTML}</p>`;
-          const childBody = div();
+          const childBody = div({ class: 'child-accordion-item-body' });
           p.nextElementSibling.querySelectorAll('li').forEach((li) => {
             childBody.innerHTML += `<p>${li.innerHTML}</p>`;
           });
