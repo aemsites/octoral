@@ -36,6 +36,11 @@
     background-color: transparent;
   }
 
+  .accordion details .accordion-item-body p {
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
   .accordion details .accordion-item-body p:not(.child-accordion-item-body p) {
     background-color: #a9aaab;
   }
@@ -69,15 +74,6 @@
     color: #00b0f0;
     text-decoration: none;
   }
-  
-  /* .accordion details[open] summary {
-    background-color: #69c7e9;
-  } */
-  
-  /* .accordion details summary:focus,
-  .accordion details summary:hover {
-    background-color: var(--dark-color);
-  } */
 
   .accordion details[open] summary:not(.child-accordion-item-label) {
     background-color: #69c7e9;
@@ -121,11 +117,7 @@
   .accordion details.child-accordion-item[open] summary.child-accordion-item-label::after {
     transform: translateY(-50%) rotate(-45deg);
   }
-  
-  /* .accordion details .accordion-item-body {
-    padding: 0 16px;
-  } */
-  
+
   .accordion details[open] .accordion-item-body {
     border-top: 1px solid var(--dark-color);
     background-color: var(--background-color);
