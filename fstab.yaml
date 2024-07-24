@@ -2,4 +2,4 @@ mountpoints:
   /: https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/octoral/Website
 
 folders:
-  **/products/: /products/
+  /**/products/: /products/
