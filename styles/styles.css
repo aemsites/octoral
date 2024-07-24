@@ -20,6 +20,7 @@
   --light-gray-2: #ddd;
   --gray: #a9aaab;
   --dark-gray: #7c7d7e;
+  --dark-gray-2: #666;
 
   /* fonts */
   --body-font-family: frutiger, arial, serif;
@@ -27,9 +28,7 @@
   --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  --body-font-size: 14px;
 
   /* heading sizes */
   --heading-font-size-xxl: 48px;
@@ -55,7 +54,7 @@
 }
 
 body {
-  font-size: var(--body-font-size-m);
+  font-size: var(--body-font-size);
   margin: 0;
   font-family: var(--body-font-family);
   line-height: 1.6;
@@ -103,10 +102,13 @@ blockquote {
   margin-bottom: 1em;
 }
 
+strong {
+  font-family: frutiger-bold, frutiger, arial, serif;;
+}
+
 code,
 pre {
   font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size-s);
 }
 
 code {
@@ -125,8 +127,8 @@ main pre {
 }
 
 /* links */
-a:any-link {
-  color: var(--blue);
+a {
+  color: var(--text-color);
   text-decoration: none;
 }
 
@@ -207,6 +209,8 @@ main .section {
 
 @media (width >= 900px) {
   .section > div {
+    box-sizing: border-box;
+    padding: 60px 55px;
     max-width: 960px;
     margin: auto;
     background: #fff;
