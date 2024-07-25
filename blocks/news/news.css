@@ -1,0 +1,36 @@
+.news.block {
+    width: 575px;
+    padding-left: 350px;
+
+    p {
+        margin-bottom: 1em;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    h2 a{
+        color: #535353 !important;
+    }
+
+    h1 {
+        text-transform: uppercase;
+        color: #00b0f0;
+    }
+
+    .entry-meta {
+        display: none;
+    }
+
+    p a {
+        text-decoration: underline;
+    }
+
+    ul {
+        padding-left: unset;
+        list-style: none;
+    }
+}
+
+
