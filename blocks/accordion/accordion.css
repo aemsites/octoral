@@ -85,40 +85,31 @@
   .accordion details summary::-webkit-details-marker {
     display: none;
   }
-  
-  .accordion details summary:not(.accordion-item-no-body)::after {
+
+  .accordion details.accordion-item summary:not(.accordion-item-no-body)::after {
     content: "";
     position: absolute;
-    top: 50%;
+    top: 45%;
     right: 18px;
-    transform: translateY(-50%) rotate(135deg);
-    width: 9px;
-    height: 9px;
-    border: 2px solid;
-    border-width: 2px 2px 0 0;
+    width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 10px solid #fff;
     transition: transform 0.2s;
-    color: white;
   }
   
-  .accordion details[open] summary:not(.accordion-item-no-body)::after {
-    transform: translateY(-50%) rotate(-45deg);
+  .accordion details.accordion-item[open] summary.accordion-item-label:not(.accordion-item-no-body)::after {
+    transform: translateY(-50%) rotate(-180deg);
   }
 
-  .accordion details.child-accordion-item summary.child-accordion-item-label::after  {
-    content: "";
-    position: absolute;
+
+  .accordion details.accordion-item[open] details.child-accordion-item summary.child-accordion-item-label::after  {
     top: 50%;
-    right: 18px;
-    transform: translateY(-50%) rotate(135deg);
-    width: 9px;
-    height: 9px;
-    border: 2px solid;
-    border-width: 2px 2px 0 0;
-    transition: transform 0.2s;
   }
 
-  .accordion details.child-accordion-item[open] summary.child-accordion-item-label::after {
-    transform: translateY(-50%) rotate(-45deg);
+  .accordion details.accordion-item[open] details.child-accordion-item[open] summary.child-accordion-item-label::after {
+    transform: translateY(-50%) rotate(-180deg);
   }
 
   .accordion details[open] .accordion-item-body {
