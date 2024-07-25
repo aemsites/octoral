@@ -38,8 +38,8 @@
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
-  /* nav height */
-  --nav-height: 64px;
+  /* sizes */
+  --page-width: 1030px;
 }
 
 @media (width >= 900px) {
@@ -65,10 +65,6 @@ body {
 
 body.appear {
   display: block;
-}
-
-header {
-  height: var(--nav-height);
 }
 
 h1,
@@ -183,6 +179,7 @@ main img {
   max-width: 100%;
   width: auto;
   height: auto;
+  display: block;
 }
 
 .icon {
@@ -196,22 +193,13 @@ main img {
   width: 100%;
 }
 
-/* sections */
-main .section {
-  padding: 64px 16px;
-}
 
-@media (width >= 600px) {
-  main .section {
-    padding: 64px 32px;
-  }
-}
 
 @media (width >= 900px) {
   .section > div {
     box-sizing: border-box;
     padding: 60px 55px;
-    max-width: 960px;
+    max-width: var(--page-width);
     margin: auto;
     background: #fff;
     border: 1px solid var(--light-gray);
