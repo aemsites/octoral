@@ -43,6 +43,11 @@ export default function decorate(block) {
         a.classList.remove('button');
       }
     });
+    details.querySelectorAll('p').forEach((p) => {
+      if (p.classList.contains('button-container')) {
+        p.classList.remove('button-container');
+      }
+    });
     row.replaceWith(details);
   });
 }

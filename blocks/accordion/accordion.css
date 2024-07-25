@@ -36,17 +36,20 @@
     background-color: transparent;
   }
 
-  .accordion details .accordion-item-body p {
+  .accordion details .accordion-item-body p:not(.child-accordion-item-body p) {
+    background-color: #a9aaab;
     margin-top: 5px;
     margin-bottom: 0;
   }
 
-  .accordion details .accordion-item-body p:not(.child-accordion-item-body p) {
-    background-color: #a9aaab;
-  }
-
   .accordion details[open] .accordion-item-body p:not(.child-accordion-item-body p):hover {
     background-color: #7c7d7e;
+  }
+
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 1.2;
   }
 
   .accordion details[open] .accordion-item-body details.child-accordion-item[open] p:not(.child-accordion-item-body p) {
