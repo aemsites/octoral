@@ -31,7 +31,7 @@
     color: #fff;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 18.33px;
+    font-size: var(--body-font-size-s);
     font-family: FrutigerBold, Arial, serif;
     background-color: transparent;
   }
