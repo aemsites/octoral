@@ -3,7 +3,7 @@ footer {
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  max-width: 960px;
+  max-width: var(--page-width);
   margin: auto;
   box-sizing: border-box;
   padding: 0 55px;
@@ -20,7 +20,7 @@ footer {
   .links {
     ul {
       margin: 0;
-      padding: 0 0 0 10px;
+      padding: 0 10px;
       list-style: none;
     }
   }
