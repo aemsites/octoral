@@ -1,0 +1,41 @@
+.news-template {
+    p {
+        margin-bottom: 1em;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    h2 a{
+        color: #535353 !important;
+        text-decoration: underline;
+    }
+
+    h1 {
+        text-transform: uppercase;
+    }
+
+    p a {
+        text-decoration: underline;
+    }
+
+    ul {
+        padding-left: unset;
+        list-style: none;
+    }
+
+    .news-collection a{
+        color: #616161
+    }
+
+    .inline-heading {
+        color: #00ccff;
+    }
+}
+
+.table-header {
+    text-decoration: underline;
+}
+
+
