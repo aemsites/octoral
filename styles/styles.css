@@ -116,7 +116,7 @@ main pre {
 
 /* links */
 a {
-  color: var(--text-color);
+  color: var(--blue);
   text-decoration: none;
   &:hover { text-decoration: none }
 }
