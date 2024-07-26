@@ -42,13 +42,23 @@ export async function fetchPlaceholders(locale = 'en') {
     });
   }
   await window.placeholders[`${TRANSLATION_KEY}-loaded`];
-  return window.placeholders[TRANSLATION_KEY][locale];
+  return [window.placeholders[TRANSLATION_KEY][locale], window.placeholders[TRANSLATION_KEY][`${locale}-href`]];
+}
+
+function replaceEntries(placeholders, element) {
+  const text = element.innerText.toLowerCase();
+  Object.keys(placeholders[0]).forEach((key) => {
+    if (text === key) {
+      element.innerText = placeholders[0][key];
+      element.setAttribute('href', placeholders[1][key]);
+    }
+  });
 }
 
 export default async function decorate(block) {
-  const locale = 'en-href';
+  const param = new URL(window.location).pathname;
+  const locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
   const placeholders = await fetchPlaceholders(locale);
-  console.log(placeholders);
   [...block.children].forEach((row) => {
     // decorate accordion item label
     const label = row.children[0];
@@ -89,6 +99,9 @@ export default async function decorate(block) {
     details.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
+        replaceEntries(placeholders, a);
+      } else {
+        replaceEntries(placeholders, a);
       }
     });
     details.querySelectorAll('p').forEach((p) => {
