@@ -16,7 +16,7 @@
   /* colors */
   --text-color: #343534;
   --heading-color: #535353;
-  --background-color: #f9f9f9;
+  --background-color: #f3f3f4;
   --light-blue: #00c0f2;
   --blue: #00b0f0;
   --light-gray: #eee;
@@ -63,7 +63,7 @@ body {
   font-family: var(--body-font-family);
   line-height: 1.6;
   color: var(--text-color);
-  background-color: var(--background-color);
+  background: var(--background-color);
   display: none;
   &.appear { display: block }
 }
