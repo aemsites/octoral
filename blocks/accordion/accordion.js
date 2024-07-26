@@ -1,4 +1,4 @@
-import { div } from '../../scripts/dom-helpers.js';
+import { div, summary } from '../../scripts/dom-helpers.js';
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
@@ -62,9 +62,8 @@ export default async function decorate(block) {
   [...block.children].forEach((row) => {
     // decorate accordion item label
     const label = row.children[0];
-    const summary = document.createElement('summary');
-    summary.className = 'accordion-item-label';
-    summary.append(...label.childNodes);
+    const parentSummary = summary({ class: 'accordion-item-label' });
+    parentSummary.append(...label.childNodes);
     // decorate accordion item body
     const check = !!row.children[1];
     const body = row.children[1];
@@ -74,8 +73,7 @@ export default async function decorate(block) {
         if (p.nextElementSibling && p.nextElementSibling.tagName === 'UL') {
           const childDetails = document.createElement('details');
           childDetails.className = 'child-accordion-item';
-          const childSummary = document.createElement('summary');
-          childSummary.className = 'child-accordion-item-label';
+          const childSummary = summary({ class: 'child-accordion-item-label' });
           childSummary.innerHTML = `<p>${p.innerHTML}</p>`;
           const childBody = div({ class: 'child-accordion-item-body' });
           p.nextElementSibling.querySelectorAll('li').forEach((li) => {
@@ -91,10 +89,10 @@ export default async function decorate(block) {
     const details = document.createElement('details');
     details.className = 'accordion-item';
     if (check) {
-      details.append(summary, body);
+      details.append(parentSummary, body);
     } else {
-      summary.classList.add('accordion-item-no-body');
-      details.append(summary);
+      parentSummary.classList.add('accordion-item-no-body');
+      details.append(parentSummary);
     }
     details.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
