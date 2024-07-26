@@ -1,6 +1,54 @@
 import { div } from '../../scripts/dom-helpers.js';
 
-export default function decorate(block) {
+export async function fetchPlaceholders(locale = 'en') {
+  window.placeholders = window.placeholders || {};
+  const TRANSLATION_KEY = 'translation';
+  const loaded = window.placeholders[`${TRANSLATION_KEY}-loaded`];
+
+  if (!loaded) {
+    window.placeholders[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
+      fetch('/translations.json')
+        .then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          }
+          throw new Error(`${resp.status}: ${resp.statusText}`);
+        })
+        .then((json) => {
+          const placeholders = {};
+          const KEY = 'Key';
+
+          json.data.forEach((entry) => {
+            Object.keys(entry).forEach((localeKey) => {
+              if (localeKey !== KEY) {
+                if (placeholders[localeKey]) {
+                  placeholders[localeKey][entry.Key.toLowerCase()] = entry[localeKey];
+                } else {
+                  placeholders[localeKey] = {
+                    [entry.Key.toLowerCase()]: entry[localeKey],
+                  };
+                }
+              }
+            });
+          });
+
+          window.placeholders[TRANSLATION_KEY] = placeholders;
+          resolve();
+        }).catch((error) => {
+          // Error While Loading Placeholders
+          window.placeholders[TRANSLATION_KEY] = {};
+          reject(error);
+        });
+    });
+  }
+  await window.placeholders[`${TRANSLATION_KEY}-loaded`];
+  return window.placeholders[TRANSLATION_KEY][locale];
+}
+
+export default async function decorate(block) {
+  const locale = 'en-href';
+  const placeholders = await fetchPlaceholders(locale);
+  console.log(placeholders);
   [...block.children].forEach((row) => {
     // decorate accordion item label
     const label = row.children[0];
