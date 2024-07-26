@@ -27,15 +27,16 @@ export default async function decorate(block) {
 
   const $social = div({ class: 'social' },
     a({ href: 'https://www.facebook.com/officialoctoral', target: '_blank' },
-      img({ src: '/icons/facebook.png', alt: 'Facebook' })),
+      img({ src: '/icons/facebook.png', width: 32, height: 23, alt: 'Facebook' })),
     a({ href: 'https://www.instagram.com/officialoctoral/', target: '_blank' },
-      img({ src: '/icons/instagram.png', alt: 'Instagram' })),
+      img({ src: '/icons/instagram.png', width: 32, height: 23, alt: 'Instagram' })),
     a({ href: 'https://www.youtube.com/channel/UC5u6bn-tunxcManO-1OGiKw', target: '_blank' },
-      img({ src: '/icons/youtube.png', alt: 'YouTube' })),
+      img({ src: '/icons/youtube.png', width: 32, height: 23, alt: 'YouTube' })),
   );
 
   const $terms = div({ class: 'terms' },
-    a({ href: 'https://www.valsparauto.com', target: '_blank' }, img({ src: '/icons/valspar-logo.png', alt: 'Valspar logo' })),
+    a({ href: 'https://www.valsparauto.com', target: '_blank' },
+      img({ src: '/icons/valspar-logo.png', width: 212, height: 35, alt: 'Valspar logo' })),
     p(
       'Copyright © 2024 Valspar b.v. and The',
       br(),

@@ -54,8 +54,14 @@ header {
     }
   }
 
-  .logo img {
-    display: block;
+  .logo {
     width: 100%;
+    /* force height to improve LHS */
+    aspect-ratio: 1030 / 230;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
   }
 }

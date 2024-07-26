@@ -26,6 +26,8 @@
   /* fonts */
   --body-font-family: 'Open Sans', arial, serif;
   --heading-font-family: 'Open Sans', arial, serif;
+  /*--body-font-family: arial, serif;*/
+  /*--heading-font-family: arial, serif;*/
   --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
@@ -63,10 +65,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
-}
-
-body.appear {
-  display: block;
+  &.appear { display: block }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -169,6 +168,7 @@ main img {
   display: inline-block;
   height: 24px;
   width: 24px;
+
   img {
     height: 100%;
     width: 100%;
