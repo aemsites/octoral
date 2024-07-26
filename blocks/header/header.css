@@ -56,8 +56,8 @@ header {
 
   .logo {
     width: 100%;
-    /* force height to improve LHS */
-    aspect-ratio: 1030 / 230;
+    aspect-ratio: 1030 / 230; /* force height to improve LHS */
+
     img {
       display: block;
       width: 100%;

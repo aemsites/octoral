@@ -1,3 +1,5 @@
+/* stylelint-disable declaration-block-single-line-max-declarations */
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -26,8 +28,6 @@
   /* fonts */
   --body-font-family: 'Open Sans', arial, serif;
   --heading-font-family: 'Open Sans', arial, serif;
-  /*--body-font-family: arial, serif;*/
-  /*--heading-font-family: arial, serif;*/
   --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
@@ -150,7 +150,7 @@ a.button, button {
     cursor: unset;
   }
 
-  &.secondary, &.secondary {
+  &.secondary {
     background-color: unset;
     border: 2px solid currentcolor;
     color: var(--text-color);
@@ -182,15 +182,8 @@ main img {
   margin: auto;
   background: #fff;
   border: 1px solid var(--light-gray);
+
   @media (width >= 900px) {
     padding: 60px 55px;
   }
 }
-
-
-/* todo: remove if unused
-main .section.light,
-main .section.highlight {
-
-}
-*/
