@@ -5,7 +5,10 @@ import { div, strong, p, a, img, br } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
   const locale = getPathSegment(0);
-  const footerFrag = await loadFragment(`/${locale}/footer`);
+  const validLocales = ['us', 'en', 'nl', 'de', 'fr', 'it', 'es'];
+  // if the locale is not valid, default to 'us'
+  const selectedLocale = validLocales.includes(locale) ? locale : 'us';
+  const footerFrag = await loadFragment(`/${selectedLocale}/footer`);
 
   const $vcard = div({ class: 'vcard' },
     strong('Valspar b.v.'),
