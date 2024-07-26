@@ -49,11 +49,18 @@
   .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p {
     margin-top: 0;
     margin-bottom: 0;
-    line-height: 1.2;
   }
 
   .accordion details[open] .accordion-item-body details.child-accordion-item[open] p:not(.child-accordion-item-body p) {
     background-color: var(--dark-gray);
+  }
+
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:first-child {
+    margin-top: 1em;
+  }
+
+  .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:last-child {
+    margin-bottom: 1em;
   }
 
   .accordion details .accordion-item-body p a:any-link {
