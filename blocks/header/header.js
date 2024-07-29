@@ -25,7 +25,7 @@ export default async function decorate(block) {
       ul(
         ...languages.map(({ code, label }) => li({ class: `${code === locale ? 'active' : ''}` },
           a({ href: `/${code}/`, title: label },
-            img({ src: `/icons/flag-${code}.png`, alt: label }),
+            img({ src: `/icons/flag-${code}.png`, width: 16, height: 11, alt: label }),
           ),
         )),
       ),
@@ -33,7 +33,7 @@ export default async function decorate(block) {
   );
 
   const $logo = div({ class: 'logo' },
-    img({ src: '/icons/octoral-header.png', alt: 'Octoral logo' }),
+    img({ src: '/icons/octoral-header.png', width: 1030, height: 230, alt: 'Octoral logo' }),
   );
 
   block.replaceWith($topBar, $logo);

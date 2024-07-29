@@ -1,15 +1,41 @@
 /* stylelint-disable max-line-length */
 
 @font-face {
-  font-family: frutiger-bold;
+  font-family: 'Open Sans';
   font-style: normal;
-  font-weight: bold;
-  src: url('/fonts/frutiger-bold.woff') format('woff'),
+  font-weight: 300;
+  src: url('../fonts/open-sans-300.woff2') format('woff2');
+  font-display: optional;
 }
 
 @font-face {
-  font-family: frutiger;
+  font-family: 'Open Sans';
   font-style: normal;
-  font-weight: bold;
-  src: url('/fonts/frutiger-roman.woff') format('woff'),
+  font-weight: 400;
+  src: url('../fonts/open-sans-regular.woff2') format('woff2');
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/open-sans-600.woff2') format('woff2');
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/open-sans-700.woff2') format('woff2');
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: url('../fonts/open-sans-800.woff2') format('woff2');
+  font-display: optional;
 }
