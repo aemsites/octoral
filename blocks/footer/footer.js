@@ -1,14 +1,11 @@
 /* eslint-disable no-use-before-define, object-curly-newline, function-paren-newline */
-import getPathSegment from '../../scripts/utils.js';
+import getPathSegments from '../../scripts/utils.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { div, strong, p, a, img, br } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
-  const locale = getPathSegment(0);
-  const validLocales = ['us', 'en', 'nl', 'de', 'fr', 'it', 'es'];
-  // if the locale is not valid, default to 'us'
-  const selectedLocale = validLocales.includes(locale) ? locale : 'us';
-  const footerFrag = await loadFragment(`/${selectedLocale}/footer`);
+  const [locale] = getPathSegments();
+  const footerFrag = await loadFragment(`/${locale}/footer`);
 
   const $vcard = div({ class: 'vcard' },
     strong('Valspar b.v.'),

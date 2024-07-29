@@ -175,7 +175,7 @@ main img {
   }
 }
 
-.section > div {
+main > div {
   box-sizing: border-box;
   padding: 20px 25px;
   max-width: var(--page-width);

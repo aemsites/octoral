@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define, object-curly-newline, function-paren-newline */
-import getPathSegment from '../../scripts/utils.js';
+import getPathSegments from '../../scripts/utils.js';
 import { div, nav, form, input, a, img, li, ul } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
-  const locale = getPathSegment(0);
+  const [locale] = getPathSegments();
   // supported languages
   const languages = [
     { code: 'us', label: 'USA' },
