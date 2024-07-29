@@ -22,10 +22,10 @@
   --dark-gray: #7c7d7e;
   --dark-gray-2: #666;
 
-  /* fonts */
-  --body-font-family: frutiger, arial, serif;
-  --heading-font-family: frutiger-bold, frutiger, arial, serif;
-  --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
+   /* fonts */
+   --body-font-family: 'Open Sans', arial, serif;
+   --heading-font-family: 'Open Sans', arial, serif;
+   --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
   --body-font-size: 14px;

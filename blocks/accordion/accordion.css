@@ -32,7 +32,7 @@
     text-transform: uppercase;
     font-weight: bold;
     font-size: var(--body-font-size-s);
-    font-family: FrutigerBold, Arial, serif;
+    font-family: var(--body-font-family);
     background-color: transparent;
   }
 
@@ -69,14 +69,14 @@
     text-transform: uppercase;
     color: #fff;
     font-size: 13px;
-    font-family: Frutiger, Arial, serif;
+    font-family: var( --body-font-family);
   }
   
   .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a {
     text-transform: uppercase;
     font-weight: bold;
     color: var(--dark-gray-2);
-    font-family: FrutigerBold, Arial, serif;
+    font-family: var(--body-font-family);
     font-size: 13px;
   }
 

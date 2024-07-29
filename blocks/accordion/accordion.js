@@ -1,4 +1,4 @@
-import { div, summary } from '../../scripts/dom-helpers.js';
+import { div, summary, details } from '../../scripts/dom-helpers.js';
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
@@ -71,8 +71,7 @@ export default async function decorate(block) {
       body.className = 'accordion-item-body';
       body.querySelectorAll('p').forEach((p) => {
         if (p.nextElementSibling && p.nextElementSibling.tagName === 'UL') {
-          const childDetails = document.createElement('details');
-          childDetails.className = 'child-accordion-item';
+          const childDetails = details({ class: 'child-accordion-item' });
           const childSummary = summary({ class: 'child-accordion-item-label' });
           childSummary.innerHTML = `<p>${p.innerHTML}</p>`;
           const childBody = div({ class: 'child-accordion-item-body' });
@@ -86,15 +85,14 @@ export default async function decorate(block) {
       });
     }
     // decorate accordion item
-    const details = document.createElement('details');
-    details.className = 'accordion-item';
+    const parentDetails = details({ class: 'accordion-item' });
     if (check) {
-      details.append(parentSummary, body);
+      parentDetails.append(parentSummary, body);
     } else {
       parentSummary.classList.add('accordion-item-no-body');
-      details.append(parentSummary);
+      parentDetails.append(parentSummary);
     }
-    details.querySelectorAll('a').forEach((a) => {
+    parentDetails.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
         replaceEntries(placeholders, a);
@@ -102,11 +100,11 @@ export default async function decorate(block) {
         replaceEntries(placeholders, a);
       }
     });
-    details.querySelectorAll('p').forEach((p) => {
+    parentDetails.querySelectorAll('p').forEach((p) => {
       if (p.classList.contains('button-container')) {
         p.classList.remove('button-container');
       }
     });
-    row.replaceWith(details);
+    row.replaceWith(parentDetails);
   });
 }
