@@ -15,7 +15,10 @@ export default async function decorate(block) {
     { code: 'es', label: 'Español' },
   ];
 
+  const $homeBtn = a({ class: 'home', href: `/${locale}/` }, img({ src: '/icons/home.png', width: 16, height: 16, alt: 'Back to home' }));
+
   const $topBar = div({ class: 'top-bar' },
+    (getPathSegments().length > 1) ? $homeBtn : '',
     div({ class: 'search' },
       form({ method: 'get', action: `/${locale}/search` },
         input({ type: 'text', name: 'query', title: 'Search...', placeholder: 'Search...' }),
