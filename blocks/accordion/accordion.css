@@ -13,7 +13,7 @@
     padding-right: 48px;
     cursor: pointer;
     list-style: none;
-    overflow: auto;
+    overflow: hidden;
     transition: background-color 0.2s;
   }
 
