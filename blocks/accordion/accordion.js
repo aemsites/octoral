@@ -78,6 +78,9 @@ export default async function decorate(block) {
   if (param.includes('/products/')) {
     // eslint-disable-next-line prefer-destructuring
     locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
+    if (locale === '') {
+      locale = 'en';
+    }
   }
 
   const placeholders = await fetchPlaceholders(locale);
