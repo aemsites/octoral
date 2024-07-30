@@ -1,5 +1,4 @@
 .aside-nav details {
-
   .accordion-item-body p:not(.child-accordion-item-body p).dark-grey {
     background-color: var(--dark-gray);
   }

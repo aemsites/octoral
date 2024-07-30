@@ -1,7 +1,6 @@
 import { div, summary, details } from '../../scripts/dom-helpers.js';
 import getPathSegments from '../../scripts/utils.js';
 
-
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
   const TRANSLATION_KEY = 'translation';
@@ -38,18 +37,20 @@ export async function fetchPlaceholders(locale = 'en') {
           resolve();
         }).catch((error) => {
         // Error While Loading Placeholders
-        window.placeholders[TRANSLATION_KEY] = {};
-        reject(error);
-      });
+          window.placeholders[TRANSLATION_KEY] = {};
+          reject(error);
+        });
     });
   }
   await window.placeholders[`${TRANSLATION_KEY}-loaded`];
   return [window.placeholders[TRANSLATION_KEY][locale], window.placeholders[TRANSLATION_KEY][`${locale}-href`]];
 }
 
-function expand(element, param) {
+let currentPath;
+function expand(element) {
   const urlPathname = new URL(element.href).pathname;
-  if (urlPathname === param) {
+
+  if (urlPathname === currentPath) {
     if (element.closest('details')) {
       element.closest('details').open = true;
       if (element.closest('details').parentNode && element.closest('details').parentNode.closest('details')) {
@@ -62,20 +63,20 @@ function expand(element, param) {
   }
 }
 
-function replaceEntries(placeholders, element, param) {
+function replaceEntries(placeholders, element) {
   const text = element.innerText.toLowerCase();
   Object.keys(placeholders[0]).forEach((key) => {
     if (text === key) {
       element.innerText = placeholders[0][key];
       element.setAttribute('href', placeholders[1][key]);
-      expand(element, param);
+      expand(element);
     }
   });
 }
 
 export default async function decorate(block) {
-  const [locale, products] = getPathSegments();
-
+  const [locale] = getPathSegments();
+  currentPath = window.location.pathname;
   const placeholders = await fetchPlaceholders(locale);
   [...block.children].forEach((row) => {
     // decorate accordion item label
@@ -113,9 +114,9 @@ export default async function decorate(block) {
     parentDetails.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
-        replaceEntries(placeholders, a, products);
+        replaceEntries(placeholders, a);
       } else {
-        replaceEntries(placeholders, a, products);
+        replaceEntries(placeholders, a);
       }
     });
     parentDetails.querySelectorAll('p').forEach((p) => {

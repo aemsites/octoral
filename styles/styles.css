@@ -68,6 +68,9 @@ body {
   &.appear { display: block }
 }
 
+/* pushes header down when sidekick is present */
+helix-sidekick[pushdown] ~ header { top: 49px }
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font-family);
   color: var(--heading-color);
