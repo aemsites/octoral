@@ -1,0 +1,22 @@
+.home {
+
+    main > div {
+        display: flex;
+
+        /* left content */
+        section {
+            position: relative;
+            flex: 1;
+
+            padding-right: 10px; /* Adjust padding to fit the new layout */
+            box-sizing: border-box;
+        }
+
+        /* right nav */
+        aside {
+            width: 300px;
+            overflow: hidden; /* todo: fix this */
+            box-sizing: border-box;
+        }
+    }
+}
