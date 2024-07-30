@@ -45,19 +45,44 @@ export async function fetchPlaceholders(locale = 'en') {
   return [window.placeholders[TRANSLATION_KEY][locale], window.placeholders[TRANSLATION_KEY][`${locale}-href`]];
 }
 
-function replaceEntries(placeholders, element) {
+function expand(element, param) {
+  const urlPathname = new URL(element.href).pathname;
+  if (urlPathname === param) {
+    if (element.closest('details')) {
+      element.closest('details').open = true;
+      if (element.closest('details').parentNode && element.closest('details').parentNode.closest('details')) {
+        element.closest('details').parentNode.closest('details').open = true;
+        element.classList.add('blue');
+      } else {
+        element.parentNode.classList.add('dark-grey');
+      }
+    }
+  }
+}
+
+function replaceEntries(placeholders, element, param) {
   const text = element.innerText.toLowerCase();
   Object.keys(placeholders[0]).forEach((key) => {
     if (text === key) {
       element.innerText = placeholders[0][key];
       element.setAttribute('href', placeholders[1][key]);
+      expand(element, param);
     }
   });
 }
 
+let locale = 'en';
+
 export default async function decorate(block) {
   const param = new URL(window.location).pathname;
-  const locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
+  if (param.includes('/products/')) {
+    // eslint-disable-next-line prefer-destructuring
+    locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
+    if (locale === '') {
+      locale = 'en';
+    }
+  }
+
   const placeholders = await fetchPlaceholders(locale);
   [...block.children].forEach((row) => {
     // decorate accordion item label
@@ -95,9 +120,9 @@ export default async function decorate(block) {
     parentDetails.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
-        replaceEntries(placeholders, a);
+        replaceEntries(placeholders, a, param);
       } else {
-        replaceEntries(placeholders, a);
+        replaceEntries(placeholders, a, param);
       }
     });
     parentDetails.querySelectorAll('p').forEach((p) => {
