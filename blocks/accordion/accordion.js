@@ -55,9 +55,15 @@ function replaceEntries(placeholders, element) {
   });
 }
 
+let locale = 'en';
+
 export default async function decorate(block) {
   const param = new URL(window.location).pathname;
-  const locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
+  if (param.includes('/products/')) {
+    // eslint-disable-next-line prefer-destructuring
+    locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
+  }
+
   const placeholders = await fetchPlaceholders(locale);
   [...block.children].forEach((row) => {
     // decorate accordion item label
