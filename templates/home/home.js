@@ -7,7 +7,7 @@ export default async function decorate(doc) {
   const $content = $page.querySelector('.default-content-wrapper');
 
   const lefNavFrag = await loadFragment('/drafts/Meet/en/products/leftdiv');
-  const $leftNav = lefNavFrag.querySelector('.accordion-wrapper').cloneNode(true);
+  const $leftNav = lefNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
 
   // const $section = section(
   //   $content,

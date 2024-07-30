@@ -1,4 +1,6 @@
 import { div, summary, details } from '../../scripts/dom-helpers.js';
+import getPathSegments from '../../scripts/utils.js';
+
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
@@ -71,17 +73,8 @@ function replaceEntries(placeholders, element, param) {
   });
 }
 
-let locale = 'en';
-
 export default async function decorate(block) {
-  const param = new URL(window.location).pathname;
-  if (param.includes('/products/')) {
-    // eslint-disable-next-line prefer-destructuring
-    locale = /[a-z]*\/products\//.exec(param)[0].split('/')[0];
-    if (locale === '') {
-      locale = 'en';
-    }
-  }
+  const [locale, products] = getPathSegments();
 
   const placeholders = await fetchPlaceholders(locale);
   [...block.children].forEach((row) => {
@@ -120,9 +113,9 @@ export default async function decorate(block) {
     parentDetails.querySelectorAll('a').forEach((a) => {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
-        replaceEntries(placeholders, a, param);
+        replaceEntries(placeholders, a, products);
       } else {
-        replaceEntries(placeholders, a, param);
+        replaceEntries(placeholders, a, products);
       }
     });
     parentDetails.querySelectorAll('p').forEach((p) => {
