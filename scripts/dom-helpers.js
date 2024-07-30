@@ -141,3 +141,5 @@ export function dt(...items) { return domEl('dt', ...items); }
 export function dd(...items) { return domEl('dd', ...items); }
 export function hr(...items) { return domEl('hr', ...items); }
 export function script(...items) { return domEl('script', ...items); }
+export function summary(...items) { return domEl('summary', ...items); }
+export function details(...items) { return domEl('details', ...items); }

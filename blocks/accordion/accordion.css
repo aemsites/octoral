@@ -2,6 +2,14 @@
   width: 400px;
 }
 
+.accordion details .accordion-item-body p:not(.child-accordion-item-body p).dark-grey {
+  background-color: var(--dark-gray);
+}
+
+.accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a.blue {
+  color: var(--blue);
+}
+
 /* stylelint-disable-next-line no-descending-specificity */
 .accordion details + details {
   margin-top: 16px;
@@ -13,16 +21,16 @@
   padding-right: 48px;
   cursor: pointer;
   list-style: none;
-  overflow: auto;
+  overflow: hidden;
   transition: background-color 0.2s;
 }
 
 .accordion details summary:not(.child-accordion-item-label) {
-  background-color: #00b0f0;
+  background-color: var(--blue);
 }
 
 .accordion details summary:not(.child-accordion-item-label):hover {
-  background-color: #69c7e9
+  background-color: var(--light-blue);
 }
 
 .accordion details summary p a:any-link {
@@ -32,28 +40,35 @@
   text-transform: uppercase;
   font-weight: bold;
   font-size: var(--body-font-size-s);
-  font-family: FrutigerBold, Arial, serif;
+  font-family: var(--body-font-family);
   background-color: transparent;
 }
 
 .accordion details .accordion-item-body p:not(.child-accordion-item-body p) {
-  background-color: #a9aaab;
+  background-color: var(--gray);
   margin-top: 5px;
   margin-bottom: 0;
 }
 
 .accordion details[open] .accordion-item-body p:not(.child-accordion-item-body p):hover {
-  background-color: #7c7d7e;
+  background-color: var(--dark-gray);
 }
 
 .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p {
   margin-top: 0;
   margin-bottom: 0;
-  line-height: 1.2;
 }
 
 .accordion details[open] .accordion-item-body details.child-accordion-item[open] p:not(.child-accordion-item-body p) {
-  background-color: #7c7d7e;
+  background-color: var(--dark-gray);
+}
+
+.accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:first-child {
+  margin-top: 1em;
+}
+
+.accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:last-child {
+  margin-bottom: 1em;
 }
 
 .accordion details .accordion-item-body p a:any-link {
@@ -62,24 +77,24 @@
   text-transform: uppercase;
   color: #fff;
   font-size: 13px;
-  font-family: Frutiger, Arial, serif;
+  font-family: var( --body-font-family);
 }
 
 .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a {
   text-transform: uppercase;
   font-weight: bold;
-  color: #666;
-  font-family: FrutigerBold, Arial, serif;
+  color: var(--dark-gray-2);
+  font-family: var(--body-font-family);
   font-size: 13px;
 }
 
 .accordion details[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a:hover {
-  color: #00b0f0;
+  color: var(--blue);
   text-decoration: none;
 }
 
 .accordion details[open] summary:not(.child-accordion-item-label) {
-  background-color: #69c7e9;
+  background-color: var(--light-blue);
 }
 
 .accordion details summary::-webkit-details-marker {
@@ -93,9 +108,9 @@
   right: 18px;
   width: 0;
   height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 10px solid #fff;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid #fff;
   transition: transform 0.2s;
 }
 
