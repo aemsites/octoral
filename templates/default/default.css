@@ -1,0 +1,29 @@
+main {
+    display: flex;
+
+    /* left nav */
+    aside {
+        width: 300px;
+        box-sizing: border-box;
+    }
+
+    /* right content */
+    section {
+        position: relative;
+        flex: 1;
+        padding: 0 0 0 40px;
+        box-sizing: border-box;
+
+        /* border */
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10px;
+            width: 1px;
+            height: 100%;
+            background: #ccc;
+            box-sizing: border-box;
+        }
+    }
+}

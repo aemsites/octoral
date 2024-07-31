@@ -1,0 +1,26 @@
+/* home specific styles */
+
+/* extends default template css */
+.home main {
+    /* reverse colum order */
+    flex-direction: row-reverse;
+
+    /* adjust for two columns */
+    section {
+        display: flex;
+        flex-direction: row;
+        padding: 0 10px 0 0;
+        &::before { display: none }
+
+        .left {
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .right {
+            width: 300px;
+            box-sizing: border-box;
+            padding: 0 10px;
+        }
+    }
+}
