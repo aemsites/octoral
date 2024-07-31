@@ -1,9 +1,9 @@
 /* eslint-disable no-use-before-define, object-curly-newline, function-paren-newline */
-import getPathSegment from '../../scripts/utils.js';
+import getPathSegments from '../../scripts/utils.js';
 import { div, nav, form, input, a, img, li, ul } from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
-  const locale = getPathSegment(0);
+  const [locale] = getPathSegments();
   // supported languages
   const languages = [
     { code: 'us', label: 'USA' },
@@ -15,7 +15,10 @@ export default async function decorate(block) {
     { code: 'es', label: 'Español' },
   ];
 
+  const $homeBtn = a({ class: 'home', href: `/${locale}/` }, img({ src: '/icons/home.png', width: 16, height: 16, alt: 'Back to home' }));
+
   const $topBar = div({ class: 'top-bar' },
+    (getPathSegments().length > 1) ? $homeBtn : '',
     div({ class: 'search' },
       form({ method: 'get', action: `/${locale}/search` },
         input({ type: 'text', name: 'query', title: 'Search...', placeholder: 'Search...' }),

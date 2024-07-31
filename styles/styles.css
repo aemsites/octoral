@@ -25,10 +25,10 @@
   --dark-gray: #7c7d7e;
   --dark-gray-2: #666;
 
-   /* fonts */
-   --body-font-family: 'Open Sans', arial, serif;
-   --heading-font-family: 'Open Sans', arial, serif;
-   --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
+  /* fonts */
+  --body-font-family: 'Open Sans', arial, serif;
+  --heading-font-family: 'Open Sans', arial, serif;
+  --fixed-font-family: menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
   --body-font-size: 14px;
@@ -67,6 +67,9 @@ body {
   display: none;
   &.appear { display: block }
 }
+
+/* pushes header down when sidekick is present */
+helix-sidekick[pushdown] ~ header { top: 49px }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font-family);
@@ -175,7 +178,7 @@ main img {
   }
 }
 
-.section > div {
+main {
   box-sizing: border-box;
   padding: 20px 25px;
   max-width: var(--page-width);

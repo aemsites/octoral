@@ -1,12 +1,16 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
-import { h3 } from '../../scripts/dom-helpers.js';
+import { loadTemplate } from '../../scripts/scripts.js';
+import getPathSegments from '../../scripts/utils.js';
 
 export default async function decorate(doc) {
-  // doc is an object, just like a block
+  // extends default template
+  await loadTemplate(doc, 'default');
 
-  // get h1 tag from doc and change it to h3 using domhelpers
-  const h1 = doc.querySelector('h1');
-  if (h1) {
-    h1.replaceWith(h3(h1.textContent));
-  }
+  // get path segments for use in product display logic
+  const [locale, products, vocCompliant, type, title] = getPathSegments();
+  console.log('locale:', locale);
+  console.log('products:', products);
+  console.log('vocCompliant:', vocCompliant);
+  console.log('type:', type);
+  console.log('title:', title);
 }
