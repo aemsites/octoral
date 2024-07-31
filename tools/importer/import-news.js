@@ -48,16 +48,8 @@ function fixBrochure(main) {
 
 function handleTable(main, document) {
   const temp = main.querySelectorAll('table');
-
   temp.forEach((t) => {
-    const cells = [['table (bordered)']];
-    t.cloneNode(true).querySelectorAll('tr').forEach((row) => {
-      const x = [];
-      row.querySelectorAll('td').forEach((cell) => {
-        x.push(cell.textContent);
-      });
-      cells.push(x);
-    });
+    const cells = [[t.cloneNode(true)]];
     const table = WebImporter.DOMUtils.createTable(cells, document);
     t.replaceWith(table);
   });
