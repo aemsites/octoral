@@ -7,14 +7,17 @@ export default async function decorate(doc) {
   await loadTemplate(doc, 'default');
 
   class Obj {
-    constructor(type, image, href, label, desc, feedType, title, subtitle, itemnr, perbox, volume) {
+    // eslint-disable-next-line max-len
+    constructor(type, typelabel, image, href, label, desc, feedType, title, titlelabel, subtitle, itemnr, perbox, volume) {
       this.type = type;
+      this.typelabel = typelabel;
       this.image = image;
       this.href = href;
       this.label = label;
       this.desc = desc;
       this.feedType = feedType;
       this.title = title;
+      this.titlelabel = titlelabel;
       this.subtitle = subtitle;
       this.itemnr = itemnr;
       this.perbox = perbox;
@@ -31,11 +34,11 @@ export default async function decorate(doc) {
     data.forEach((entry) => {
       if (entry['voc-compliant'] === vocCompliant && entry.type.toLowerCase().replace(/ /g, '_') === type) {
         if (!entry.title) {
-          obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'table', entry.title, entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+          obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'table', entry.title, entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
           endResult.push(obj);
         } else if (!duplicates.includes(entry.type)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
           duplicates.push(entry.type);
-          obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'card');
+          obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'card', entry.title, entry['title-label']);
           endResult.push(obj);
         }
       }
@@ -52,7 +55,7 @@ export default async function decorate(doc) {
       if (entry['voc-compliant'] === vocCompliant) {
         if (!duplicates.includes(entry.type)) {
           duplicates.push(entry.type);
-          obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'card');
+          obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['voc-compliant-label'], entry['type-desc'], 'card');
           endResult.push(obj);
         }
       }
