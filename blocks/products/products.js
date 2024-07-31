@@ -1,10 +1,16 @@
-export class ObjJustVocCompliant {
-  constructor(type, image, href, label, desc) {
+export class Obj {
+  constructor(type, image, href, label, desc, feedType, title, subtitle, itemnr, perbox, volume) {
     this.type = type;
     this.image = image;
     this.href = href;
     this.label = label;
     this.desc = desc;
+    this.feedType = feedType;
+    this.title = title;
+    this.subtitle = subtitle;
+    this.itemnr = itemnr;
+    this.perbox = perbox;
+    this.volume = volume;
   }
 }
 
@@ -14,7 +20,29 @@ export function getPathSegments() {
   return pathSegments;
 }
 
-const justvocCompliant = (data, vocCompliant, locale) => {
+// Checking 2nd used case - https://www.octoral.com/en/products/non-voc/cleaning_agents
+const tillType = (data, vocCompliant, type, locale) => {
+  const endResult = [];
+  const duplicates = [];
+  let obj = {};
+
+  data.forEach((entry) => {
+    if (entry['voc-compliant'] === vocCompliant && entry.type.toLowerCase().replace(/ /g, '_') === type) {
+      if (!entry.title) {
+        obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'table', entry.title, entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+        endResult.push(obj);
+      } else if (!duplicates.includes(entry.type)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
+        duplicates.push(entry.type);
+        obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'card');
+        endResult.push(obj);
+      }
+    }
+  });
+  return endResult;
+};
+
+// Checking 1st used case - https://www.octoral.com/en/products/non-voc/
+const tillVocCompliant = (data, vocCompliant, locale) => {
   const endResult = [];
   const duplicates = [];
   let obj = {};
@@ -22,7 +50,7 @@ const justvocCompliant = (data, vocCompliant, locale) => {
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
-        obj = new ObjJustVocCompliant(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['voc-compliant-label'], entry['voc-compliant-desc']);
+        obj = new Obj(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'card');
         endResult.push(obj);
       }
     }
@@ -50,7 +78,11 @@ export async function fetchProducts(vocCompliant, type, title, locale = 'en') {
           const products = {};
 
           if (typeof type === 'undefined' && typeof title === 'undefined') {
-            endResult = justvocCompliant(json.data, vocCompliant, locale);
+            endResult = tillVocCompliant(json.data, vocCompliant, locale);
+          }
+
+          if (typeof type !== 'undefined' && typeof title === 'undefined') {
+            endResult = tillType(json.data, vocCompliant, type, locale);
           }
 
           window.products[TRANSLATION_KEY] = products;
