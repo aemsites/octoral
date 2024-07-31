@@ -1,21 +1,37 @@
 .home {
-
     main > div {
         display: flex;
 
-        /* left content */
+        /* left container */
         section {
-            position: relative;
+            display: flex;
+            flex-direction: row; /* Align children in a row (left and right columns) */
             flex: 1;
+            padding-right: 10px;
+            box-sizing: border-box;
+        }
 
-            padding-right: 10px; /* Adjust padding to fit the new layout */
+        .left {
+            flex: 1;
+            margin-right: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .right {
+            width: 300px;
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
             box-sizing: border-box;
         }
 
         /* right nav */
         aside {
             width: 300px;
-            overflow: hidden; /* todo: fix this */
+            overflow: hidden;
             box-sizing: border-box;
         }
     }

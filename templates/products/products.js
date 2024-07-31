@@ -8,11 +8,11 @@ export default async function decorate(doc) {
   const $content = $page.querySelector('.default-content-wrapper');
   // eslint-disable-next-line no-unused-vars
   const [locale, products, vocCompliant, type, title] = getPathSegments();
-  const lefNavFrag = await loadFragment(`/${locale}/aside-nav`);
-  const $leftNav = lefNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
+  const navFrag = await loadFragment(`/aside-nav`);
+  const $asideNav = navFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
 
   const $aside = aside(
-    $leftNav,
+    $asideNav,
   );
 
   const $section = section(

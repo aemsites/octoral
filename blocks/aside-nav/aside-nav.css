@@ -1,6 +1,6 @@
 .aside-nav details {
   .accordion-item-body p:not(.child-accordion-item-body p).dark-grey {
-    background-color: var(--dark-gray);
+    background: var(--dark-gray);
   }
 
   &[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p a.blue {
@@ -14,29 +14,27 @@
 
   summary {
     position: relative;
-    padding: 0 16px;
-    padding-right: 48px;
+    padding: 0 48px 0 16px;
     cursor: pointer;
     list-style: none;
     overflow: hidden;
     transition: background-color 0.2s;
 
     &:not(.child-accordion-item-label) {
-      background-color: var(--blue);
+      background: var(--blue);
     }
 
     &:not(.child-accordion-item-label):hover {
-      background-color: var(--light-blue);
+      background: var(--light-blue);
     }
 
-    & p a:any-link {
+    & p a {
       position: relative;
       color: #fff;
       text-transform: uppercase;
       font-weight: bold;
-      font-size: var(--body-font-size-s);
       font-family: var(--body-font-family);
-      background-color: transparent;
+      background: transparent;
     }
 
     &::-webkit-details-marker {
@@ -45,13 +43,13 @@
   }
 
   .accordion-item-body p:not(.child-accordion-item-body p) {
-    background-color: var(--gray);
+    background: var(--gray);
     margin-top: 5px;
     margin-bottom: 0;
   }
 
   &[open] .accordion-item-body p:not(.child-accordion-item-body p):hover {
-    background-color: var(--dark-gray);
+    background: var(--dark-gray);
   }
 
   &[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p {
@@ -60,7 +58,7 @@
   }
 
   &[open] .accordion-item-body details.child-accordion-item[open] p:not(.child-accordion-item-body p) {
-    background-color: var(--dark-gray);
+    background: var(--dark-gray);
   }
 
   &[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:first-child {
@@ -72,7 +70,7 @@
   }
 
   .accordion-item-body p a:any-link {
-    background-color: transparent;
+    background: transparent;
     padding: 7px 20px;
     text-transform: uppercase;
     color: #fff;
@@ -94,10 +92,8 @@
   }
 
   &[open] summary:not(.child-accordion-item-label) {
-    background-color: var(--light-blue);
+    background: var(--light-blue);
   }
-
-
 
   & summary:not(.accordion-item-no-body)::after {
     content: "";
@@ -126,8 +122,7 @@
   }
 
   &[open] .accordion-item-body {
-    border-top: 1px solid var(--dark-color);
-    background-color: var(--background-color);
+    background: var(--background-color);
   }
 
   &.child-accordion-item summary.child-accordion-item-label {
