@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
-import { aside, section, p } from '../../scripts/dom-helpers.js';
+import { aside, section } from '../../scripts/dom-helpers.js';
 import { loadFragment } from '../../blocks/fragment/fragment.js';
 
 export default async function decorate(doc) {
