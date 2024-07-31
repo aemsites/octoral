@@ -116,6 +116,7 @@ export default class ArticleList {
         this.scrollTop();
       }
     });
+    $prev.innerHTML = '<';
     $prev.disabled = this.currentPage === 0;
     p.appendChild($prev);
 
@@ -166,6 +167,7 @@ export default class ArticleList {
         this.scrollTop();
       }
     });
+    $next.innerHTML = '>';
     $next.disabled = this.currentPage === totalPages - 1;
     p.appendChild($next);
 

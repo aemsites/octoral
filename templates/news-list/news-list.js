@@ -6,8 +6,6 @@ import ArticleList from '../../scripts/article-list.js';
 import { loadFragment } from '../../blocks/fragment/fragment.js';
 
 export default async function decorate(doc) {
-  console.log(doc);
-
   const $page = doc.querySelector('main .section');
   const $articles = div({ class: 'articles' });
   const $pagination = div({ class: 'pagination' });
