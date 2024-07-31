@@ -1,8 +1,10 @@
 export class ObjJustVocCompliant {
-  constructor(type, image, href) {
+  constructor(type, image, href, label, desc) {
     this.type = type;
     this.image = image;
     this.href = href;
+    this.label = label;
+    this.desc = desc;
   }
 }
 
@@ -20,7 +22,7 @@ const justvocCompliant = (data, vocCompliant, locale) => {
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
-        obj = new ObjJustVocCompliant(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`);
+        obj = new ObjJustVocCompliant(entry.type, entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['voc-compliant-label'], entry['voc-compliant-desc']);
         endResult.push(obj);
       }
     }
@@ -28,13 +30,15 @@ const justvocCompliant = (data, vocCompliant, locale) => {
   return endResult;
 };
 
-export async function fetchPlaceholders(vocCompliant, type, title, locale = 'en') {
-  window.placeholders = window.placeholders || {};
+let endResult = [];
+
+export async function fetchProducts(vocCompliant, type, title, locale = 'en') {
+  window.products = window.products || {};
   const TRANSLATION_KEY = 'products';
-  const loaded = window.placeholders[`${TRANSLATION_KEY}-loaded`];
+  const loaded = window.products[`${TRANSLATION_KEY}-loaded`];
 
   if (!loaded) {
-    window.placeholders[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
+    window.products[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
       fetch(`/products.json?helix-${locale}`)
         .then((resp) => {
           if (resp.ok) {
@@ -43,46 +47,28 @@ export async function fetchPlaceholders(vocCompliant, type, title, locale = 'en'
           throw new Error(`${resp.status}: ${resp.statusText}`);
         })
         .then((json) => {
-          const placeholders = {};
-          const KEY = 'Key';
+          const products = {};
 
           if (typeof type === 'undefined' && typeof title === 'undefined') {
-            const endResult = justvocCompliant(json.data, vocCompliant, locale);
-            console.log(endResult);
+            endResult = justvocCompliant(json.data, vocCompliant, locale);
           }
 
-          json.data.forEach((entry) => {
-            Object.keys(entry).forEach((localeKey) => {
-
-
-
-            //   if (localeKey !== KEY) {
-            //     if (placeholders[localeKey]) {
-            //       placeholders[localeKey][entry.Key.toLowerCase()] = entry[localeKey];
-            //     } else {
-            //       placeholders[localeKey] = {
-            //         [entry.Key.toLowerCase()]: entry[localeKey],
-            //       };
-            //     }
-            //   }
-            });
-          });
-
-          window.placeholders[TRANSLATION_KEY] = placeholders;
+          window.products[TRANSLATION_KEY] = products;
           resolve();
         }).catch((error) => {
-          // Error While Loading Placeholders
-          window.placeholders[TRANSLATION_KEY] = {};
+          // Error While Loading Products
+          window.products[TRANSLATION_KEY] = {};
           reject(error);
         });
     });
   }
-  await window.placeholders[`${TRANSLATION_KEY}-loaded`];
-  return [window.placeholders[TRANSLATION_KEY][locale], window.placeholders[TRANSLATION_KEY][`${locale}-href`]];
+  await window.products[`${TRANSLATION_KEY}-loaded`];
+  return endResult;
 }
 
 export default async function decorate(block) {
   const [locale, products, vocCompliant, type, title] = getPathSegments();
   console.log(locale, products, vocCompliant, type, title);
-  const placeholders = await fetchPlaceholders(vocCompliant, type, title, locale);
+  const result = await fetchProducts(vocCompliant, type, title, locale);
+  console.log(result);
 }
