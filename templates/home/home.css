@@ -1,38 +1,25 @@
-.home {
-    main > div {
+/* home specific styles */
+
+/* extends default template css */
+.home main {
+    /* reverse colum order */
+    flex-direction: row-reverse;
+
+    section {
         display: flex;
+        flex-direction: row;
+        padding: 0 10px 0 0;
+        &::before { display: none }
+    }
 
-        /* left container */
-        section {
-            display: flex;
-            flex-direction: row; /* Align children in a row (left and right columns) */
-            flex: 1;
-            padding-right: 10px;
-            box-sizing: border-box;
-        }
+    .left {
+        flex: 1;
+        padding-right: 10px;
+    }
 
-        .left {
-            flex: 1;
-            margin-right: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .right {
-            width: 300px;
-            padding: 0 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            box-sizing: border-box;
-        }
-
-        /* right nav */
-        aside {
-            width: 300px;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
+    .right {
+        width: 300px;
+        box-sizing: border-box;
+        padding: 0 10px;
     }
 }

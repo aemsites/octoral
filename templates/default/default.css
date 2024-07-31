@@ -1,4 +1,4 @@
-main > div {
+main {
     display: flex;
 
     /* left nav */
@@ -11,8 +11,7 @@ main > div {
     section {
         position: relative;
         flex: 1;
-        background-color: #fff;
-        padding-left: 40px;
+        padding: 0 0 0 40px;
         box-sizing: border-box;
 
         /* border */
