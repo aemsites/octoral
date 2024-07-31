@@ -1,0 +1,66 @@
+main > div {
+    
+    display: flex;
+
+    /* left nav */
+    aside {
+        width: auto;
+        box-sizing: border-box;
+        padding-left: 17%;
+        z-index: 1;
+        position: relative;
+        float: left;
+        
+    }
+
+    .accordion-wrapper {
+        position: absolute;
+        width: auto;
+        padding-left: 2px;
+        z-index: -1;
+        
+        
+    }
+
+    .accordion-item {
+        width: 100%;
+    }
+    
+
+    /* right content */
+    section {
+        position: relative;
+        /* flex: 1; */
+        width: 80%;
+        background-color: #fff;
+        padding-left: 20%;
+        padding-right: 25%;
+        box-sizing: border-box;
+        
+        
+
+        /* border */
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            /* left: 150px; */
+            left: 24%;
+            width: 1px;
+            height: 100%;
+            background: #ccc;
+            box-sizing: border-box;
+        }
+    }
+
+    .articles {
+        width: auto;
+       
+        
+    }
+
+    .card {
+        width: auto;
+    }
+
+}
