@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
 import { loadTemplate } from '../../scripts/scripts.js';
 import getPathSegments from '../../scripts/utils.js';
-import { section, h1, p } from '../../scripts/dom-helpers.js';
+import { div, h1, p } from '../../scripts/dom-helpers.js';
 
 class Obj {
   // eslint-disable-next-line max-len
@@ -103,8 +103,8 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
 export default async function decorate(doc) {
   // extends default template
   await loadTemplate(doc, 'default');
-  const $main = doc.querySelector('main');
-  let $section = section();
+  const $section = doc.querySelector('section');
+  let $products = div();
 
   // get path segments for use in product display logic
   const [locale, products, vocCompliant, type, title] = getPathSegments();
@@ -115,7 +115,8 @@ export default async function decorate(doc) {
   // Displaying 1st used case
   const usedCase = result[0].feedType;
   if (usedCase === 'stage1-card') {
-    $section = section(
+    $products = div(
+
       h1(`${result[0].label}`),
       p(`${result[0].desc}`),
     );
@@ -123,7 +124,7 @@ export default async function decorate(doc) {
 
   // Displaying 2nd used case
   if (usedCase === 'stage2-table') {
-    $section = section(
+    $products = div(
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
@@ -131,7 +132,8 @@ export default async function decorate(doc) {
 
   // Displaying 3rd used case
   if (usedCase === 'stage3-card') {
-    $section = section(
+    $products = div(
+
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
@@ -139,11 +141,12 @@ export default async function decorate(doc) {
 
   // Displaying 4th used case
   if (usedCase === 'stage4-table') {
-    $section = section(
+    $products = div(
+
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
   }
 
-  $main.replaceChild($section, $main.querySelector('section'));
+  $section.append($products);
 }
