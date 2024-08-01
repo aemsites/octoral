@@ -3,12 +3,12 @@ import getPathSegments from '../../scripts/utils.js';
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
-  const TRANSLATION_KEY = 'translation';
+  const TRANSLATION_KEY = 'products';
   const loaded = window.placeholders[`${TRANSLATION_KEY}-loaded`];
 
   if (!loaded) {
     window.placeholders[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
-      fetch('/translations.json')
+      fetch(`/products.json?sheet=translations&sheet=${locale}`)
         .then((resp) => {
           if (resp.ok) {
             return resp.json();
@@ -18,8 +18,7 @@ export async function fetchPlaceholders(locale = 'en') {
         .then((json) => {
           const placeholders = {};
           const KEY = 'Key';
-
-          json.data.forEach((entry) => {
+          json.translations.data.forEach((entry) => {
             Object.keys(entry).forEach((localeKey) => {
               if (localeKey !== KEY) {
                 if (placeholders[localeKey]) {
