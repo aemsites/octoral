@@ -3,7 +3,8 @@ import getPathSegments from '../../scripts/utils.js';
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};
-  const TRANSLATION_KEY = 'products';
+  const TRANSLATION_KEY = 'translations';
+  const TRANSLATION_KEY_PRODUCTS = 'products';
   const loaded = window.placeholders[`${TRANSLATION_KEY}-loaded`];
 
   if (!loaded) {
@@ -31,8 +32,8 @@ export async function fetchPlaceholders(locale = 'en') {
               }
             });
           });
-
           window.placeholders[TRANSLATION_KEY] = placeholders;
+          window.placeholders[TRANSLATION_KEY_PRODUCTS] = json;
           resolve();
         }).catch((error) => {
         // Error While Loading Placeholders
