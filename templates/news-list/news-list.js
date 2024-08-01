@@ -11,25 +11,22 @@ export default async function decorate(doc) {
   const $pagination = div({ class: 'pagination' });
   const articlesPerPage = Number(getMetadata('articles-per-page'));
   const paginationMaxBtns = Number(getMetadata('pagination-max-buttons'));
-  // Old nav template
-  // const lefNavFrag = await loadFragment('/drafts/Meet/en/products/leftdiv');
   const lefNavFrag = await loadFragment('/aside-nav');
-  // Old nav instance
-  // const $leftNav = lefNavFrag.querySelector('.accordion-wrapper').cloneNode(true);
   const $leftNav = lefNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
 
   const $aside = aside(
     $leftNav,
   );
 
-  const $articleCard = (article) => div(
-    { class: 'card' },
-    a(
-      { href: article.path },
-      h3(article.title),
-    ),
-    p(article.description),
-  );
+  const $articleCard = (article) =>
+    // eslint-disable-next-line function-paren-newline, implicit-arrow-linebreak
+    div({ class: 'card' },
+      // eslint-disable-next-line function-paren-newline
+      a({ href: article.path },
+      // eslint-disable-next-line indent, function-paren-newline
+      h3(article.title)),
+      p(article.description),
+    );
 
   const $newsPage = section(
     h1('News'),
