@@ -80,13 +80,14 @@ export default async function decorate(doc) {
   };
 
   let endResult = [];
+
   async function fetchProducts(vocCompliant, type, title, locale = 'en') {
     console.log(vocCompliant, type, title, locale);
     window.placeholders = window.placeholders || {};
     const TRANSLATION_KEY = 'products';
 
     await window.placeholders;
-    const json = window.placeholders[`${TRANSLATION_KEY}`].en;
+    const json = window.placeholders[`${TRANSLATION_KEY}`][`${locale}`];
 
     if (typeof type === 'undefined' && typeof title === 'undefined') {
       endResult = tillVocCompliant(json.data, vocCompliant, locale);
