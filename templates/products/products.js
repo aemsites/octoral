@@ -2,7 +2,9 @@
 import { loadTemplate } from '../../scripts/scripts.js';
 import getPathSegments from '../../scripts/utils.js';
 import { div, h1, p } from '../../scripts/dom-helpers.js';
-import { createOptimizedPicture, buildBlock } from '../../scripts/aem.js';
+import {
+  createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
+} from '../../scripts/aem.js';
 
 class Obj {
   // eslint-disable-next-line max-len
@@ -38,17 +40,17 @@ const resultParsers = {
       let cardImage;
       const cardBody = document.createElement('div');
       if (`result.${value}-image`) {
-         cardImage = createOptimizedPicture(`result.${value}-image`); 
+        cardImage = createOptimizedPicture(`result.${value}-image`);
+        console.log(cardImage);
       }
-      const div = document.createElement('div');
-      div.classList.add('title');
-      div.textContent = result.type;
+      const divTitle = document.createElement('div');
+      divTitle.classList.add('title');
+      divTitle.textContent = result.type;
       const path = document.createElement('a');
       path.href = window.location.origin + result.href;
-      path.append(div)
+      path.append(divTitle);
       cardBody.appendChild(path);
       row.push(cardBody);
-
 
       if (cardImage) {
         const pathImg = document.createElement('a');
@@ -61,7 +63,6 @@ const resultParsers = {
     return blockContents;
   },
 };
-
 
 // Checking 4th used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system/octobase_system_mixing_colours
 const tillTitle = (data, vocCompliant, type, title, locale) => {
@@ -162,11 +163,14 @@ export default async function decorate(doc) {
     const blockType = 'cards';
     const blockContents = resultParsers[blockType](result, 'type');
     const builtBlock = buildBlock(blockType, blockContents);
-    console.log(builtBlock);
+    const parentDiv = div(
+      builtBlock,
+    );
     $section.append($products);
-    $section.append(...builtBlock.childNodes);
+    $section.append(parentDiv);
+    decorateBlock(builtBlock);
+    await loadBlock(builtBlock);
   }
-  
 
   // Displaying 2nd used case
   if (usedCase === 'stage2-table') {
@@ -174,6 +178,7 @@ export default async function decorate(doc) {
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
+    $section.append($products);
   }
 
   // Displaying 3rd used case
@@ -183,6 +188,7 @@ export default async function decorate(doc) {
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
+    $section.append($products);
   }
 
   // Displaying 4th used case
@@ -192,7 +198,6 @@ export default async function decorate(doc) {
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
+    $section.append($products);
   }
-
-  // $section.append($products);
 }
