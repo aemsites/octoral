@@ -11,8 +11,12 @@ export default async function decorate(doc) {
   const $pagination = div({ class: 'pagination' });
   const articlesPerPage = Number(getMetadata('articles-per-page'));
   const paginationMaxBtns = Number(getMetadata('pagination-max-buttons'));
-  const lefNavFrag = await loadFragment('/drafts/Meet/en/products/leftdiv');
-  const $leftNav = lefNavFrag.querySelector('.accordion-wrapper').cloneNode(true);
+  // Old nav template
+  // const lefNavFrag = await loadFragment('/drafts/Meet/en/products/leftdiv');
+  const lefNavFrag = await loadFragment('/aside-nav');
+  // Old nav instance
+  // const $leftNav = lefNavFrag.querySelector('.accordion-wrapper').cloneNode(true);
+  const $leftNav = lefNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
 
   const $aside = aside(
     $leftNav,
