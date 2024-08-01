@@ -31,7 +31,7 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
 
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && entry.type.toLowerCase().replace(/ /g, '_') === type && entry.title.toLowerCase().replace(/ /g, '_') === title) {
-      obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'stage4-table', entry.title, entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
+      obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
       endResult.push(obj);
     }
   });
@@ -103,6 +103,8 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
 export default async function decorate(doc) {
   // extends default template
   await loadTemplate(doc, 'default');
+  const $main = doc.querySelector('main');
+  let $section = section();
 
   // get path segments for use in product display logic
   const [locale, products, vocCompliant, type, title] = getPathSegments();
@@ -113,9 +115,35 @@ export default async function decorate(doc) {
   // Displaying 1st used case
   const usedCase = result[0].feedType;
   if (usedCase === 'stage1-card') {
-    const $section = section(
+    $section = section(
       h1(`${result[0].label}`),
       p(`${result[0].desc}`),
     );
   }
+
+  // Displaying 2nd used case
+  if (usedCase === 'stage2-table') {
+    $section = section(
+      h1(`${result[0].typelabel}`),
+      p(`${result[0].desc}`),
+    );
+  }
+
+  // Displaying 3rd used case
+  if (usedCase === 'stage3-card') {
+    $section = section(
+      h1(`${result[0].typelabel}`),
+      p(`${result[0].desc}`),
+    );
+  }
+
+  // Displaying 4th used case
+  if (usedCase === 'stage4-table') {
+    $section = section(
+      h1(`${result[0].titlelabel}`),
+      p(`${result[0].desc}`),
+    );
+  }
+
+  $main.replaceChild($section, $main.querySelector('section'));
 }
