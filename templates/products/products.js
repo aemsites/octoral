@@ -2,11 +2,13 @@
 import { loadTemplate } from '../../scripts/scripts.js';
 import getPathSegments from '../../scripts/utils.js';
 import { div, h1, p } from '../../scripts/dom-helpers.js';
+import { createOptimizedPicture, buildBlock } from '../../scripts/aem.js';
 
 class Obj {
   // eslint-disable-next-line max-len
-  constructor(type, typelabel, image, href, label, desc, feedType, title, titlelabel, subtitle, itemnr, perbox, volume, code, productname) {
+  constructor(type, typeimage, typelabel, image, href, label, desc, feedType, title, titleimage, titlelabel, subtitle, itemnr, perbox, volume, code, productname) {
     this.type = type;
+    this.typeimage = typeimage;
     this.typelabel = typelabel;
     this.image = image;
     this.href = href;
@@ -14,6 +16,7 @@ class Obj {
     this.desc = desc;
     this.feedType = feedType;
     this.title = title;
+    this.titleimage = titleimage;
     this.titlelabel = titlelabel;
     this.subtitle = subtitle;
     this.itemnr = itemnr;
@@ -24,6 +27,42 @@ class Obj {
   }
 }
 
+// Result parsers parse the query results into a format that can be used by the block builder for
+// the specific block types
+const resultParsers = {
+  // Parse results into a cards block
+  cards: (results, value) => {
+    const blockContents = [];
+    results.forEach((result) => {
+      const row = [];
+      let cardImage;
+      const cardBody = document.createElement('div');
+      if (`result.${value}-image`) {
+         cardImage = createOptimizedPicture(`result.${value}-image`); 
+      }
+      const div = document.createElement('div');
+      div.classList.add('title');
+      div.textContent = result.type;
+      const path = document.createElement('a');
+      path.href = window.location.origin + result.href;
+      path.append(div)
+      cardBody.appendChild(path);
+      row.push(cardBody);
+
+
+      if (cardImage) {
+        const pathImg = document.createElement('a');
+        pathImg.href = window.location.origin + result.href;
+        pathImg.append(cardImage);
+        row.push(pathImg);
+      }
+      blockContents.push(row);
+    });
+    return blockContents;
+  },
+};
+
+
 // Checking 4th used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system/octobase_system_mixing_colours
 const tillTitle = (data, vocCompliant, type, title, locale) => {
   const endResult = [];
@@ -31,7 +70,7 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
 
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && entry.type.toLowerCase().replace(/ /g, '_') === type && entry.title.toLowerCase().replace(/ /g, '_') === title) {
-      obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
+      obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
       endResult.push(obj);
     }
   });
@@ -47,11 +86,11 @@ const tillType = (data, vocCompliant, type, locale) => {
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && entry.type.toLowerCase().replace(/ /g, '_') === type) {
       if (!entry.title) {
-        obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
         endResult.push(obj);
       } else if (!duplicates.includes(entry.type)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
         duplicates.push(entry.type);
-        obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, entry['title-label']);
+        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}/${entry.title.toLowerCase().replace(/ /g, '_')}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, entry['title-image'], entry['title-label']);
         endResult.push(obj);
       }
     }
@@ -68,7 +107,7 @@ const tillVocCompliant = (data, vocCompliant, locale) => {
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
-        obj = new Obj(entry.type, entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
+        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${entry.type.toLowerCase().replace(/ /g, '_')}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
         endResult.push(obj);
       }
     }
@@ -120,7 +159,14 @@ export default async function decorate(doc) {
       h1(`${result[0].label}`),
       p(`${result[0].desc}`),
     );
+    const blockType = 'cards';
+    const blockContents = resultParsers[blockType](result, 'type');
+    const builtBlock = buildBlock(blockType, blockContents);
+    console.log(builtBlock);
+    $section.append($products);
+    $section.append(...builtBlock.childNodes);
   }
+  
 
   // Displaying 2nd used case
   if (usedCase === 'stage2-table') {
@@ -148,5 +194,5 @@ export default async function decorate(doc) {
     );
   }
 
-  $section.append($products);
+  // $section.append($products);
 }
