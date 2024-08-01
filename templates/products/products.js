@@ -37,15 +37,11 @@ const resultParsers = {
     const blockContents = [];
     results.forEach((result) => {
       const row = [];
-      let cardImage;
       const cardBody = document.createElement('div');
-      if (`result.${value}-image`) {
-        cardImage = createOptimizedPicture(`result.${value}-image`);
-        console.log(cardImage);
-      }
+      const cardImage = createOptimizedPicture(result[`${value}image`]);
       const divTitle = document.createElement('div');
       divTitle.classList.add('title');
-      divTitle.textContent = result.type;
+      divTitle.textContent = result[`${value}`];
       const path = document.createElement('a');
       path.href = window.location.origin + result.href;
       path.append(divTitle);
