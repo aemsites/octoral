@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import { ul, li, a } from '../../scripts/dom-helpers.js';
 import { getPathSegments, loadTranslations, translate, normalizeString } from '../../scripts/utils.js';
 

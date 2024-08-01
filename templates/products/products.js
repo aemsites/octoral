@@ -1,6 +1,6 @@
-// eslint-disable-next-line no-unused-vars,no-empty-function
+/* eslint-disable function-call-argument-newline, object-curly-newline, function-paren-newline */
 import { loadTemplate } from '../../scripts/scripts.js';
-import { div, p, h1, h2 } from '../../scripts/dom-helpers.js';
+import { div, h1, h2 } from '../../scripts/dom-helpers.js';
 import { getPathSegments, loadTranslations, translate, normalizeString } from '../../scripts/utils.js';
 
 export default async function decorate(doc) {
@@ -8,6 +8,7 @@ export default async function decorate(doc) {
   await loadTemplate(doc, 'default');
 
   // Get path segments for use in product display logic
+  // eslint-disable-next-line no-unused-vars
   const [locale, productPath, vocCompliant, type, subType] = getPathSegments();
 
   // Load translations by locale and store for later use
@@ -47,18 +48,18 @@ export default async function decorate(doc) {
     if (isLandingPage) heading = products[0].voc;
     if (isTypePage || isSubTypePage) heading = products[0].type;
 
-    $section.append(h1(translate('voc')));
+    $section.append(h1(translate(heading)));
 
     const $products = div();
 
     if (isLandingPage) {
-      const uniqueProductTypes = new Set();
+      const seenTypes = new Set();
       products.forEach((product) => {
         const productType = translate(product.type); // Translate the product type
 
         // Only append if the type hasn't been seen before
-        if (!uniqueProductTypes.has(productType)) {
-          uniqueProductTypes.add(productType); // Add the type to the Set
+        if (!seenTypes.has(productType)) {
+          seenTypes.add(productType); // Add the type to the Set
           $products.append(h2(productType)); // Append the unique type to the DOM
         }
       });
@@ -98,7 +99,6 @@ export default async function decorate(doc) {
       console.log('No products found');
     }
   }
-
 
   getProductInfo();
 }
