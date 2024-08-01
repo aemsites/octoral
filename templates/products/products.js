@@ -82,43 +82,23 @@ export default async function decorate(doc) {
   let endResult = [];
   async function fetchProducts(vocCompliant, type, title, locale = 'en') {
     console.log(vocCompliant, type, title, locale);
-    window.products = window.products || {};
+    window.placeholders = window.placeholders || {};
     const TRANSLATION_KEY = 'products';
-    const loaded = window.products[`${TRANSLATION_KEY}-loaded`];
 
-    if (!loaded) {
-      window.products[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
-        fetch(`/products.json?sheet=${locale}`)
-          .then((resp) => {
-            if (resp.ok) {
-              return resp.json();
-            }
-            throw new Error(`${resp.status}: ${resp.statusText}`);
-          })
-          .then((json) => {
-            const products = {};
-            if (typeof type === 'undefined' && typeof title === 'undefined') {
-              endResult = tillVocCompliant(json.data, vocCompliant, locale);
-            }
+    await window.placeholders;
+    const json = window.placeholders[`${TRANSLATION_KEY}`].en;
 
-            if (typeof type !== 'undefined' && typeof title === 'undefined') {
-              endResult = tillType(json.data, vocCompliant, type, locale);
-            }
-
-            if (typeof title !== 'undefined') {
-              endResult = tillTitle(json.data, vocCompliant, type, title, locale);
-            }
-
-            window.products[TRANSLATION_KEY] = products;
-            resolve();
-          }).catch((error) => {
-            // Error While Loading Products
-            window.products[TRANSLATION_KEY] = {};
-            reject(error);
-          });
-      });
+    if (typeof type === 'undefined' && typeof title === 'undefined') {
+      endResult = tillVocCompliant(json.data, vocCompliant, locale);
     }
-    await window.products[`${TRANSLATION_KEY}-loaded`];
+
+    if (typeof type !== 'undefined' && typeof title === 'undefined') {
+      endResult = tillType(json.data, vocCompliant, type, locale);
+    }
+
+    if (typeof title !== 'undefined') {
+      endResult = tillTitle(json.data, vocCompliant, type, title, locale);
+    }
     return endResult;
   }
 
