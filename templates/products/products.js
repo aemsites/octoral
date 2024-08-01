@@ -88,7 +88,7 @@ export default async function decorate(doc) {
 
     if (!loaded) {
       window.products[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
-        fetch(`/products.json?helix-${locale}`)
+        fetch(`/products.json?sheet=${locale}`)
           .then((resp) => {
             if (resp.ok) {
               return resp.json();
