@@ -19,7 +19,7 @@
 .block.cards.products .cards-card-image {
     display: flex;
     justify-content: flex-end;
-    top: 10px;
+    top: 20px;
     position: relative;
 }
 
@@ -59,7 +59,7 @@
 @media (width >= 900px) {
     .block.cards.products > ul {
         grid-template-columns: repeat(4, 25%);
-        height: 87px;
+        height: 91px;
     }
 }
 
