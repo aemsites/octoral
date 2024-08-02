@@ -1,7 +1,9 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
 import { loadTemplate } from '../../scripts/scripts.js';
 import getPathSegments from '../../scripts/utils.js';
-import { div, h1, p } from '../../scripts/dom-helpers.js';
+import {
+  div, h1, p, a,
+} from '../../scripts/dom-helpers.js';
 import {
   createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
 } from '../../scripts/aem.js';
@@ -37,19 +39,18 @@ const resultParsers = {
     const blockContents = [];
     results.forEach((result) => {
       const row = [];
-      const cardBody = document.createElement('div');
+      const cardBody = div();
       const cardImage = createOptimizedPicture(result[`${value}image`]);
-      const divTitle = document.createElement('div');
-      divTitle.classList.add('title');
+      const divTitle = div({ class: 'title' });
       divTitle.textContent = result[`${value}`];
-      const path = document.createElement('a');
+      const path = a();
       path.href = window.location.origin + result.href;
       path.append(divTitle);
       cardBody.appendChild(path);
       row.push(cardBody);
 
       if (cardImage) {
-        const pathImg = document.createElement('a');
+        const pathImg = a();
         pathImg.href = window.location.origin + result.href;
         pathImg.append(cardImage);
         row.push(pathImg);
@@ -63,69 +64,54 @@ const resultParsers = {
     const blockContents = [];
     const row = [];
 
-    // const thead = document.createElement('div');
-    const trowhead = document.createElement('div');
-    const cellhead1 = document.createElement('div');
+    const trowhead = div();
+    const cellhead1 = div({ class: 'heading' });
     cellhead1.textContent = 'Item nr';
-    cellhead1.classList.add('heading');
     trowhead.append(cellhead1);
-    const cellhead2 = document.createElement('div');
+    const cellhead2 = div({ class: 'heading' });
     cellhead2.textContent = 'Code';
-    cellhead2.classList.add('heading');
     trowhead.append(cellhead2);
-    const cellhead3 = document.createElement('div');
+    const cellhead3 = div({ class: 'heading' });
     cellhead3.textContent = 'Product name';
-    cellhead3.classList.add('heading');
     trowhead.append(cellhead3);
-    const cellhead4 = document.createElement('div');
+    const cellhead4 = div({ class: 'heading' });
     cellhead4.textContent = 'Per box';
-    cellhead4.classList.add('heading');
     trowhead.append(cellhead4);
-    const cellhead5 = document.createElement('div');
+    const cellhead5 = div({ class: 'heading' });
     cellhead5.textContent = 'Volume';
-    cellhead5.classList.add('heading');
     trowhead.append(cellhead5);
-    // thead.append(trowhead);
     row.push(trowhead);
 
-    // const tbody = document.createElement('div');
-
     results.forEach((result) => {
-      const trow = document.createElement('div');
-      const cell1 = document.createElement('div');
-      cell1.classList.add('data');
+      const trow = div();
+      const cell1 = div({ class: 'data' });
       if (result.itemnr) {
         cell1.textContent = result.itemnr;
         trow.append(cell1);
       }
-      const cell2 = document.createElement('div');
-      cell2.classList.add('data');
+      const cell2 = div({ class: 'data' });
       if (result.code) {
         cell2.textContent = result.code;
         trow.append(cell2);
       }
-      const cell3 = document.createElement('div');
-      cell3.classList.add('data');
+      const cell3 = div({ class: 'data' });
       if (result.productname) {
         cell3.textContent = result.productname;
         trow.append(cell3);
       }
-      const cell4 = document.createElement('div');
-      cell4.classList.add('data');
+      const cell4 = div({ class: 'data' });
       if (result.perbox) {
         cell4.textContent = result.perbox;
         trow.append(cell4);
       }
-      const cell5 = document.createElement('div');
-      cell5.classList.add('data');
+      const cell5 = div({ class: 'data' });
       if (result.volume) {
         cell5.textContent = result.volume;
         trow.append(cell5);
       }
-      // tbody.append(trow);
       row.push(trow);
     });
-    // row.push(tbody);
+
     blockContents.push(row);
     return blockContents;
   },
@@ -226,7 +212,6 @@ export default async function decorate(doc) {
   const [locale, products, vocCompliant, type, title] = getPathSegments();
   console.log(locale, products, vocCompliant, type, title);
   const result = await fetchProducts(vocCompliant, type, title, locale);
-  console.log(result);
 
   // Displaying 1st used case
   const usedCase = result[0].feedType;
@@ -245,8 +230,7 @@ export default async function decorate(doc) {
     $section.append($products);
     $section.append(parentDiv);
     decorateBlock(builtBlock);
-    console.log(builtBlock);
-    // await loadBlock(builtBlock);
+    await loadBlock(builtBlock);
     builtBlock.classList.add('products');
   }
 
