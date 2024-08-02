@@ -185,7 +185,17 @@ export default async function decorate(doc) {
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
+    const blockType = 'cards';
+    const blockContents = resultParsers[blockType](result, 'title');
+    const builtBlock = buildBlock(blockType, blockContents);
+    const parentDiv = div(
+      builtBlock,
+    );
     $section.append($products);
+    $section.append(parentDiv);
+    decorateBlock(builtBlock);
+    await loadBlock(builtBlock);
+    builtBlock.classList.add('products');
   }
 
   // Displaying 4th used case

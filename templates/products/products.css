@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     position: absolute;
+    z-index: 2;
 }
 
 .block.cards.products .cards-card-body p {
@@ -18,6 +19,8 @@
 .block.cards.products .cards-card-image {
     display: flex;
     justify-content: flex-end;
+    top: 10px;
+    position: relative;
 }
 
 .block.cards.products .cards-card-image p {
@@ -56,7 +59,7 @@
 @media (width >= 900px) {
     .block.cards.products > ul {
         grid-template-columns: repeat(4, 25%);
-        height: 72px;
+        height: 87px;
     }
 }
 
