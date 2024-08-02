@@ -511,6 +511,7 @@ function buildBlock(blockName, content) {
   // build image block nested div structure
   blockEl.classList.add(blockName);
   table.forEach((row) => {
+    console.log(row);
     const rowEl = document.createElement('div');
     row.forEach((col) => {
       const colEl = document.createElement('div');

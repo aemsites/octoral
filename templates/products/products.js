@@ -58,6 +58,66 @@ const resultParsers = {
     });
     return blockContents;
   },
+
+  table: (results) => {
+    const blockContents = [];
+    const row = [];
+
+    const thead = document.createElement('thead');
+    const trowhead = document.createElement('tr');
+    const cellhead1 = document.createElement('th');
+    cellhead1.textContent = 'Item nr';
+    trowhead.append(cellhead1);
+    const cellhead2 = document.createElement('th');
+    cellhead2.textContent = 'Code';
+    trowhead.append(cellhead2);
+    const cellhead3 = document.createElement('th');
+    cellhead3.textContent = 'Product name';
+    trowhead.append(cellhead3);
+    const cellhead4 = document.createElement('th');
+    cellhead4.textContent = 'Per box';
+    trowhead.append(cellhead4);
+    const cellhead5 = document.createElement('th');
+    cellhead5.textContent = 'Volume';
+    trowhead.append(cellhead5);
+    thead.append(trowhead);
+    row.push(thead);
+
+    const tbody = document.createElement('tbody');
+
+    results.forEach((result) => {
+      const trow = document.createElement('tr');
+      const cell1 = document.createElement('td');
+      if (result.itemnr) {
+        cell1.textContent = result.itemnr;
+        trow.append(cell1);
+      }
+      const cell2 = document.createElement('td');
+      if (result.code) {
+        cell2.textContent = result.code;
+        trow.append(cell2);
+      }
+      const cell3 = document.createElement('td');
+      if (result.productname) {
+        cell3.textContent = result.productname;
+        trow.append(cell3);
+      }
+      const cell4 = document.createElement('td');
+      if (result.perbox) {
+        cell4.textContent = result.perbox;
+        trow.append(cell4);
+      }
+      const cell5 = document.createElement('td');
+      if (result.volume) {
+        cell5.textContent = result.volume;
+        trow.append(cell5);
+      }
+      tbody.append(trow);
+    });
+    row.push(tbody);
+    blockContents.push(row);
+    return blockContents;
+  },
 };
 
 // Checking 4th used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system/octobase_system_mixing_colours
@@ -214,7 +274,21 @@ export default async function decorate(doc) {
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
+    const blockType = 'table';
     console.log(groupBy(result, 'subtitle'));
     $section.append($products);
+    Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
+      console.log(key);
+      const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
+      console.log(blockContents);
+      const builtBlock = buildBlock(blockType, blockContents);
+      console.log(builtBlock);
+      const parentDiv = div(
+        builtBlock,
+      );
+      $section.append(parentDiv);
+      decorateBlock(builtBlock);
+      await loadBlock(builtBlock);
+    });
   }
 }
