@@ -136,6 +136,15 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   return endResult;
 }
 
+// Grouping by subtitle
+const groupBy = (array, key) => array.reduce((accum, current) => {
+  if (!accum[current[key]]) {
+    accum[current[key]] = [];
+  }
+  accum[current[key]].push(current);
+  return accum;
+}, {});
+
 export default async function decorate(doc) {
   // extends default template
   await loadTemplate(doc, 'default');
@@ -205,6 +214,7 @@ export default async function decorate(doc) {
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
+    console.log(groupBy(result, 'subtitle'));
     $section.append($products);
   }
 }
