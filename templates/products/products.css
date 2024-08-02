@@ -30,8 +30,8 @@
     padding: 0;
     overflow: hidden;
     position: relative;
-    grid-template-columns: repeat(4, 25%);
-    height: 72px;
+    grid-template-columns: repeat(2, 50%);
+    height: auto;
 }
 
 .block.cards.products > ul li {
@@ -50,5 +50,13 @@
  .block.cards.products ul li img {
     width: auto;
     height: auto;
+}
+
+
+@media (width >= 900px) {
+    .block.cards.products > ul {
+        grid-template-columns: repeat(4, 25%);
+        height: 72px;
+    }
 }
 
