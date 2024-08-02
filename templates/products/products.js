@@ -166,6 +166,7 @@ export default async function decorate(doc) {
     $section.append(parentDiv);
     decorateBlock(builtBlock);
     await loadBlock(builtBlock);
+    builtBlock.classList.add('products');
   }
 
   // Displaying 2nd used case
