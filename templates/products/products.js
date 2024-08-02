@@ -59,62 +59,73 @@ const resultParsers = {
     return blockContents;
   },
 
-  table: (results) => {
+  productstable: (results) => {
     const blockContents = [];
     const row = [];
 
-    const thead = document.createElement('thead');
-    const trowhead = document.createElement('tr');
-    const cellhead1 = document.createElement('th');
+    // const thead = document.createElement('div');
+    const trowhead = document.createElement('div');
+    const cellhead1 = document.createElement('div');
     cellhead1.textContent = 'Item nr';
+    cellhead1.classList.add('heading');
     trowhead.append(cellhead1);
-    const cellhead2 = document.createElement('th');
+    const cellhead2 = document.createElement('div');
     cellhead2.textContent = 'Code';
+    cellhead2.classList.add('heading');
     trowhead.append(cellhead2);
-    const cellhead3 = document.createElement('th');
+    const cellhead3 = document.createElement('div');
     cellhead3.textContent = 'Product name';
+    cellhead3.classList.add('heading');
     trowhead.append(cellhead3);
-    const cellhead4 = document.createElement('th');
+    const cellhead4 = document.createElement('div');
     cellhead4.textContent = 'Per box';
+    cellhead4.classList.add('heading');
     trowhead.append(cellhead4);
-    const cellhead5 = document.createElement('th');
+    const cellhead5 = document.createElement('div');
     cellhead5.textContent = 'Volume';
+    cellhead5.classList.add('heading');
     trowhead.append(cellhead5);
-    thead.append(trowhead);
-    row.push(thead);
+    // thead.append(trowhead);
+    row.push(trowhead);
 
-    const tbody = document.createElement('tbody');
+    // const tbody = document.createElement('div');
 
     results.forEach((result) => {
-      const trow = document.createElement('tr');
-      const cell1 = document.createElement('td');
+      const trow = document.createElement('div');
+      const cell1 = document.createElement('div');
+      cell1.classList.add('data');
       if (result.itemnr) {
         cell1.textContent = result.itemnr;
         trow.append(cell1);
       }
-      const cell2 = document.createElement('td');
+      const cell2 = document.createElement('div');
+      cell2.classList.add('data');
       if (result.code) {
         cell2.textContent = result.code;
         trow.append(cell2);
       }
-      const cell3 = document.createElement('td');
+      const cell3 = document.createElement('div');
+      cell3.classList.add('data');
       if (result.productname) {
         cell3.textContent = result.productname;
         trow.append(cell3);
       }
-      const cell4 = document.createElement('td');
+      const cell4 = document.createElement('div');
+      cell4.classList.add('data');
       if (result.perbox) {
         cell4.textContent = result.perbox;
         trow.append(cell4);
       }
-      const cell5 = document.createElement('td');
+      const cell5 = document.createElement('div');
+      cell5.classList.add('data');
       if (result.volume) {
         cell5.textContent = result.volume;
         trow.append(cell5);
       }
-      tbody.append(trow);
+      // tbody.append(trow);
+      row.push(trow);
     });
-    row.push(tbody);
+    // row.push(tbody);
     blockContents.push(row);
     return blockContents;
   },
@@ -234,7 +245,8 @@ export default async function decorate(doc) {
     $section.append($products);
     $section.append(parentDiv);
     decorateBlock(builtBlock);
-    await loadBlock(builtBlock);
+    console.log(builtBlock);
+    // await loadBlock(builtBlock);
     builtBlock.classList.add('products');
   }
 
@@ -274,15 +286,12 @@ export default async function decorate(doc) {
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
-    const blockType = 'table';
-    console.log(groupBy(result, 'subtitle'));
+    const blockType = 'productstable';
     $section.append($products);
     Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
       console.log(key);
       const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
-      console.log(blockContents);
       const builtBlock = buildBlock(blockType, blockContents);
-      console.log(builtBlock);
       const parentDiv = div(
         builtBlock,
       );
