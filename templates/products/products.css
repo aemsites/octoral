@@ -1,1 +1,6 @@
 /* product specific styles */
+
+.block.cards.products > ul {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+}
