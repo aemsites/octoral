@@ -1,7 +1,3 @@
-.hidden {
-  display: none;
-}
-
 .productstable {
     overflow-x: auto;
   }
@@ -34,7 +30,7 @@
     font-size: 13px;
   }
 
-  .productstable table tr.shouldbehidden {
+  .productstable table tr.hidden {
     display: none;
   }
   

@@ -58,10 +58,33 @@ export default async function decorate(block) {
     tbody.append(showLessRow);
     tbody.querySelectorAll('tr').forEach((row, i) => {
       if (i > 6 && !row.classList.contains('showmore')) {
-        row.classList.add('shouldbehidden');
+        row.classList.add('hidden', 'shouldbehidden');
       }
     });
   }
+
+  showMoreLabel.addEventListener('click', () => {
+    tbody.querySelectorAll('tr').forEach((row) => {
+      console.log(row);
+      if (row.classList.contains('hidden')) {
+        row.classList.remove('hidden');
+      }
+      if (row.classList.contains('showmore')) {
+        row.classList.add('hidden');
+      }
+    });
+  });
+
+  showLessLabel.addEventListener('click', () => {
+    tbody.querySelectorAll('tr').forEach((row) => {
+      if (row.classList.contains('shouldbehidden')) {
+        row.classList.add('hidden');
+      }
+      if (row.classList.contains('showmore')) {
+        row.classList.remove('hidden');
+      }
+    });
+  });
 
   block.innerHTML = '';
   block.append(table);
