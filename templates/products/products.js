@@ -208,7 +208,7 @@ export default async function decorate(doc) {
 
   // get path segments for use in product display logic
   const [locale, products, vocCompliant, type, title] = getPathSegments();
-  const result = await fetchProducts(vocCompliant, type, title, locale);
+  const result = await fetchProducts(vocCompliant, type, title, locale, products);
 
   // Displaying 1st used case
   const usedCase = result[0].feedType;
