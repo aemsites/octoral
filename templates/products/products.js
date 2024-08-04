@@ -2,7 +2,7 @@
 import { loadTemplate } from '../../scripts/scripts.js';
 import getPathSegments from '../../scripts/utils.js';
 import {
-  div, h1, p, a,
+  div, h1, p, a, h2,
 } from '../../scripts/dom-helpers.js';
 import {
   createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
@@ -276,7 +276,9 @@ export default async function decorate(doc) {
       console.log(key);
       const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
       const builtBlock = buildBlock(blockType, blockContents);
+      const productName = h2(key);
       const parentDiv = div(
+        productName,
         builtBlock,
       );
       $section.append(parentDiv);
