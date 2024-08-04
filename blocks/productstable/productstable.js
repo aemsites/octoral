@@ -3,6 +3,9 @@
  * Recreate a table
  * https://www.hlx.live/developer/block-collection/table
  */
+import {
+  label,
+} from '../../scripts/dom-helpers.js';
 
 export default async function decorate(block) {
   const table = document.createElement('table');
@@ -31,6 +34,35 @@ export default async function decorate(block) {
       });
     });
   });
+
+  // Addition of show more row
+  const showMoreRow = document.createElement('tr');
+  showMoreRow.classList.add('showmore');
+  const showMoreCell = document.createElement('td');
+  showMoreCell.setAttribute('colspan', '100%');
+  const showMoreLabel = label('Show More');
+  showMoreCell.append(showMoreLabel);
+  showMoreRow.append(showMoreCell);
+
+  // Addition of show less row
+  const showLessRow = document.createElement('tr');
+  showLessRow.classList.add('showless');
+  const showLessCell = document.createElement('td');
+  showLessCell.setAttribute('colspan', '100%');
+  const showLessLabel = label('Show Less');
+  showLessCell.append(showLessLabel);
+  showLessRow.append(showLessCell);
+
+  if (tbody.querySelectorAll('tr').length > 6) {
+    tbody.append(showMoreRow);
+    tbody.append(showLessRow);
+    tbody.querySelectorAll('tr').forEach((row, i) => {
+      if (i > 6 && !row.classList.contains('showmore')) {
+        row.classList.add('shouldbehidden');
+      }
+    });
+  }
+
   block.innerHTML = '';
   block.append(table);
 }

@@ -1,5 +1,14 @@
+.hidden {
+  display: none;
+}
+
 .productstable {
     overflow-x: auto;
+  }
+
+  .productstable label {
+    display: inline-block;
+    cursor: pointer;
   }
   
   .productstable table {
@@ -7,6 +16,26 @@
     max-width: 100%;
     border-collapse: collapse;
     font-size: var(--body-font-size-xs);
+  }
+
+  .productstable table th,
+  .productstable table td {
+    padding: 0.5em;
+    text-align: left;
+    border: 1px solid #dadada;
+  }
+
+  .productstable .showmore td,
+  .productstable .showless td {
+    text-align: center;
+    background: #eee;
+    color: #0f7cc1;
+    padding: 3px;
+    font-size: 13px;
+  }
+
+  .productstable table tr.shouldbehidden {
+    display: none;
   }
   
   @media (width >= 600px) {
@@ -32,13 +61,6 @@
   
   .productstable table th {
     font-weight: 700;
-  }
-  
-  .productstable table th,
-  .productstable table td {
-    padding: 0.5em;
-    text-align: left;
-    border: 1px solid #dadada;
   }
   
   .productstable table th p,
