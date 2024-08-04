@@ -38,6 +38,7 @@
   .productstable table td {
     padding: 0.5em;
     text-align: left;
+    border: 1px solid #dadada;
   }
   
   .productstable table th p,
@@ -57,10 +58,4 @@
   /* striped variant */
   .productstable.striped tbody tr:nth-child(odd) {
     background-color: var(--light-color);
-  }
-  
-  /* bordered variant */
-  .productstable.bordered table th,
-  .productstable.bordered table td {
-    border: 1px solid #dadada;
   }

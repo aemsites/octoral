@@ -66,7 +66,7 @@ const resultParsers = {
 
     const trowhead = div();
     const cellhead1 = div({ class: 'heading' });
-    cellhead1.textContent = 'Item nr';
+    cellhead1.textContent = 'Item nr.';
     trowhead.append(cellhead1);
     const cellhead2 = div({ class: 'heading' });
     cellhead2.textContent = 'Code';
@@ -272,7 +272,6 @@ export default async function decorate(doc) {
     );
     const blockType = 'productstable';
     $section.append($products);
-    console.log((groupBy(result, 'subtitle')));
     Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
       const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
       const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
