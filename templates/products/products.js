@@ -272,8 +272,9 @@ export default async function decorate(doc) {
     );
     const blockType = 'productstable';
     $section.append($products);
+    console.log((groupBy(result, 'subtitle')));
     Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
-      console.log(key);
+      const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
       const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
       const builtBlock = buildBlock(blockType, blockContents);
       const productName = h2(key);
@@ -281,7 +282,12 @@ export default async function decorate(doc) {
         productName,
         builtBlock,
       );
-      $section.append(parentDiv);
+      const mainDiv = div(
+        { class: 'product-info' },
+        productImage,
+        parentDiv,
+      );
+      $section.append(mainDiv);
       decorateBlock(builtBlock);
       await loadBlock(builtBlock);
     });
