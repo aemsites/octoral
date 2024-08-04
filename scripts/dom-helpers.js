@@ -143,3 +143,6 @@ export function hr(...items) { return domEl('hr', ...items); }
 export function script(...items) { return domEl('script', ...items); }
 export function summary(...items) { return domEl('summary', ...items); }
 export function details(...items) { return domEl('details', ...items); }
+export function tr(...items) { return domEl('tr', ...items); }
+export function th(...items) { return domEl('th', ...items); }
+export function td(...items) { return domEl('td', ...items); }
