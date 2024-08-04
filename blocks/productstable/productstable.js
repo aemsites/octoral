@@ -32,7 +32,7 @@ export default async function decorate(block) {
   });
 
   // Addition of show more row
-  const showMoreRow = tr({ class: 'showmore'});
+  const showMoreRow = tr({ class: 'showmore' });
   const showMoreCell = td();
   showMoreCell.setAttribute('colspan', '100%');
   const showMoreLabel = label('Show More');
@@ -40,7 +40,7 @@ export default async function decorate(block) {
   showMoreRow.append(showMoreCell);
 
   // Addition of show less row
-  const showLessRow = tr({ class: 'showless'});
+  const showLessRow = tr({ class: 'showless' });
   const showLessCell = td();
   showLessCell.setAttribute('colspan', '100%');
   const showLessLabel = label('Show Less');
@@ -59,7 +59,6 @@ export default async function decorate(block) {
 
   showMoreLabel.addEventListener('click', () => {
     tbody.querySelectorAll('tr').forEach((row) => {
-      console.log(row);
       if (row.classList.contains('hidden')) {
         row.classList.remove('hidden');
       }
