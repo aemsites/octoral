@@ -80,8 +80,6 @@ const resultParsers = {
     const cellhead5 = div({ class: 'heading' });
     cellhead5.textContent = 'Volume';
     trowhead.append(cellhead5);
-    
-
     results.forEach((result) => {
       const trow = div();
       const cell1 = div({ class: 'data' });
@@ -202,7 +200,6 @@ const groupBy = (array, key) => array.reduce((accum, current) => {
   accum[current[key]].push(current);
   return accum;
 }, {});
-
 
 export default async function decorate(doc) {
   // extends default template
