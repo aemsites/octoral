@@ -55,6 +55,10 @@
     height: auto;
 }
 
+.product-info {
+    margin: 0 0 2em 0;
+}
+
 .product-info picture {
   clear:both;
 }
