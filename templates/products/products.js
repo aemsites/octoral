@@ -80,7 +80,7 @@ const resultParsers = {
     const cellhead5 = div({ class: 'heading' });
     cellhead5.textContent = 'Volume';
     trowhead.append(cellhead5);
-    row.push(trowhead);
+    
 
     results.forEach((result) => {
       const trow = div();
@@ -88,27 +88,28 @@ const resultParsers = {
       if (result.itemnr) {
         cell1.textContent = result.itemnr;
         trow.append(cell1);
-      }
+      } else cellhead1.remove();
       const cell2 = div({ class: 'data' });
       if (result.code) {
         cell2.textContent = result.code;
         trow.append(cell2);
-      }
+      } else cellhead2.remove();
       const cell3 = div({ class: 'data' });
       if (result.productname) {
         cell3.textContent = result.productname;
         trow.append(cell3);
-      }
+      } else cellhead3.remove();
       const cell4 = div({ class: 'data' });
       if (result.perbox) {
         cell4.textContent = result.perbox;
         trow.append(cell4);
-      }
+      } else cellhead4.remove();
       const cell5 = div({ class: 'data' });
       if (result.volume) {
         cell5.textContent = result.volume;
         trow.append(cell5);
-      }
+      } else cellhead5.remove();
+      row.push(trowhead);
       row.push(trow);
     });
 
@@ -193,7 +194,7 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   return endResult;
 }
 
-// Grouping by subtitle
+// Grouping by subtitle for Used Cases 2 & 4
 const groupBy = (array, key) => array.reduce((accum, current) => {
   if (!accum[current[key]]) {
     accum[current[key]] = [];
@@ -201,6 +202,7 @@ const groupBy = (array, key) => array.reduce((accum, current) => {
   accum[current[key]].push(current);
   return accum;
 }, {});
+
 
 export default async function decorate(doc) {
   // extends default template
@@ -240,7 +242,26 @@ export default async function decorate(doc) {
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
     );
+    const blockType = 'productstable';
     $section.append($products);
+    Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
+      const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
+      const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
+      const builtBlock = buildBlock(blockType, blockContents);
+      const productName = h2(key);
+      const parentDiv = div(
+        productName,
+        builtBlock,
+      );
+      const mainDiv = div(
+        { class: 'product-info' },
+        productImage,
+        parentDiv,
+      );
+      $section.append(mainDiv);
+      decorateBlock(builtBlock);
+      await loadBlock(builtBlock);
+    });
   }
 
   // Displaying 3rd used case
