@@ -171,7 +171,6 @@ const tillVocCompliant = (data, vocCompliant, locale) => {
 let endResult = [];
 
 async function fetchProducts(vocCompliant, type, title, locale = 'en') {
-  console.log(vocCompliant, type, title, locale);
   window.placeholders = window.placeholders || {};
   const TRANSLATION_KEY = 'products';
 
@@ -209,7 +208,6 @@ export default async function decorate(doc) {
 
   // get path segments for use in product display logic
   const [locale, products, vocCompliant, type, title] = getPathSegments();
-  console.log(locale, products, vocCompliant, type, title);
   const result = await fetchProducts(vocCompliant, type, title, locale);
 
   // Displaying 1st used case
