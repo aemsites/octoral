@@ -1,28 +1,27 @@
 .productstable {
-    overflow-x: auto;
-  }
+  overflow-x: auto;
 
-  .productstable label {
+  & label {
     display: inline-block;
     cursor: pointer;
   }
-  
-  .productstable table {
+
+  & table {
     width: 100%;
     max-width: 100%;
     border-collapse: collapse;
     font-size: var(--body-font-size-xs);
   }
 
-  .productstable table th,
-  .productstable table td {
+  & table th,
+  & table td {
     padding: 0.5em;
     text-align: left;
     border: 1px solid #dadada;
   }
 
-  .productstable .showmore td,
-  .productstable .showless td {
+  & .showmore td,
+  & .showless td {
     text-align: center;
     background: #eee;
     color: #0f7cc1;
@@ -30,9 +29,42 @@
     font-size: 13px;
   }
 
-  .productstable table tr.hidden {
+  & table tr.hidden {
     display: none;
   }
+
+  & table thead tr {
+    border-top: 2px solid #dadada;
+    border-bottom: 2px solid #dadada;
+  }
+
+  & table tbody tr {
+    border-bottom: 1px solid #dadada;
+  }
+
+  & table th {
+    font-weight: 700;
+  }
+
+  & table th p,
+  & table td p {
+    margin: 0;
+  }
+
+  & table td p + p {
+    margin-top: 0.25em;
+  }
+
+  /* no header variant */
+  &.no-header table tbody tr {
+    border-top: 1px solid #dadada;
+  }
+
+  /* striped variant */
+  &.striped tbody tr:nth-child(odd) {
+    background-color: var(--light-color);
+  }
+}
   
   @media (width >= 600px) {
     .table table {
@@ -44,36 +76,4 @@
     .table table {
       font-size: var(--body-font-size-m);
     }
-  }
-  
-  .productstable table thead tr {
-    border-top: 2px solid #dadada;
-    border-bottom: 2px solid #dadada;
-  }
-  
-  .productstable table tbody tr {
-    border-bottom: 1px solid #dadada;
-  }
-  
-  .productstable table th {
-    font-weight: 700;
-  }
-  
-  .productstable table th p,
-  .productstable table td p {
-    margin: 0;
-  }
-  
-  .productstable table td p + p {
-    margin-top: 0.25em;
-  }
-  
-  /* no header variant */
-  .productstable.no-header table tbody tr {
-    border-top: 1px solid #dadada;
-  }
-  
-  /* striped variant */
-  .productstable.striped tbody tr:nth-child(odd) {
-    background-color: var(--light-color);
   }
