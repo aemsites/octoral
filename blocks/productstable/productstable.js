@@ -16,8 +16,7 @@ export default async function decorate(block) {
       // const row = document.createElement('tr');
       const row = tr();
       col.querySelectorAll('div.heading').forEach((div) => {
-        const cell = th();
-        cell.setAttribute('scope', 'col');
+        const cell = th({ scope: 'col' });
         cell.innerHTML = div.innerHTML;
         row.append(cell);
         thead.append(row);
@@ -33,16 +32,14 @@ export default async function decorate(block) {
 
   // Addition of show more row
   const showMoreRow = tr({ class: 'showmore' });
-  const showMoreCell = td();
-  showMoreCell.setAttribute('colspan', '100%');
+  const showMoreCell = td({ colspan: '100%' });
   const showMoreLabel = label('Show More');
   showMoreCell.append(showMoreLabel);
   showMoreRow.append(showMoreCell);
 
   // Addition of show less row
   const showLessRow = tr({ class: 'showless' });
-  const showLessCell = td();
-  showLessCell.setAttribute('colspan', '100%');
+  const showLessCell = td({ colspan: '100%' });
   const showLessLabel = label('Show Less');
   showLessCell.append(showLessLabel);
   showLessRow.append(showLessCell);
