@@ -12,31 +12,33 @@
 /* global WebImporter */
 
 import {
-  createMetadata, fixRelativeLinks,
+  createMetadata,
 } from './utils.js';
 
 function rgbToHex(rgb) {
   const result = rgb.match(/\d+/g).map((num) => {
     const hex = parseInt(num, 10).toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
+    return hex.length === 1 ? `0${hex}` : hex;
   });
   return `#${result.join('')}`;
 }
 
-function filterElementsByStyleValue(elements, styleProp = 'color', value = '#00ccff') {
-  const filteredEls = [];
-  elements.forEach(el => {
-    filterElementByStyleValue(el, styleProp, value) ? filteredEls.push(el) : null;
-  });
-  return filteredEls;
-}
-
 function filterElementByStyleValue(element, styleProp = 'color', value = '#00ccff') {
-  let rgbColor = element.style[styleProp];
-  if(rgbColor) {
-    return rgbToHex(rgbColor) === value ? true : false;
+  const rgbColor = element.style[styleProp];
+  if (rgbColor) {
+    return rgbToHex(rgbColor) === value;
   }
   return false;
+}
+
+function filterElementsByStyleValue(elements, styleProp = 'color', value = '#00ccff') {
+  const filteredEls = [];
+  elements.forEach((el) => {
+    if (filterElementByStyleValue(el, styleProp, value)) {
+      filteredEls.push(el);
+    }
+  });
+  return filteredEls;
 }
 
 function fixHeadings(main) {
@@ -45,19 +47,26 @@ function fixHeadings(main) {
   // Certain inline headings are placed in strong > span
   headings.push(...filterElementsByStyleValue(main.querySelectorAll('p strong span')));
 
-  //Certain inline headings are placed in span > strong
-  Array.from(main.querySelectorAll('p span strong')).forEach(el => {
-    if(filterElementByStyleValue(el.parentElement)) {
+  // Certain inline headings are placed in span > strong
+  Array.from(main.querySelectorAll('p span strong')).forEach((el) => {
+    if (filterElementByStyleValue(el.parentElement)) {
       headings.push(el);
     }
-  })
+  });
 
   if (headings) {
     headings.forEach((el) => {
       const h3El = document.createElement('h3');
-      h3El.innerText = el.textContent.trim()
+      h3El.innerText = el.textContent.trim();
       el.parentElement.replaceWith(h3El);
-      [...h3El.closest('p')?.children].forEach((f) => (f.nodeName === 'BR') ? f.remove() : f )
+      const closestP = h3El.closest('p');
+      if (closestP) {
+        [...closestP.children].forEach((f) => {
+          if (f.nodeName === 'BR') {
+            f.remove();
+          }
+        });
+      }
     });
   }
 }
@@ -82,13 +91,13 @@ function fixBrochure(main, results, url) {
     const href = a.getAttribute('href');
     if (href && href.endsWith('.pdf')) {
       const u = new URL(href, url);
-      const newPath = '/assets/' + u.pathname.split('/').pop();
+      const newPath = `/assets/${u.pathname.split('/').pop()}`;
       results.push({
         path: newPath,
         from: u.toString(),
         report: {
-          redirectUrl: href.toString()
-        }
+          redirectUrl: href.toString(),
+        },
       });
 
       // update the link to new path on the target host
@@ -98,7 +107,6 @@ function fixBrochure(main, results, url) {
       a.setAttribute('href', newHref);
     }
   });
-
 }
 
 function handleTable(main, document) {
@@ -109,11 +117,11 @@ function handleTable(main, document) {
     t.cloneNode(true).querySelectorAll('tr').forEach((row) => {
       const x = [];
       row.querySelectorAll('td').forEach((cell) => {
-        if(cell.querySelector('strong')) {
-          console.log('inside if')
+        if (cell.querySelector('strong')) {
+          console.log('inside if');
           x.push(`<strong>${cell.textContent}</strong>`);
         } else {
-          console.log('inside else')
+          console.log('inside else');
 
           x.push(cell.textContent);
         }
@@ -149,7 +157,6 @@ export default {
   }) => {
     const newsArticle = document.querySelector('.block-newsarticle section article');
     const fields = {};
-    let brochureLink;
     if (newsArticle) {
       fields.newsTitle = newsArticle.querySelector('h1')?.textContent.trim().toUpperCase();
       fields.publishDateTime = newsArticle.querySelector('.entry-meta .published')?.getAttribute('title');
@@ -187,7 +194,7 @@ export default {
 
     results.push({
       element: main,
-      path: getSanitizedPath(params.originalURL)
+      path: getSanitizedPath(params.originalURL),
     });
 
     handleTable(main, document);

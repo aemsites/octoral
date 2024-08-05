@@ -40,7 +40,5 @@ export const fixRelativeLinks = (document) => {
   });
 };
 
-export const getPathSegments = (url) => {
-  return (new URL(url)).pathname.split('/')
-      .filter((segment) => segment);
-}
+export const getPathSegments = (url) => (new URL(url)).pathname.split('/')
+  .filter((segment) => segment);

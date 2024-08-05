@@ -1,5 +1,5 @@
 import {
-  a, p, img
+  a, p, img,
 } from '../../scripts/dom-helpers.js';
 import getPathSegments from '../../scripts/utils.js';
 import { loadTemplate } from '../../scripts/scripts.js';
