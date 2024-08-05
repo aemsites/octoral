@@ -1,5 +1,5 @@
 import {
-  a, h2, img, strong,
+  a, p, img
 } from '../../scripts/dom-helpers.js';
 import getPathSegments from '../../scripts/utils.js';
 import { loadTemplate } from '../../scripts/scripts.js';
@@ -13,21 +13,6 @@ const newsNavInfo = [
   { code: 'es', label: 'NOTICIA', link: '/es/noticia' },
 ];
 
-function isTextContentUppercase(text) {
-  return /^[A-Z,\-\s]+$/.test(text);
-}
-
-function fixHeadings(main) {
-  const content = main.querySelectorAll('p strong');
-  if (content) {
-    content.forEach((el) => {
-      if (isTextContentUppercase(el.textContent)) {
-        el.classList.add('inline-heading');
-      }
-    });
-  }
-}
-
 export default async function decorate(doc) {
   const [locale] = getPathSegments();
   let label; let
@@ -35,10 +20,10 @@ export default async function decorate(doc) {
   try {
     ({ label, link } = newsNavInfo.find((newsNav) => newsNav.code === locale));
   } catch (e) {
-    console.log('Unsupported locale found for news article');
+    console.error('Unsupported locale found for news article');
   }
 
-  const newsLink = h2({ class: 'news-collection' });
+  const newsLink = p({ class: 'news-collection' });
   const newsRef = a({ href: link });
   newsRef.textContent = label;
   newsLink.appendChild(newsRef);
@@ -60,17 +45,6 @@ export default async function decorate(doc) {
         brochureLink.removeAttribute('title');
         brochureLink.replaceChildren(downloadImg);
       }
-    });
-  });
-  fixHeadings(mainDiv);
-
-  // Boldify Tables Header
-  const tables = doc.querySelectorAll('table');
-  tables.forEach((table) => {
-    const header = table.querySelector('tr');
-    header.querySelectorAll('td').forEach((td) => {
-      const elem = strong(td.textContent.trim());
-      td.replaceChildren(elem);
     });
   });
 

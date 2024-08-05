@@ -15,12 +15,54 @@ import {
   createMetadata, fixRelativeLinks,
 } from './utils.js';
 
-/**
- * Prefixes relative links with the target domain
- * @param {HTMLDocument} document The document
- */
+function rgbToHex(rgb) {
+  const result = rgb.match(/\d+/g).map((num) => {
+    const hex = parseInt(num, 10).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  });
+  return `#${result.join('')}`;
+}
 
-function fixBrochure(main) {
+function filterElementsByStyleValue(elements, styleProp = 'color', value = '#00ccff') {
+  const filteredEls = [];
+  elements.forEach(el => {
+    filterElementByStyleValue(el, styleProp, value) ? filteredEls.push(el) : null;
+  });
+  return filteredEls;
+}
+
+function filterElementByStyleValue(element, styleProp = 'color', value = '#00ccff') {
+  let rgbColor = element.style[styleProp];
+  if(rgbColor) {
+    return rgbToHex(rgbColor) === value ? true : false;
+  }
+  return false;
+}
+
+function fixHeadings(main) {
+  const headings = [];
+
+  // Certain inline headings are placed in strong > span
+  headings.push(...filterElementsByStyleValue(main.querySelectorAll('p strong span')));
+
+  //Certain inline headings are placed in span > strong
+  Array.from(main.querySelectorAll('p span strong')).forEach(el => {
+    if(filterElementByStyleValue(el.parentElement)) {
+      headings.push(el);
+    }
+  })
+
+  if (headings) {
+    headings.forEach((el) => {
+      const h3El = document.createElement('h3');
+      h3El.innerText = el.textContent.trim()
+      el.parentElement.replaceWith(h3El);
+      [...h3El.closest('p')?.children].forEach((f) => (f.nodeName === 'BR') ? f.remove() : f )
+    });
+  }
+}
+
+function fixBrochure(main, results, url) {
   const newsArticle = main.querySelector('.block-newsarticle section article');
   if (newsArticle && newsArticle.querySelector('.entry-content p img[alt="Download Button"]')) {
     const brochureImages = newsArticle.querySelectorAll('.entry-content p img[alt="Download Button"]');
@@ -28,31 +70,67 @@ function fixBrochure(main) {
       brochureImages.forEach((brochureImage) => {
         const parent = brochureImage.parentNode;
         if (parent.nodeName === 'A') {
-          const brochureLink = parent;
-          brochureLink.textContent += '[class=download-button]';
+          const aEl = parent;
+          aEl.textContent += '[class=download-button]';
         }
       });
     }
   }
 
-  if (newsArticle && newsArticle.querySelector('.entry-content p a[href$=".pdf"]')) {
-    const brochureLinks = newsArticle.querySelectorAll('.entry-content p a[href$=".pdf"]');
-    if (brochureLinks) {
-      brochureLinks.forEach((brochureLink) => {
-        const fileName = new URL(brochureLink.href).pathname.split('/').pop();
-        brochureLink.setAttribute('href', `/assets/${fileName}`);
+  // find pdf links
+  main.querySelectorAll('a').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (href && href.endsWith('.pdf')) {
+      const u = new URL(href, url);
+      const newPath = '/assets/' + u.pathname.split('/').pop();
+      results.push({
+        path: newPath,
+        from: u.toString(),
+        report: {
+          redirectUrl: href.toString()
+        }
       });
+
+      // update the link to new path on the target host
+      // this is required to be able to follow the links in Word
+      // you will need to replace "main--repo--owner" by your project setup
+      const newHref = new URL(newPath, 'https://main--octoral--aemsites.hlx.page').toString();
+      a.setAttribute('href', newHref);
     }
-  }
+  });
+
 }
 
 function handleTable(main, document) {
   const temp = main.querySelectorAll('table');
+
   temp.forEach((t) => {
-    const cells = [[t.cloneNode(true)]];
+    const cells = [['table']];
+    t.cloneNode(true).querySelectorAll('tr').forEach((row) => {
+      const x = [];
+      row.querySelectorAll('td').forEach((cell) => {
+        if(cell.querySelector('strong')) {
+          console.log('inside if')
+          x.push(`<strong>${cell.textContent}</strong>`);
+        } else {
+          console.log('inside else')
+
+          x.push(cell.textContent);
+        }
+      });
+      cells.push(x);
+    });
     const table = WebImporter.DOMUtils.createTable(cells, document);
     t.replaceWith(table);
   });
+}
+
+function getSanitizedPath(url) {
+  const { pathname } = new URL(url);
+  const initialReplace = new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '');
+
+  console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
+  return initialReplace;
 }
 
 export default {
@@ -79,25 +157,20 @@ export default {
       fields.updatedDateTime = newsArticle.querySelector('.entry-meta .updated')?.innerHTML.trim();
 
       if (newsArticle.querySelector('.entry-content p:last-of-type a') != null) {
-        brochureLink = newsArticle.querySelector('.entry-content p:last-of-type a')?.getAttribute('href');
         fields.brochureText = newsArticle.querySelector('.entry-content p:last-of-type a')?.textContent;
       }
     }
 
-    if (brochureLink) {
-      /* figure if we should download PDF  in importer or write utility seperately
-            fetchNewsBrochure(brochureLink, "/pdf/" +  (new URL(brochureLink).pathname));
-            */
-    }
     fields.template = 'news';
     params.preProcessMetadata = fields;
   },
 
-  transformDOM: ({
+  transform: ({
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
   }) => {
     const main = document.body;
+    const results = [];
 
     // use helper method to remove header, footer, etc.
     WebImporter.DOMUtils.remove(main, [
@@ -112,30 +185,15 @@ export default {
     ]);
     // create the metadata block and append it to the main element
 
+    results.push({
+      element: main,
+      path: getSanitizedPath(params.originalURL)
+    });
+
     handleTable(main, document);
+    fixBrochure(main, results, url);
+    fixHeadings(main);
     createMetadata(main, document, params);
-    fixBrochure(main);
-    fixRelativeLinks(main);
-    return main;
-  },
-
-  /**
-     * Return a path that describes the document being transformed (file name, nesting...).
-     * The path is then used to create the corresponding Word document.
-     * @param {HTMLDocument} document The document
-     * @param {string} url The url of the page imported
-     * @param {string} html The raw html (the document is cleaned up during preprocessing)
-     * @param {object} params Object containing some parameters given by the import process.
-     * @return {string} The path
-     */
-  generateDocumentPath: ({
-    // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
-  }) => {
-    const { pathname } = new URL(url);
-    const initialReplace = new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '');
-
-    console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
-    return WebImporter.FileUtils.sanitizePath(initialReplace);
+    return results;
   },
 };
