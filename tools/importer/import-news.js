@@ -12,7 +12,7 @@
 /* global WebImporter */
 
 import {
-  createMetadata,
+  createMetadata, getSanitizedPath,
 } from './utils.js';
 
 function rgbToHex(rgb) {
@@ -71,17 +71,14 @@ function fixHeadings(main) {
   }
 }
 
-function fixBrochure(main, results, url) {
+function fixPdfBrochure(main, results, url) {
   const newsArticle = main.querySelector('.block-newsarticle section article');
   if (newsArticle && newsArticle.querySelector('.entry-content p img[alt="Download Button"]')) {
     const brochureImages = newsArticle.querySelectorAll('.entry-content p img[alt="Download Button"]');
     if (brochureImages) {
       brochureImages.forEach((brochureImage) => {
-        const parent = brochureImage.parentNode;
-        if (parent.nodeName === 'A') {
-          const aEl = parent;
-          aEl.textContent += '[class=download-button]';
-        }
+        const aEl = brochureImage.closest('a');
+        aEl.textContent += '[class=download-button]';
       });
     }
   }
@@ -91,7 +88,7 @@ function fixBrochure(main, results, url) {
     const href = a.getAttribute('href');
     if (href && href.endsWith('.pdf')) {
       const u = new URL(href, url);
-      const newPath = `/assets/${u.pathname.split('/').pop()}`;
+      const newPath = WebImporter.FileUtils.sanitizePath(`/assets/${u.pathname.split('/').pop()}`);
       results.push({
         path: newPath,
         from: u.toString(),
@@ -133,12 +130,14 @@ function handleTable(main, document) {
   });
 }
 
-function getSanitizedPath(url) {
-  const { pathname } = new URL(url);
-  const initialReplace = new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '');
-
-  console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
-  return initialReplace;
+function fixImage(main) {
+  const heroImage = main.querySelector('img:first-of-type');
+  if (heroImage) {
+    const ul = heroImage.closest('ul');
+    if (ul) {
+      ul.replaceWith(heroImage);
+    }
+  }
 }
 
 export default {
@@ -197,8 +196,9 @@ export default {
       path: getSanitizedPath(params.originalURL),
     });
 
+    fixImage(main);
     handleTable(main, document);
-    fixBrochure(main, results, url);
+    fixPdfBrochure(main, results, url);
     fixHeadings(main);
     createMetadata(main, document, params);
     return results;

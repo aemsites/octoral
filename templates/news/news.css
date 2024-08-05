@@ -11,8 +11,7 @@
     }
 
     ul {
-        padding-left: unset;
-        list-style: none;
+        padding-left: 25px;
     }
 
     .news-collection {
