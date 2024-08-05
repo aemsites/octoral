@@ -1,0 +1,9 @@
+indices:
+  news:
+    include:
+      - /en/news/**
+    target: /en/news/query-index.json
+    properties:
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 5)
