@@ -62,7 +62,7 @@
 
   /* striped variant */
   &.striped tbody tr:nth-child(odd) {
-    background-color: var(--light-color);
+    background: var(--light-color);
   }
 }
   

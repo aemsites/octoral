@@ -2,30 +2,32 @@
 
 .block.cards.products {
     & > ul {
-      list-style: none;
-      padding: 0;
-      overflow: hidden;
-      position: relative;
-      grid-template-columns: repeat(2, 50%);
-      height: auto;
-    }
+        list-style: none;
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+        grid-template-columns: repeat(2, 50%);
+        height: auto;
 
-    & > ul li {
-      position: relative;
-      display: block;
-      background: #eee;
-      overflow: hidden;
-      text-transform: uppercase;
-      color: #00b0f0;
-      font-size: 11px;
-      font-weight: bold;
-      cursor: hand;
-      cursor: pointer;
-    }
 
-    & > ul li img {
-      width: auto;
-      height: auto;
+        & li {
+            position: relative;
+            display: block;
+            background: #eee;
+            overflow: hidden;
+            text-transform: uppercase;
+            color: #00b0f0;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: hand;
+            cursor: pointer;
+
+
+            & img {
+                width: auto;
+                height: auto;
+            }
+        }
     }
 
     & .cards-card-body {
@@ -33,16 +35,16 @@
         padding: 0;
         position: absolute;
         z-index: 2;
-    }
 
-    & .cards-card-body p {
-        margin: 0;
-        padding: 0;
-    }
+        & p {
+            margin: 0;
+            padding: 0;
+        }
 
-    & .cards-card-body .title {
-        padding: 5px;
-        text-decoration: underline;
+        & .title {
+            padding: 5px;
+            text-decoration: underline;
+        }
     }
 
     & .cards-card-image {
@@ -50,13 +52,14 @@
         justify-content: flex-end;
         top: 20px;
         position: relative;
-    }
 
-    & .cards-card-image p {
-        margin: 0;
-        padding: 0;
+
+        & p {
+            margin: 0;
+            padding: 0;
+        }
     }
-  }
+}
 
 .product-info {
     margin: 0 0 2em;
@@ -67,7 +70,7 @@
 }
 
 @media (width >= 900px) {
-    .block.cards.products > ul {
+    .block.cards.products>ul {
         grid-template-columns: repeat(4, 25%);
         height: 91px;
     }
@@ -82,4 +85,3 @@
         text-align: right;
     }
 }
-
