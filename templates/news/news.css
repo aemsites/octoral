@@ -1,7 +1,7 @@
 .news-template {
     p {
 
-        a {
+        a:not(.button) {
             text-decoration: underline;
         }
     }
@@ -28,6 +28,7 @@
         a {
             color: var(--heading-color);
             text-transform: uppercase;
+            text-decoration: underline;
         }
 
     }

@@ -12,7 +12,7 @@
 /* global WebImporter */
 
 import {
-  createMetadata, getSanitizedPath,
+  createMetadata,
 } from './utils.js';
 
 function rgbToHex(rgb) {
@@ -78,7 +78,7 @@ function fixPdfBrochure(main, results, url) {
     if (brochureImages) {
       brochureImages.forEach((brochureImage) => {
         const aEl = brochureImage.closest('a');
-        aEl.textContent += '[class=download-button]';
+        aEl.textContent = 'Download [class:button download]';
       });
     }
   }
@@ -93,13 +93,10 @@ function fixPdfBrochure(main, results, url) {
         path: newPath,
         from: u.toString(),
         report: {
-          redirectUrl: href.toString(),
+          redirectPdfUrl: href.toString(),
         },
       });
 
-      // update the link to new path on the target host
-      // this is required to be able to follow the links in Word
-      // you will need to replace "main--repo--owner" by your project setup
       const newHref = new URL(newPath, 'https://main--octoral--aemsites.hlx.page').toString();
       a.setAttribute('href', newHref);
     }
@@ -193,7 +190,10 @@ export default {
 
     results.push({
       element: main,
-      path: getSanitizedPath(params.originalURL),
+      path: WebImporter.FileUtils.sanitizePath(params.originalURL),
+      report: {
+        redirectPageUrl: params.originalURL,
+      },
     });
 
     fixImage(main);
