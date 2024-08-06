@@ -65,20 +65,15 @@ const resultParsers = {
     const row = [];
 
     const trowhead = div();
-    const cellhead1 = div({ class: 'heading' });
-    cellhead1.textContent = 'Item nr.';
+    const cellhead1 = div({ class: 'heading' }, 'Item nr.');
     trowhead.append(cellhead1);
-    const cellhead2 = div({ class: 'heading' });
-    cellhead2.textContent = 'Code';
+    const cellhead2 = div({ class: 'heading' }, 'Code');
     trowhead.append(cellhead2);
-    const cellhead3 = div({ class: 'heading' });
-    cellhead3.textContent = 'Product name';
+    const cellhead3 = div({ class: 'heading' }, 'Product name');
     trowhead.append(cellhead3);
-    const cellhead4 = div({ class: 'heading' });
-    cellhead4.textContent = 'Per box';
+    const cellhead4 = div({ class: 'heading' }, 'Per box');
     trowhead.append(cellhead4);
-    const cellhead5 = div({ class: 'heading' });
-    cellhead5.textContent = 'Volume';
+    const cellhead5 = div({ class: 'heading' }, 'Volume');
     trowhead.append(cellhead5);
     results.forEach((result) => {
       const trow = div();
