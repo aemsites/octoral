@@ -1,5 +1,5 @@
 import { div, summary, details } from '../../scripts/dom-helpers.js';
-import getPathSegments from '../../scripts/utils.js';
+import { getPathSegments } from '../../scripts/utils.js';
 
 export async function fetchPlaceholders(locale = 'en') {
   window.placeholders = window.placeholders || {};

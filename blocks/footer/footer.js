@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define, object-curly-newline, function-paren-newline */
-import getPathSegments from '../../scripts/utils.js';
+import { getPathSegments } from '../../scripts/utils.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { div, strong, p, a, img, br } from '../../scripts/dom-helpers.js';
 
