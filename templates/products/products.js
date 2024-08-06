@@ -77,31 +77,21 @@ const resultParsers = {
     trowhead.append(cellhead5);
     results.forEach((result) => {
       const trow = div();
-      const cell1 = div({ class: 'data' });
-      if (result.itemnr) {
-        cell1.textContent = result.itemnr;
-        trow.append(cell1);
-      } else cellhead1.remove();
-      const cell2 = div({ class: 'data' });
-      if (result.code) {
-        cell2.textContent = result.code;
-        trow.append(cell2);
-      } else cellhead2.remove();
-      const cell3 = div({ class: 'data' });
-      if (result.productname) {
-        cell3.textContent = result.productname;
-        trow.append(cell3);
-      } else cellhead3.remove();
-      const cell4 = div({ class: 'data' });
-      if (result.perbox) {
-        cell4.textContent = result.perbox;
-        trow.append(cell4);
-      } else cellhead4.remove();
-      const cell5 = div({ class: 'data' });
-      if (result.volume) {
-        cell5.textContent = result.volume;
-        trow.append(cell5);
-      } else cellhead5.remove();
+      const createCell = (data, className, heading) => {
+        if (data) {
+          const cell = div({ class: className });
+          cell.textContent = data;
+          trow.append(cell);
+        } else {
+          heading.remove();
+        }
+      };
+      createCell(result.itemnr, 'data', cellhead1);
+      createCell(result.code, 'data', cellhead2);
+      createCell(result.productname, 'data', cellhead3);
+      createCell(result.perbox, 'data', cellhead4);
+      createCell(result.volume, 'data', cellhead5);
+
       row.push(trowhead);
       row.push(trow);
     });
