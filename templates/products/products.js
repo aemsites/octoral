@@ -195,16 +195,15 @@ export default async function decorate(doc) {
   const [locale, products, vocCompliant, type, title] = getPathSegments();
   const result = await fetchProducts(vocCompliant, type, title, locale, products);
 
-  // Displaying 1st used case
+  // Taking care of the 1st & 3rd used cases
   const usedCase = result[0].feedType;
-  if (usedCase === 'stage1-card') {
+  if (usedCase === 'stage1-card' || usedCase === 'stage3-card') {
     $products = div(
-
       h1(`${result[0].label}`),
       p(`${result[0].desc}`),
     );
     const blockType = 'cards';
-    const blockContents = resultParsers[blockType](result, 'type');
+    const blockContents = usedCase === 'stage1-card' ? resultParsers[blockType](result, 'type') : resultParsers[blockType](result, 'title');
     const builtBlock = buildBlock(blockType, blockContents);
     const parentDiv = div(
       builtBlock,
@@ -216,61 +215,16 @@ export default async function decorate(doc) {
     builtBlock.classList.add('products');
   }
 
-  // Displaying 2nd used case
-  if (usedCase === 'stage2-table') {
-    $products = div(
+  // Taking care of the 2nd & 4th used cases
+  if (usedCase === 'stage2-table' || usedCase === 'stage4-table') {
+    $products = usedCase === 'stage2-table' ? div(
       h1(`${result[0].typelabel}`),
       p(`${result[0].desc}`),
-    );
-    const blockType = 'productstable';
-    $section.append($products);
-    Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
-      const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
-      const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
-      const builtBlock = buildBlock(blockType, blockContents);
-      const productName = h2(key);
-      const parentDiv = div(
-        productName,
-        builtBlock,
-      );
-      const mainDiv = div(
-        { class: 'product-info' },
-        productImage,
-        parentDiv,
-      );
-      $section.append(mainDiv);
-      decorateBlock(builtBlock);
-      await loadBlock(builtBlock);
-    });
-  }
-
-  // Displaying 3rd used case
-  if (usedCase === 'stage3-card') {
-    $products = div(
-
-      h1(`${result[0].typelabel}`),
-      p(`${result[0].desc}`),
-    );
-    const blockType = 'cards';
-    const blockContents = resultParsers[blockType](result, 'title');
-    const builtBlock = buildBlock(blockType, blockContents);
-    const parentDiv = div(
-      builtBlock,
-    );
-    $section.append($products);
-    $section.append(parentDiv);
-    decorateBlock(builtBlock);
-    await loadBlock(builtBlock);
-    builtBlock.classList.add('products');
-  }
-
-  // Displaying 4th used case
-  if (usedCase === 'stage4-table') {
-    $products = div(
-
+    ) : div(
       h1(`${result[0].titlelabel}`),
       p(`${result[0].desc}`),
     );
+
     const blockType = 'productstable';
     $section.append($products);
     Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
