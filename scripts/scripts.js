@@ -29,8 +29,8 @@ function buildHeroBlock(main) {
   }
 }
 
-/** allow for link attributes to be added into link text
- * ex: Link Text[class:button,target:_blank,title:Link to somewhere]
+/** allow for link attributes to be added by authors
+ * example usage = Text [class:button,target:_blank,title:Title goes here]
  * @param main
  */
 export function decorateLinks(main) {
@@ -82,8 +82,6 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
-  // decorateButtons(main);
   decorateLinks(main);
   decorateIcons(main);
   buildAutoBlocks(main);
