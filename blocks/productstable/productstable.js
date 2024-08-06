@@ -37,44 +37,23 @@ export default async function decorate(block) {
   showMoreCell.append(showMoreLabel);
   showMoreRow.append(showMoreCell);
 
-  // Addition of show less row
-  const showLessRow = tr({ class: 'showless' });
-  const showLessCell = td({ colspan: '100%' });
-  const showLessLabel = label('Show Less');
-  showLessCell.append(showLessLabel);
-  showLessRow.append(showLessCell);
-
   if (tbody.querySelectorAll('tr').length > 6) {
-    tbody.append(showMoreRow);
-    tbody.append(showLessRow);
     tbody.querySelectorAll('tr').forEach((row, i) => {
-      if (i > 6 && !row.classList.contains('showmore')) {
+      if (i > 6) {
         row.classList.add('hidden', 'shouldbehidden');
       }
     });
+    tbody.append(showMoreRow);
   }
 
-  showMoreLabel.addEventListener('click', () => {
-    tbody.querySelectorAll('tr').forEach((row) => {
-      if (row.classList.contains('hidden')) {
-        row.classList.remove('hidden');
-      }
-      if (row.classList.contains('showmore')) {
-        row.classList.add('hidden');
-      }
+  const toggle = () => {
+    tbody.querySelectorAll('tr.shouldbehidden').forEach((row) => {
+      row.classList.toggle('hidden');
     });
-  });
+    showMoreLabel.textContent = showMoreLabel.textContent === 'Show More' ? 'Show Less' : 'Show More';
+  };
 
-  showLessLabel.addEventListener('click', () => {
-    tbody.querySelectorAll('tr').forEach((row) => {
-      if (row.classList.contains('shouldbehidden')) {
-        row.classList.add('hidden');
-      }
-      if (row.classList.contains('showmore')) {
-        row.classList.remove('hidden');
-      }
-    });
-  });
+  showMoreLabel.addEventListener('click', toggle);
 
   block.innerHTML = '';
   block.append(table);
