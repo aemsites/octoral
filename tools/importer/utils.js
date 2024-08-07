@@ -42,11 +42,3 @@ export const fixRelativeLinks = (document) => {
 
 export const getPathSegments = (url) => (new URL(url)).pathname.split('/')
   .filter((segment) => segment);
-
-export const getSanitizedPath = (url) => {
-  const { pathname } = new URL(url);
-  const initialReplace = new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '');
-
-  console.log(`pathname: ${pathname} -> initialReplace: ${initialReplace}`);
-  return initialReplace;
-};

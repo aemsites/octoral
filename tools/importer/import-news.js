@@ -112,11 +112,8 @@ function handleTable(main, document) {
       const x = [];
       row.querySelectorAll('td').forEach((cell) => {
         if (cell.querySelector('strong')) {
-          console.log('inside if');
           x.push(`<strong>${cell.textContent}</strong>`);
         } else {
-          console.log('inside else');
-
           x.push(cell.textContent);
         }
       });
@@ -163,8 +160,6 @@ export default {
         fields.brochureText = newsArticle.querySelector('.entry-content p:last-of-type a')?.textContent;
       }
     }
-
-    fields.template = 'news';
     params.preProcessMetadata = fields;
   },
 
