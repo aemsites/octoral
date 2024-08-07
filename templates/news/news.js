@@ -1,7 +1,7 @@
 import {
   a, p,
 } from '../../scripts/dom-helpers.js';
-import getPathSegments from '../../scripts/utils.js';
+import { getPathSegments } from '../../scripts/utils.js';
 import { loadTemplate } from '../../scripts/scripts.js';
 
 const newsNavInfo = [
