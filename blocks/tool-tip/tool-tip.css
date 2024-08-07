@@ -1,78 +1,76 @@
 .tool-tip-wrapper {
-    position: relative;
+  position: relative;
 
-    /*.map {*/
-    /*    background: url('https://www.octoral.com/skin/map.jpg') no-repeat left top;*/
-    /*}*/
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-    .pointer {
-        overflow: hidden;
-        text-indent: -20000px;
-        width: 10px;
-        height: 10px;
-        background: #0f7cc1;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: 2;
+  .intro {
+    color: #fff;
+    background: #000;
+    border-radius: 20px;
+    width: 400px;
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    z-index: 999;
+    padding: 20px;
+    font-size: 14px;
+    text-align: center;
+    margin-left: -200px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 1600ms;
+    &.fade-in { opacity: .8 }
+  }
 
-        &:hover, &.active {
-            background: #fe8a02;
-        }
+  .pin {
+    overflow: hidden;
+    text-indent: -20000px;
+    width: 10px;
+    height: 10px;
+    background: #0f7cc1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    cursor: pointer;
+    &:hover, &.active { background: #fe8a02; }
+  }
+
+  .info {
+    position: absolute;
+    top: 330px;
+    left: 150px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 12px;
+    align-items: start;
+    padding: 10px 15px;
+    width: 300px;
+    z-index: 999;
+    background: var(--dark-gray-2);
+    color: #fff;
+    visibility: hidden;
+    &.active { visibility: visible }
+
+    h5, p {
+      grid-column: 1;
+      margin: 0;
+      line-height: 22px;
+      color: #fff;
+      text-transform: none;
+      font-weight: normal;
+      text-align: right;
     }
 
-    canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        border: 1px solid red;}
-
-    #welcomebox {
-        color: #fff;
-        background: #000;
-        border-radius: 20px;
-        width: 400px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: 999;
-        padding: 20px;
-        font-size: 14px;
-        text-align: center;
-        opacity: 0;
-        margin-left: -200px;
-        margin-top: -60px;
+    p {
+      text-align: left;
+      grid-column: 2;
+      & + p { margin-top: -12px }
+      a { color: #fe8a02}
     }
-
-    .agencieinfo {
-        position: absolute;
-        top: 330px;
-        left: 150px;
-        /*visibility: hidden;*/
-        background: red;
-        padding: 10px 15px;
-        z-index: 999;
-        width: 300px;
-        color: #fff;
-    }
-
-    .agencieinfo .title {
-        width: 50px;
-        float: left;
-        position: relative;
-        margin-right: 20px;
-    }
-
-    .agencieinfo .info {
-        float: left;
-        width: 230px;
-    }
-
-    .agencieinfo .row {
-        margin: 5px 0;
-    }
-
-    .agencieinfo .info a {
-        color: #fe8a02;
-    }
+  }
 }
