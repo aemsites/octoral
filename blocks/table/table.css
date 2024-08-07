@@ -1,0 +1,22 @@
+.table table {
+    width: 100%;
+    max-width: 100%;
+    font-size: var(--body-font-size);
+    padding: 0;
+}
+
+@media (width >= 600px) {
+    .table table {
+        font-size: var(--body-font-size);
+    }
+}
+
+.table table tr {
+    line-height: 10px;
+}
+
+.table table th,
+.table table td {
+    padding: 0;
+    text-align: left;
+}
