@@ -1,0 +1,41 @@
+/* buttons */
+a.button, button {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 30px;
+    text-align: center;
+    font-family: var(--body-font-family);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1em;
+    line-height: 2.5em;
+    cursor: pointer;
+    color: #fff;
+    background: var(--blue);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+
+    &:hover, &:focus { background: var(--light-blue) }
+
+    &:disabled, &:disabled:hover {
+        background: var(--gray);
+        cursor: unset;
+    }
+
+    &.download {
+        padding: 0 30px;
+        font-size: 1.6em;
+        line-height: 2.8em;
+
+        &::before {
+            content: url('../icons/download.png');
+            margin-right: 12px;
+            transform: translateY(0);
+        }
+    }
+
+
+}
