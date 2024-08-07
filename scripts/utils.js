@@ -4,7 +4,11 @@
  * and the segments are returned as an array.
  * @returns {string[]} An array of path segments.
  */
-export default function getPathSegments() {
+export function getPathSegments() {
   return window.location.pathname.split('/')
     .filter((segment) => segment);
+}
+
+export function normalizeString(str) {
+  return str.toLowerCase().replace(/ /g, '_');
 }
