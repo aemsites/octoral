@@ -6,4 +6,4 @@ indices:
     properties:
       description:
         select: main > div p
-        value: words(textContent(el), 0, 5)
+        value: words(textContent(el), 0, 25)

@@ -1,17 +1,6 @@
 main > div {
     
-    
-    /* left nav */
-    aside {
-        width: auto;
-        box-sizing: border-box;
-        z-index: 1;
-        position: relative;
-        float: left;
-        
-    }
-
-     /* right content */
+    /* right content */
     section {
         position: relative;
         flex: 1;
@@ -19,26 +8,12 @@ main > div {
         background-color: #fff;
         box-sizing: border-box;
         padding-left: 35%;
-        
-        
-
-        /* border */
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 35%;
-            width: 1px;
-            height: 100%;
-            background: #ccc;
-            box-sizing: border-box;
-        }
+         
     }
 
     .articles {
         width: auto;
-       
-        
+               
     }
 
     .card {
@@ -48,6 +23,7 @@ main > div {
             font-size: 18px;
             color: #535353;
             text-decoration: underline;
+            
         }
         p {
             font-family: sans-serif;
