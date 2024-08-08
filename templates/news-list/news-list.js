@@ -1,5 +1,5 @@
 import {
-  div, h3, p, h1, a, section,
+  div, h3, p, h1, a,
 } from '../../scripts/dom-helpers.js';
 import { getMetadata } from '../../scripts/aem.js';
 import ArticleList from '../../scripts/article-list.js';
@@ -29,7 +29,8 @@ export default async function decorate(doc) {
       p(article.description),
     );
 
-  const $newsPage = section(
+  // eslint-disable-next-line object-curly-spacing
+  const $newsPage = div(
     h1('News'),
     $articles,
     $pagination,
