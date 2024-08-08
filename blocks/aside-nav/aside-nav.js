@@ -75,11 +75,11 @@ function replaceEntries(placeholders, element) {
 }
 
 export default async function decorate(block) {
-  var [locale] = getPathSegments();
+  let [locale] = getPathSegments();
   const regions = ['en', 'de', 'es', 'fr', 'it', 'nl', 'us'];
   if (!regions.some((region) => region === locale)) {
     locale = 'en';
-   }
+  }
   currentPath = window.location.pathname;
   const placeholders = await fetchPlaceholders(locale);
   [...block.children].forEach((row) => {
