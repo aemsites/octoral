@@ -12,7 +12,7 @@
 /* global WebImporter */
 
 import {
-  createMetadata,
+  createMetadata, getPathSegments,
 } from './utils.js';
 
 function rgbToHex(rgb) {
@@ -71,7 +71,7 @@ function fixHeadings(main) {
   }
 }
 
-function fixPdfBrochure(main, results, url) {
+function fixPdfBrochure(main, results, url, locale) {
   const newsArticle = main.querySelector('.block-newsarticle section article');
   if (newsArticle && newsArticle.querySelector('.entry-content p img[alt="Download Button"]')) {
     const brochureImages = newsArticle.querySelectorAll('.entry-content p img[alt="Download Button"]');
@@ -88,7 +88,7 @@ function fixPdfBrochure(main, results, url) {
     const href = a.getAttribute('href');
     if (href && href.endsWith('.pdf')) {
       const u = new URL(href, url);
-      const newPath = WebImporter.FileUtils.sanitizePath(`/assets/${u.pathname.split('/').pop()}`);
+      const newPath = `/${locale}/assets${WebImporter.FileUtils.sanitizePath(u.pathname.split('/').pop())}`; // this may change based on customer preference
       results.push({
         path: newPath,
         from: u.toString(),
@@ -168,6 +168,7 @@ export default {
     document, url, html, params,
   }) => {
     const main = document.body;
+    const locale = getPathSegments(params.originalURL)[0];
     const results = [];
 
     // use helper method to remove header, footer, etc.
@@ -182,18 +183,18 @@ export default {
       '.entry-meta',
     ]);
     // create the metadata block and append it to the main element
-
+    const path = new URL(params.originalURL).pathname;
     results.push({
       element: main,
-      path: WebImporter.FileUtils.sanitizePath(params.originalURL),
+      path: WebImporter.FileUtils.sanitizePath(path),
       report: {
-        redirectPageUrl: params.originalURL,
+        redirectPageUrl: path,
       },
     });
 
     fixImage(main);
     handleTable(main, document);
-    fixPdfBrochure(main, results, url);
+    fixPdfBrochure(main, results, url, locale);
     fixHeadings(main);
     createMetadata(main, document, params);
     return results;
