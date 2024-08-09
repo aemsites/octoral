@@ -12,12 +12,6 @@ export default async function decorate(doc) {
   const $pagination = div({ class: 'pagination' });
   const articlesPerPage = Number(getMetadata('articles-per-page')) || 10;
   const paginationMaxBtns = Number(getMetadata('pagination-max-buttons')) || 7;
-  // const lefNavFrag = await loadFragment('/aside-nav');
-  // const $leftNav = lefNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
-
-  // const $aside = aside(
-  //   $leftNav,
-  // );
 
   const $articleCard = (article) =>
     // eslint-disable-next-line function-paren-newline, implicit-arrow-linebreak
