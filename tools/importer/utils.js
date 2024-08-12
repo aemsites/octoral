@@ -42,3 +42,8 @@ export const fixRelativeLinks = (document) => {
 
 export const getPathSegments = (url) => (new URL(url)).pathname.split('/')
   .filter((segment) => segment);
+
+export const normalizeString = (str) => {
+  return str.toLowerCase().replace(/ /g, '_');
+}
+
