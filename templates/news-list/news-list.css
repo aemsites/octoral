@@ -11,6 +11,7 @@ h1 {
         text-decoration: underline;
             
     }
+    
     p {
         font-family: sans-serif;
         font-size: 13px;
@@ -19,23 +20,25 @@ h1 {
 
 }
 
-button {
-    border: none;
-    outline: none;
-    margin: 1px;
-    width: 24px;
-    height: 24px;
-    background: #61B2E6;
-    font-size: 12px;
-    font-family: inherit;
-            
-}
-
-button.active {
-    background: #0f7cc1;
-}
 
 .pagination {
     text-align: center;
+
+    button {
+        border: none;
+        outline: none;
+        margin: 1px;
+        padding: 8px 12px;
+        background: #61B2E6;
+        font-size: 12px;
+        font-family: inherit;
+        line-height: 1em;
+        
+        &.active {
+            background: #0f7cc1;
+        }
+                
+    }
+
 }
 

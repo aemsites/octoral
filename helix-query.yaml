@@ -2,6 +2,8 @@ indices:
   news:
     include:
       - /en/news/**
+    exclude:
+      - /en/news/
     target: /en/news/query-index.json
     properties:
       description:
