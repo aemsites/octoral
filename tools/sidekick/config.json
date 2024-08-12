@@ -11,7 +11,7 @@
     {
       "id": "products-editor",
       "title": "Edit Products",
-      "environments": ["edit"],
+      "environments": ["edit", "dev", "preview", "prod", "live"],
       "url": "https://adobe.sharepoint.com/:x:/r/sites/HelixProjects/_layouts/15/Doc.aspx?sourcedoc=%7B921F778C-D497-455E-8656-69F177512A1F%7D&file=products.xlsx&action=default&mobileredirect=true"
     }
   ]
