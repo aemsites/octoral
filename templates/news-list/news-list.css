@@ -1,26 +1,6 @@
 h1 {
-    margin-top: 1px;
+    margin-top: 0;
    }
-   
-main > div {
-    
-    /* right content */
-    section {
-        position: relative;
-        flex: 1;
-        width: 95%;
-        background-color: #fff;
-        box-sizing: border-box;
-        padding-left: 35%;
-               
-    }
-
-     
-
-    .articles {
-        width: auto;
-               
-    }
 
     .card {
         width: auto;
@@ -39,4 +19,4 @@ main > div {
 
     }
 
-}
+
