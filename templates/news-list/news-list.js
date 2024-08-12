@@ -11,7 +11,7 @@ export default async function decorate(doc) {
   const $articles = div({ class: 'articles' });
   const $pagination = div({ class: 'pagination' });
   const articlesPerPage = Number(getMetadata('articles-per-page')) || 10;
-  const paginationMaxBtns = Number(getMetadata('pagination-max-buttons')) || 7;
+  const paginationMaxBtns = 4;
 
   const $articleCard = (article) =>
     // eslint-disable-next-line function-paren-newline, implicit-arrow-linebreak
