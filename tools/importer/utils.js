@@ -47,3 +47,15 @@ export const normalizeString = (str) => {
   return str.toLowerCase().replace(/ /g, '_');
 }
 
+export const fetchAndParseDocument = async (url) => {
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    return doc;
+  } catch (error) {
+    console.error('Error fetching and parsing document:', error);
+  }
+};
+

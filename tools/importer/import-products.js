@@ -1,6 +1,7 @@
 /* global WebImporter */
 
 import {
+  fetchAndParseDocument,
   getPathSegments, normalizeString,
 } from './utils.js';
 
@@ -9,26 +10,13 @@ import {
  * @param {HTMLDocument} document The document
  */
 
-const fetchAndParseDocument = async (url) => {
-  try {
-    const response = await fetch(url);
-    const text = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(text, 'text/html');
-    return doc;
-  } catch (error) {
-    console.error('Error fetching and parsing document:', error);
-  }
-};
-
-const pageInfo = (url) => {
+const extractPageInfo = (url) => {
   return fetchAndParseDocument(url).then((doc) => {
     let desc;
     let title;
     let types = [];
 
     if (doc) {
-      // Perform operations on the parsed document
       const body = doc.body;
       const content = body.querySelector('.span58');
       const categoryEl = content.querySelector('.category_description');
@@ -56,7 +44,6 @@ const pageInfo = (url) => {
     }
   });
 }
-
 
 export default {
   /**
@@ -87,6 +74,7 @@ export default {
     let image;
     let vocCompliantTitle = '';
     let vocCompliantDesc = '';
+    let vocCompliantLabel = '';
     let compliantTypes = [];
     let subProducts;
 
@@ -105,39 +93,35 @@ export default {
       '.entry-meta',
     ]);
 
-    // *** Extract info from Accordion
+    // *** Extract compliant info from Accordion
     const accordion = main.querySelector('#mainmenu');
-    const vocCompliantLabel = accordion.querySelector('.menu-item.active a').textContent.trim();
-    const voc_href = accordion.querySelector('.menu-item.active a').href;
-
-    let details = await pageInfo(voc_href);
+    const compliantEl = accordion.querySelector('.menu-item.active a');
+    vocCompliantLabel = compliantEl.textContent.trim();
+    let details = await extractPageInfo(compliantEl.href);
     vocCompliantTitle = details.title;
     vocCompliantDesc = details.desc;
     compliantTypes = details.types;
 
+    // *** Extract submenu info from Accordion
     let subMenuEl = accordion.querySelector('.submenu-item.active.has-submenu');
     if (subMenuEl) { // has submenu
-      typeLabel = subMenuEl.querySelector('a').textContent.trim();
+      const typeEl = subMenuEl.querySelector('a');
+      typeLabel = typeEl.textContent.trim();
       titleLabel = subMenuEl.querySelector('.subsubmenu-item.active a').textContent.trim();
-      const type_href = subMenuEl.querySelector('a').href;
 
-      let details = await pageInfo(type_href);
+      let details = await extractPageInfo(typeEl.href);
       type = details.title;
       typeDesc = details.desc;
       subProducts = details.types;
 
       typeImage = compliantTypes.filter((t) => t.type_title === typeLabel)[0].type_img;
-      // set type-image from first page
-      // set title-image from second page
     } else { // no submenu
       typeLabel = accordion.querySelector('.submenu-item.active a').textContent.trim();
     }
 
-
     // *** Extract info from Product Section
     const productContainer = main.querySelector('div.span58');
 
-    // Extract title and description
     const categoryEl = productContainer.querySelector('.category_description');
     if (categoryEl && subMenuEl) { // some pages do not have title and description
       const titleEl = categoryEl.querySelector('h1');
@@ -159,19 +143,16 @@ export default {
     }
 
     // Extract products
-    const products = [];
-    const prodList = productContainer.querySelectorAll('li');
-    prodList.forEach((prod) => {
-      image = prod.querySelector('a').href;
-      const objEl = prod.querySelector('.object-description');
+    productContainer.querySelectorAll('li').forEach((product) => {
+      image = product.querySelector('a').href;
+      const objEl = product.querySelector('.object-description');
       subTitle = objEl.querySelector('h2').textContent.trim();
       const tableEl = objEl.querySelectorAll('table tr');
 
-      const keys = [...tableEl[0].querySelectorAll('th')].map((h) => h.textContent);
       tableEl.forEach((row, i) => {
-        if (i === 0) return;
-        const firstRow = row.querySelector('td');
-        if (firstRow && firstRow.classList && firstRow.classList.contains('col-more')) return;
+        if (i === 0) return; // skip table headers
+        const cell = row.querySelector('td');
+        if (cell && cell.classList && cell.classList.contains('col-more')) return; // skip 'Show More' row
 
         const itemNo = row.querySelector('.col-reference').textContent.trim();
         const productName = row.querySelector('.col-colour').textContent.trim();
@@ -225,7 +206,7 @@ export default {
       }
     });
 
-    // fetch unique images and pass for download
+    // fetch unique images and collect for download
     const uniqueImages = new Set();
     results.forEach((result) => {
       if (result.report && result.report.image) {
@@ -239,6 +220,7 @@ export default {
       }
     });
 
+    // Add images for download
     uniqueImages.forEach((image) => {
       const imgDownload = {
         path: `/imgassets/${image.split('/').pop()}`,
@@ -250,6 +232,8 @@ export default {
       };
       results.push(imgDownload);
     });
+
+    // Add entry in excel for page redirect
     results.push({
       path: '/dummy',
       report: {
