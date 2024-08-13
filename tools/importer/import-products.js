@@ -10,40 +10,38 @@ import {
  * @param {HTMLDocument} document The document
  */
 
-const extractPageInfo = (url) => {
-  return fetchAndParseDocument(url).then((doc) => {
-    let desc;
-    let title;
-    let types = [];
+const extractPageInfo = (url) => fetchAndParseDocument(url).then((doc) => {
+  let desc;
+  let title;
+  const types = [];
 
-    if (doc) {
-      const body = doc.body;
-      const content = body.querySelector('.span58');
-      const categoryEl = content.querySelector('.category_description');
-      if (categoryEl) { // some pages do not have title and description
-        const titleEl = categoryEl.querySelector('h1');
-        categoryEl.removeChild(titleEl);
-        title = titleEl.textContent;
-        desc = categoryEl.textContent;
-      }
+  if (doc) {
+    const { body } = doc;
+    const content = body.querySelector('.span58');
+    const categoryEl = content.querySelector('.category_description');
+    if (categoryEl) { // some pages do not have title and description
+      const titleEl = categoryEl.querySelector('h1');
+      categoryEl.removeChild(titleEl);
+      title = titleEl.textContent;
+      desc = categoryEl.textContent;
+    }
 
-      const subcategories = content.querySelectorAll('.subcategories li');
-      subcategories.forEach((el) => {
-          const type_title = el.querySelector('a span').textContent.trim();
-          const type_img = el.querySelector('a img').src;
-          types.push({
-            type_title,
-            type_img,
-          });
+    const subcategories = content.querySelectorAll('.subcategories li');
+    subcategories.forEach((el) => {
+      const typeTitle = el.querySelector('a span').textContent.trim();
+      const typeImg = el.querySelector('a img').src;
+      types.push({
+        typeTitle,
+        typeImg,
       });
-    }
-    return {
-        title,
-        desc,
-        types,
-    }
-  });
-}
+    });
+  }
+  return {
+    title,
+    desc,
+    types,
+  };
+});
 
 export default {
   /**
@@ -57,9 +55,9 @@ export default {
      */
 
   transform: async ({
-                      // eslint-disable-next-line no-unused-vars
-                      document, url, html, params,
-                    }) => {
+    // eslint-disable-next-line no-unused-vars
+    document, url, html, params,
+  }) => {
     const main = document.body;
     const results = [];
     let type;
@@ -97,24 +95,23 @@ export default {
     const accordion = main.querySelector('#mainmenu');
     const compliantEl = accordion.querySelector('.menu-item.active a');
     vocCompliantLabel = compliantEl.textContent.trim();
-    let details = await extractPageInfo(compliantEl.href);
-    vocCompliantTitle = details.title;
-    vocCompliantDesc = details.desc;
-    compliantTypes = details.types;
+
+    ({
+      title: vocCompliantTitle,
+      desc: vocCompliantDesc,
+      types: compliantTypes,
+    } = await extractPageInfo(compliantEl.href));
 
     // *** Extract submenu info from Accordion
-    let subMenuEl = accordion.querySelector('.submenu-item.active.has-submenu');
+    const subMenuEl = accordion.querySelector('.submenu-item.active.has-submenu');
     if (subMenuEl) { // has submenu
       const typeEl = subMenuEl.querySelector('a');
       typeLabel = typeEl.textContent.trim();
       titleLabel = subMenuEl.querySelector('.subsubmenu-item.active a').textContent.trim();
 
-      let details = await extractPageInfo(typeEl.href);
-      type = details.title;
-      typeDesc = details.desc;
-      subProducts = details.types;
+      ({ title: type, desc: typeDesc, types: subProducts } = await extractPageInfo(typeEl.href));
 
-      typeImage = compliantTypes.filter((t) => t.type_title === typeLabel)[0].type_img;
+      typeImage = compliantTypes.filter((t) => t.typeTitle === typeLabel)[0].type_img;
     } else { // no submenu
       typeLabel = accordion.querySelector('.submenu-item.active a').textContent.trim();
     }
@@ -128,18 +125,26 @@ export default {
       categoryEl.removeChild(titleEl);
       title = titleEl.textContent;
       titleDesc = categoryEl.textContent;
-      titleImage = subProducts.filter((t) => t.type_title.toLowerCase() === titleLabel.toLowerCase())[0].type_img;
-    } else if (categoryEl){
+      titleImage = subProducts.filter(
+        (t) => t.typeTitle.toLowerCase() === titleLabel.toLowerCase(),
+      )[0].typeImg;
+    } else if (categoryEl) {
       const titleEl = categoryEl.querySelector('h1');
       categoryEl.removeChild(titleEl);
       type = titleEl.textContent;
       typeDesc = categoryEl.textContent;
-      typeImage = compliantTypes.filter((t) => t.type_title.toLowerCase() === typeLabel.toLowerCase())[0].type_img;
-    } else if (subMenuEl){
+      typeImage = compliantTypes.filter(
+        (t) => t.typeTitle.toLowerCase() === typeLabel.toLowerCase(),
+      )[0].typeImg;
+    } else if (subMenuEl) {
       // set images of one level above
-      titleImage = subProducts.filter((t) => t.type_title.toLowerCase() === titleLabel.toLowerCase())[0].type_img;
+      titleImage = subProducts.filter(
+        (t) => t.typeTitle.toLowerCase() === titleLabel.toLowerCase(),
+      )[0].typeImg;
     } else {
-      typeImage = compliantTypes.filter((t) => t.type_title.toLowerCase() === typeLabel.toLowerCase())[0].type_img;
+      typeImage = compliantTypes.filter(
+        (t) => t.typeTitle.toLowerCase() === typeLabel.toLowerCase(),
+      )[0].typeImg;
     }
 
     // Extract products
@@ -194,40 +199,40 @@ export default {
     });
 
     // perform cleanup for an optimized excel
-    results.forEach((result, i) => {
-      if (i != 0 && result.report['voc-compliant-desc']) {
-        delete result.report['voc-compliant-desc'];
+    results.forEach((obj, i) => {
+      if (i !== 0 && obj.report['voc-compliant-desc']) {
+        delete obj.report['voc-compliant-desc'];
       }
-      if (i != 0 && result.report['type-desc']) {
-        delete result.report['type-desc'];
+      if (i !== 0 && obj.report['type-desc']) {
+        delete obj.report['type-desc'];
       }
-      if (i != 0 && result.report['title-desc']) {
-        delete result.report['title-desc'];
+      if (i !== 0 && obj.report['title-desc']) {
+        delete obj.report['title-desc'];
       }
     });
 
     // fetch unique images and collect for download
     const uniqueImages = new Set();
-    results.forEach((result) => {
-      if (result.report && result.report.image) {
-        uniqueImages.add(result.report.image);
+    results.forEach((obj) => {
+      if (obj.report && obj.report.image) {
+        uniqueImages.add(obj.report.image);
       }
-      if (result.report && result.report['type-image']) {
-        uniqueImages.add(result.report['type-image']);
+      if (obj.report && obj.report['type-image']) {
+        uniqueImages.add(obj.report['type-image']);
       }
-      if (result.report && result.report['title-image']) {
-        uniqueImages.add(result.report['title-image']);
+      if (obj.report && obj.report['title-image']) {
+        uniqueImages.add(obj.report['title-image']);
       }
     });
 
     // Add images for download
-    uniqueImages.forEach((image) => {
+    uniqueImages.forEach((img) => {
       const imgDownload = {
-        path: `/imgassets/${image.split('/').pop()}`,
-        from: image.toString(),
+        path: `/imgassets/${img.split('/').pop()}`,
+        from: img.toString(),
         report: {
-          'img-new-sp': `/imgassets/${image.split('/').pop()}`,
-          'img-original': image.toString(),
+          'img-new-sp': `/imgassets/${img.split('/').pop()}`,
+          'img-original': img.toString(),
         },
       };
       results.push(imgDownload);
@@ -238,10 +243,9 @@ export default {
       path: '/dummy',
       report: {
         'url-redirect-from': params.originalURL,
-        'url-redirect-to': `/${locale}/products/${vocCompliant}/${subType ? normalizeString(type + '/' + title) : normalizeString(type)}`,
-      }
+        'url-redirect-to': `/${locale}/products/${vocCompliant}/${subType ? normalizeString(`${type}/${title}`) : normalizeString(type)}`,
+      },
     });
     return results;
-
   },
 };

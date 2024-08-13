@@ -43,9 +43,7 @@ export const fixRelativeLinks = (document) => {
 export const getPathSegments = (url) => (new URL(url)).pathname.split('/')
   .filter((segment) => segment);
 
-export const normalizeString = (str) => {
-  return str.toLowerCase().replace(/ /g, '_');
-}
+export const normalizeString = (str) => str.toLowerCase().replace(/ /g, '_');
 
 export const fetchAndParseDocument = async (url) => {
   try {
@@ -55,7 +53,8 @@ export const fetchAndParseDocument = async (url) => {
     const doc = parser.parseFromString(text, 'text/html');
     return doc;
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching and parsing document:', error);
   }
+  return null;
 };
-
