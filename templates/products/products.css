@@ -49,8 +49,7 @@
 
     & .cards-card-image {
         display: flex;
-        justify-content: flex-end;
-        top: 20px;
+        justify-content: space-around;
         position: relative;
 
 
@@ -69,10 +68,19 @@
     }
 }
 
-@media (width >= 900px) {
-    .block.cards.products>ul {
-        grid-template-columns: repeat(4, 25%);
-        height: 91px;
+@media (width >=900px) {
+    .block.cards.products {
+       & > ul {
+               grid-template-columns: repeat(4, 23%);
+               height: 91px;
+           }
+        
+       .cards-card-image {
+               display: flex;
+               justify-content: flex-end;
+               top: 20px;
+               position: relative;
+           }  
     }
 
     .product-info picture {
