@@ -203,6 +203,7 @@ export default async function decorate(doc) {
       p(`${result[0].desc}`),
     );
     const blockType = 'cards';
+    result.sort((x, y) => x.type - y.type);
     const blockContents = usedCase === 'stage1-card' ? resultParsers[blockType](result, 'type') : resultParsers[blockType](result, 'title');
     const builtBlock = buildBlock(blockType, blockContents);
     const parentDiv = div(
@@ -227,9 +228,12 @@ export default async function decorate(doc) {
 
     const blockType = 'productstable';
     $section.append($products);
-    Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
-      const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
-      const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
+    result.sort((x, y) => x.subtitle - y.subtitle);
+    const subtitleArray = groupBy(result, 'subtitle');
+    Object.keys(subtitleArray).forEach(async (key) => {
+      subtitleArray[key].sort((x, y) => x.itemnr - y.itemnr);
+      const productImage = createOptimizedPicture(subtitleArray[key][0].image);
+      const blockContents = resultParsers[blockType](subtitleArray[key]);
       const builtBlock = buildBlock(blockType, blockContents);
       const productName = h2(key);
       const parentDiv = div(
