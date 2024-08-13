@@ -31,8 +31,6 @@ class Obj {
   }
 }
 
-const imagePath = "https://main--octoral--aemsites.hlx.page/products/assets/";
-
 // Result parsers parse the query results into a format that can be used by the block builder for
 // the specific block types
 const resultParsers = {
