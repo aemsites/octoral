@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
 import { loadTemplate } from '../../scripts/scripts.js';
-import { normalizeString, getPathSegments } from '../../scripts/utils.js';
+import { normalizeString, getPathSegments, normalizeImage } from '../../scripts/utils.js';
 import {
   div, h1, p, a, h2,
 } from '../../scripts/dom-helpers.js';
@@ -30,6 +30,8 @@ class Obj {
     this.productname = productname;
   }
 }
+
+const imagePath = "https://main--octoral--aemsites.hlx.page/products/assets/";
 
 // Result parsers parse the query results into a format that can be used by the block builder for
 // the specific block types
@@ -108,7 +110,7 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
 
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && normalizeString(entry.title) === title) {
-      obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
       endResult.push(obj);
     }
   });
@@ -124,11 +126,11 @@ const tillType = (data, vocCompliant, type, locale) => {
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type) {
       if (!entry.title) {
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
         endResult.push(obj);
       } else if (!duplicates.includes(entry.title)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
         duplicates.push(entry.title);
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, entry['title-image'], entry['title-label']);
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, normalizeImage(entry['title-image']), entry['title-label']);
         endResult.push(obj);
       }
     }
@@ -145,7 +147,7 @@ const tillVocCompliant = (data, vocCompliant, locale) => {
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
         endResult.push(obj);
       }
     }
