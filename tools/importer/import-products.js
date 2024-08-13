@@ -215,21 +215,22 @@ export default {
     const uniqueImages = new Map();
     results.forEach((obj) => {
       const addImage = (originalImagePath) => {
-        const newImagePath = fixImageLinks(originalImagePath);
         if (!uniqueImages.has(originalImagePath)) {
-          uniqueImages.set(originalImagePath, newImagePath);
+          uniqueImages.set(originalImagePath, fixImageLinks(originalImagePath));
         }
-        return newImagePath;
       };
 
       if (obj.report && obj.report.image) {
-        obj.report.image = addImage(obj.report.image);
+        addImage(obj.report.image);
+        obj.report.image = obj.report.image.split('/').pop();
       }
       if (obj.report && obj.report['type-image']) {
-        obj.report['type-image'] = addImage(obj.report['type-image']);
+        addImage(obj.report['type-image']);
+        obj.report['type-image'] = obj.report['type-image'].split('/').pop();
       }
       if (obj.report && obj.report['title-image']) {
-        obj.report['title-image'] = addImage(obj.report['title-image']);
+        addImage(obj.report['title-image']);
+        obj.report['title-image'] = obj.report['title-image'].split('/').pop();
       }
     });
 
