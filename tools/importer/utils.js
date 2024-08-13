@@ -1,5 +1,8 @@
 /* global WebImporter */
 
+const PREVIEW_DOMAIN = 'https://main--octoral--aemsites.hlx.page';
+const ORIGINAL_URL = 'https://www.octoral.com';
+
 export const createMetadata = (main, document, params) => {
   const meta = {};
 
@@ -16,7 +19,7 @@ export const createMetadata = (main, document, params) => {
   const img = document.querySelector('[property="og:image"]');
   if (img && img.content) {
     const el = document.createElement('img');
-    el.src = img.content.replaceAll('https://www.octoral.com', '');
+    el.src = img.content.replaceAll(ORIGINAL_URL, '');
     meta.Image = el;
   }
 
@@ -32,10 +35,9 @@ export const createMetadata = (main, document, params) => {
 
 export const fixRelativeLinks = (document) => {
   document.querySelectorAll('a').forEach((a) => {
-    const targetDomain = 'https://main--octoral--aemsites.hlx.page';
     const url = new URL(a.href);
     if (url.pathname) {
-      a.href = targetDomain + url.pathname;
+      a.href = PREVIEW_DOMAIN + url.pathname;
     }
   });
 };
@@ -57,4 +59,11 @@ export const fetchAndParseDocument = async (url) => {
     console.error('Error fetching and parsing document:', error);
   }
   return null;
+};
+
+export const fixImageLinks = (originalImagePath) => {
+  const imageName = originalImagePath.split('/').pop();
+  const prefix = '/products/assets/';
+  // return PREVIEW_DOMAIN + WebImporter.FileUtils.sanitizePath(prefix + imageName);
+  return PREVIEW_DOMAIN + prefix + imageName;
 };

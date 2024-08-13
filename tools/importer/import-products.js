@@ -1,7 +1,7 @@
 /* global WebImporter */
 
 import {
-  fetchAndParseDocument,
+  fetchAndParseDocument, fixImageLinks,
   getPathSegments, normalizeString,
 } from './utils.js';
 
@@ -212,27 +212,34 @@ export default {
     });
 
     // fetch unique images and collect for download
-    const uniqueImages = new Set();
+    const uniqueImages = new Map();
     results.forEach((obj) => {
+      const addImage = (originalImagePath) => {
+        const newImagePath = fixImageLinks(originalImagePath);
+        if (!uniqueImages.has(originalImagePath)) {
+          uniqueImages.set(originalImagePath, newImagePath);
+        }
+        return newImagePath;
+      };
+
       if (obj.report && obj.report.image) {
-        uniqueImages.add(obj.report.image);
+        obj.report.image = addImage(obj.report.image);
       }
       if (obj.report && obj.report['type-image']) {
-        uniqueImages.add(obj.report['type-image']);
+        obj.report['type-image'] = addImage(obj.report['type-image']);
       }
       if (obj.report && obj.report['title-image']) {
-        uniqueImages.add(obj.report['title-image']);
+        obj.report['title-image'] = addImage(obj.report['title-image']);
       }
     });
 
-    // Add images for download
-    uniqueImages.forEach((img) => {
+    uniqueImages.forEach((v, k) => {
       const imgDownload = {
-        path: `/imgassets/${img.split('/').pop()}`,
-        from: img.toString(),
+        path: new URL(v.toString()).pathname,
+        from: k.toString(),
         report: {
-          'img-new-sp': `/imgassets/${img.split('/').pop()}`,
-          'img-original': img.toString(),
+          'img-new-sp': v,
+          'img-original': k,
         },
       };
       results.push(imgDownload);
