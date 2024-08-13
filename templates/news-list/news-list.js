@@ -33,7 +33,7 @@ export default async function decorate(doc) {
   $page.append($newsPage);
 
   await new ArticleList({
-    jsonPath: '/drafts/tmorris/new-dummy-data.json',
+    jsonPath: '/en/news/query-index.json',
     articleContainer: $articles,
     articleCard: $articleCard,
     articlesPerPage,

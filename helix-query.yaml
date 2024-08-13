@@ -6,6 +6,14 @@ indices:
       - /en/news/
     target: /en/news/query-index.json
     properties:
+      title:
+        select: h1
+        value: textContent(el)
       description:
         select: main > div p
         value: words(textContent(el), 0, 25)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      
+
