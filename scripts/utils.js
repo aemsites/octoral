@@ -14,6 +14,6 @@ export function normalizeString(str) {
 }
 
 export function normalizeImage(str) {
-  const imagePath = 'https://main--octoral--aemsites.hlx.page/products/assets/';
+  const imagePath = '/products/assets/';
   return imagePath + str.toLowerCase().replace(/_/g, '-');
 }
