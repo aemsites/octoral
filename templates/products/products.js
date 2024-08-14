@@ -231,8 +231,8 @@ export default async function decorate(doc) {
     result.sort((x, y) => x.subtitle - y.subtitle);
     const subtitleArray = groupBy(result, 'subtitle');
     Object.keys(subtitleArray).forEach(async (key) => {
-      subtitleArray[key].sort((x, y) => x.itemnr - y.itemnr);
       const productImage = createOptimizedPicture(subtitleArray[key][0].image);
+      subtitleArray[key].sort((x, y) => x.itemnr - y.itemnr);
       const blockContents = resultParsers[blockType](subtitleArray[key]);
       const builtBlock = buildBlock(blockType, blockContents);
       const productName = h2(key);
