@@ -1,12 +1,17 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
 import { loadTemplate } from '../../scripts/scripts.js';
-import { normalizeString, getPathSegments, normalizeImage } from '../../scripts/utils.js';
+import { normalizeString, getPathSegments } from '../../scripts/utils.js';
 import {
   div, h1, p, a, h2,
 } from '../../scripts/dom-helpers.js';
 import {
   createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
 } from '../../scripts/aem.js';
+
+function normalizeImage(str) {
+  const imagePath = '/products/assets/';
+  return imagePath + str.toLowerCase().replace(/_/g, '-');
+}
 
 class Obj {
   // eslint-disable-next-line max-len

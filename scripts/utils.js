@@ -12,8 +12,3 @@ export function getPathSegments() {
 export function normalizeString(str) {
   return str.toLowerCase().replace(/ /g, '_');
 }
-
-export function normalizeImage(str) {
-  const imagePath = '/products/assets/';
-  return imagePath + str.toLowerCase().replace(/_/g, '-');
-}
