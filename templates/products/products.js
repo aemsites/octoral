@@ -139,7 +139,7 @@ const tillType = (data, vocCompliant, type, locale) => {
   let obj = {};
 
   data.forEach((entry) => {
-    if (entry['voc-compliant'].length > 0 && entry.type.length > 0 && entry.title.length === 0) {
+    if (entry['voc-compliant'].length > 0 && entry.type.length > 0) {
       parentvocCompliant = entry['voc-compliant'];
       parentType = entry.type;
       obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
