@@ -8,6 +8,11 @@ import {
   createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
 } from '../../scripts/aem.js';
 
+function normalizeImage(str) {
+  const imagePath = '/products/assets/';
+  return imagePath + str.toLowerCase().replace(/_/g, '-');
+}
+
 class Obj {
   // eslint-disable-next-line max-len
   constructor(type, typeimage, typelabel, image, href, label, desc, feedType, title, titleimage, titlelabel, subtitle, itemnr, perbox, volume, code, productname) {
@@ -108,7 +113,7 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
 
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && normalizeString(entry.title) === title) {
-      obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
       endResult.push(obj);
     }
   });
@@ -124,11 +129,11 @@ const tillType = (data, vocCompliant, type, locale) => {
   data.forEach((entry) => {
     if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type) {
       if (!entry.title) {
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, entry['title-image'], entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
         endResult.push(obj);
-      } else if (!duplicates.includes(entry.type)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
-        duplicates.push(entry.type);
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, entry['title-image'], entry['title-label']);
+      } else if (!duplicates.includes(entry.title)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
+        duplicates.push(entry.title);
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, normalizeImage(entry['title-image']), entry['title-label']);
         endResult.push(obj);
       }
     }
@@ -145,7 +150,7 @@ const tillVocCompliant = (data, vocCompliant, locale) => {
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
-        obj = new Obj(entry.type, entry['type-image'], entry['type-label'], entry.image, `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
+        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
         endResult.push(obj);
       }
     }
@@ -203,6 +208,7 @@ export default async function decorate(doc) {
       p(`${result[0].desc}`),
     );
     const blockType = 'cards';
+    result.sort((x, y) => x.type - y.type);
     const blockContents = usedCase === 'stage1-card' ? resultParsers[blockType](result, 'type') : resultParsers[blockType](result, 'title');
     const builtBlock = buildBlock(blockType, blockContents);
     const parentDiv = div(
@@ -227,9 +233,12 @@ export default async function decorate(doc) {
 
     const blockType = 'productstable';
     $section.append($products);
-    Object.keys((groupBy(result, 'subtitle'))).forEach(async (key) => {
-      const productImage = createOptimizedPicture(groupBy(result, 'subtitle')[key][0].image);
-      const blockContents = resultParsers[blockType](groupBy(result, 'subtitle')[key]);
+    result.sort((x, y) => x.subtitle - y.subtitle);
+    const subtitleArray = groupBy(result, 'subtitle');
+    Object.keys(subtitleArray).forEach(async (key) => {
+      const productImage = createOptimizedPicture(subtitleArray[key][0].image);
+      subtitleArray[key].sort((x, y) => x.itemnr - y.itemnr);
+      const blockContents = resultParsers[blockType](subtitleArray[key]);
       const builtBlock = buildBlock(blockType, blockContents);
       const productName = h2(key);
       const parentDiv = div(

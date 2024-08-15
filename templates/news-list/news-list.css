@@ -1,0 +1,44 @@
+h1 {
+    margin-top: 0;
+   }
+
+.card {
+    width: auto;
+    h3 {
+        font-family: sans-serif;
+        font-size: 18px;
+        color: #535353;
+        text-decoration: underline;
+            
+    }
+    
+    p {
+        font-family: sans-serif;
+        font-size: 13px;
+        color: #343534;;
+    }
+
+}
+
+
+.pagination {
+    text-align: center;
+
+    button {
+        border: none;
+        outline: none;
+        margin: 1px;
+        padding: 8px 12px;
+        background: #61B2E6;
+        font-size: 12px;
+        font-family: inherit;
+        line-height: 1em;
+        
+        &.active {
+            background: #0f7cc1;
+        }
+                
+    }
+
+}
+
