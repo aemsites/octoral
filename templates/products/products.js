@@ -36,6 +36,20 @@ class Obj {
   }
 }
 
+let parentvocCompliant = '';
+let parentType = '';
+let parentTitle = '';
+let parentsubTitle = '';
+
+// Grouping by subtitle for Used Cases 2 & 4
+const groupBy = (array, key) => array.reduce((accum, current) => {
+  if (!accum[current[key]]) {
+    accum[current[key]] = [];
+  }
+  accum[current[key]].push(current);
+  return accum;
+}, {});
+
 // Result parsers parse the query results into a format that can be used by the block builder for
 // the specific block types
 const resultParsers = {
@@ -122,23 +136,34 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
 
 // Checking 2nd used case - https://www.octoral.com/en/products/non-voc/cleaning_agents
 const tillType = (data, vocCompliant, type, locale) => {
-  const endResult = [];
-  const duplicates = [];
+  const endResultStage3 = [];
+  const endResultStage2 = [];
   let obj = {};
 
   data.forEach((entry) => {
-    if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type) {
-      if (!entry.title) {
-        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
-        endResult.push(obj);
-      } else if (!duplicates.includes(entry.title)) { // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
-        duplicates.push(entry.title);
-        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, normalizeImage(entry['title-image']), entry['title-label']);
-        endResult.push(obj);
-      }
+    if (entry['voc-compliant'].length > 0 && entry.type.length > 0 && entry.title.length === 0) {
+      parentvocCompliant = entry['voc-compliant'];
+      parentType = entry.type;
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+      endResultStage2.push(obj);
+    }
+
+    if (entry['voc-compliant'].length === 0 && entry.type.length === 0 && entry.title.length === 0) {
+      entry['voc-compliant'] = parentvocCompliant;
+      entry.type = parentType;
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
+      endResultStage2.push(obj);
+    }
+
+    // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
+    if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && entry.title.length > 0) {
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, normalizeImage(entry['title-image']), entry['title-label']);
+      endResultStage3.push(obj);
     }
   });
-  return endResult;
+  const groupByType = groupBy(endResultStage2, 'type');
+  if (groupByType[`${type.replace('_', ' ').toUpperCase()}`] && groupByType[`${type.replace('_', ' ').toUpperCase()}`].length > 0) { return groupByType[`${type.replace('_', ' ').toUpperCase()}`]; }
+  return endResultStage3;
 };
 
 // Checking 1st used case - https://www.octoral.com/en/products/non-voc/
@@ -147,6 +172,9 @@ const tillVocCompliant = (data, vocCompliant, locale) => {
   const duplicates = [];
   let obj = {};
   data.forEach((entry) => {
+    if (entry['voc-compliant'].length > 0) { parentvocCompliant = entry['voc-compliant']; } else { entry['voc-compliant'] = parentvocCompliant; }
+    if (entry.type.length > 0) { parentType = entry.type; } else { entry.type = parentType; }
+
     if (entry['voc-compliant'] === vocCompliant) {
       if (!duplicates.includes(entry.type)) {
         duplicates.push(entry.type);
@@ -180,15 +208,6 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   }
   return endResult;
 }
-
-// Grouping by subtitle for Used Cases 2 & 4
-const groupBy = (array, key) => array.reduce((accum, current) => {
-  if (!accum[current[key]]) {
-    accum[current[key]] = [];
-  }
-  accum[current[key]].push(current);
-  return accum;
-}, {});
 
 export default async function decorate(doc) {
   // extends default template
