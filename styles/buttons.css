@@ -13,6 +13,7 @@ a.button, button {
     cursor: pointer;
     color: #fff;
     background: var(--blue);
+    border: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
