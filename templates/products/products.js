@@ -160,11 +160,8 @@ const tillType = (data, vocCompliant, type, locale) => {
     }
   });
   const groupByType = groupBy(endResultStage2, 'type');
-  console.log(groupByType);
-  console.log(groupByType[`${type.replace('_', ' ').toUpperCase()}`]);
   const check = (element) => element.title.length === 0;
-  console.log(groupByType[`${type.replace('_', ' ').toUpperCase()}`].every(check));
-  if (groupByType[`${type.replace('_', ' ').toUpperCase()}`] && groupByType[`${type.replace('_', ' ').toUpperCase()}`].length > 0 && groupByType[`${type.replace('_', ' ').toUpperCase()}`].every(check)) { return groupByType[`${type.replace('_', ' ').toUpperCase()}`]; }
+  if (groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`] && groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`].length > 0 && groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`].every(check)) { return groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`]; }
   return endResultStage3;
 };
 
