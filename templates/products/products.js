@@ -38,6 +38,8 @@ class Obj {
 
 let parentvocCompliant = '';
 let parentType = '';
+let parentTitle = '';
+let parentSubTitle = '';
 
 // Grouping by subtitle for Used Cases 2 & 4
 const groupBy = (array, key) => array.reduce((accum, current) => {
@@ -124,8 +126,20 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
   let obj = {};
 
   data.forEach((entry) => {
+    if (entry['voc-compliant'].length > 0 && entry.type.length > 0 && entry.title.length > 0) {
+      parentvocCompliant = entry['voc-compliant'];
+      parentType = entry.type;
+      parentTitle = entry.title;
+    }
+    if (entry['sub-title'].length > 0) { parentSubTitle = entry['sub-title']; }
+    if (entry['voc-compliant'].length === 0 && entry.type.length === 0 && entry.title.length === 0) {
+      entry['voc-compliant'] = parentvocCompliant;
+      entry.type = parentType;
+      entry.title = parentTitle;
+      entry['sub-title'] = parentSubTitle;
+    }
     if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && normalizeString(entry.title) === title) {
-      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['title-desc'], 'stage4-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
+      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage4-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
       endResult.push(obj);
     }
   });
