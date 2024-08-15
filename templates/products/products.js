@@ -38,8 +38,6 @@ class Obj {
 
 let parentvocCompliant = '';
 let parentType = '';
-let parentTitle = '';
-let parentsubTitle = '';
 
 // Grouping by subtitle for Used Cases 2 & 4
 const groupBy = (array, key) => array.reduce((accum, current) => {
