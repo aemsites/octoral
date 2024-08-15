@@ -131,6 +131,10 @@ const tillTitle = (data, vocCompliant, type, title, locale) => {
       parentType = entry.type;
       parentTitle = entry.title;
     }
+    if (entry['voc-compliant'].length > 0 && entry.type.length > 0) {
+      parentvocCompliant = entry['voc-compliant'];
+      parentType = entry.type;
+    }
     if (entry['sub-title'].length > 0) { parentSubTitle = entry['sub-title']; }
     if (entry['voc-compliant'].length === 0 && entry.type.length === 0 && entry.title.length === 0) {
       entry['voc-compliant'] = parentvocCompliant;
