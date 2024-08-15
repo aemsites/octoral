@@ -12,6 +12,8 @@
  * governing permissions and limitations under the License.
  */
 
+@import url('buttons.css');
+
 :root {
   /* colors */
   --text-color: #343534;
@@ -124,41 +126,6 @@ a {
   &:hover { text-decoration: none }
 }
 
-/* buttons */
-a.button, button {
-  font-family: var(--body-font-family);
-  display: inline-block;
-  box-sizing: border-box;
-  text-decoration: none;
-  border: 2px solid transparent;
-  padding: 5px 30px;
-  text-align: center;
-  font-style: normal;
-  font-weight: 600;
-  cursor: pointer;
-  color: #fff;
-  background-color: var(--blue);
-  margin: 16px 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  &:hover, &:focus {
-    background-color: var(--light-blue);
-    cursor: pointer;
-  }
-
-  &:disabled, &:disabled:hover {
-    background-color: var(--gray);
-    cursor: unset;
-  }
-
-  &.secondary {
-    background-color: unset;
-    border: 2px solid currentcolor;
-    color: var(--text-color);
-  }
-}
 
 main img {
   max-width: 100%;
