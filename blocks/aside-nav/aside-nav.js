@@ -9,7 +9,7 @@ export async function fetchPlaceholders(locale = 'en') {
 
   if (!loaded) {
     window.placeholders[`${TRANSLATION_KEY}-loaded`] = new Promise((resolve, reject) => {
-      fetch(`/products-optimize.json?sheet=translations&sheet=${locale}`)
+      fetch(`/drafts/akasjain/products-all.json?sheet=translations&sheet=${locale}`)
         .then((resp) => {
           if (resp.ok) {
             return resp.json();

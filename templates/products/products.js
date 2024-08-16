@@ -9,7 +9,7 @@ import {
 } from '../../scripts/aem.js';
 
 function normalizeImage(str) {
-  const imagePath = '/products/assets/';
+  const imagePath = '/drafts/akasjain/assets/';
   return imagePath + str.toLowerCase().replace(/_/g, '-');
 }
 
