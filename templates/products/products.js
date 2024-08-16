@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
 import { loadTemplate } from '../../scripts/scripts.js';
-import { normalizeString, getPathSegments } from '../../scripts/utils.js';
+import { normalizeString, getPathSegments, sanitizePath } from '../../scripts/utils.js';
 import {
   div, h1, p, a, h2,
 } from '../../scripts/dom-helpers.js';
@@ -10,7 +10,7 @@ import {
 
 function normalizeImage(str) {
   const imagePath = '/drafts/akasjain/assets/';
-  return imagePath + str.toLowerCase().replace(/_/g, '-');
+  return sanitizePath(imagePath + str);
 }
 
 class Obj {
@@ -35,11 +35,6 @@ class Obj {
     this.productname = productname;
   }
 }
-
-let parentvocCompliant = '';
-let parentType = '';
-let parentTitle = '';
-let parentSubTitle = '';
 
 // Grouping by subtitle for Used Cases 2 & 4
 const groupBy = (array, key) => array.reduce((accum, current) => {
@@ -123,87 +118,112 @@ const resultParsers = {
 // Checking 4th used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system/octobase_system_mixing_colours
 const tillTitle = (data, vocCompliant, type, title, locale) => {
   const endResult = [];
-  let obj = {};
+  const fieldset = `${vocCompliant}|${type}|${title}`;
 
-  data.forEach((entry) => {
-    if (entry['voc-compliant'].length > 0 && entry.type.length > 0 && entry.title.length > 0) {
-      parentvocCompliant = entry['voc-compliant'];
-      parentType = entry.type;
-      parentTitle = entry.title;
-    }
-    if (entry['voc-compliant'].length > 0 && entry.type.length > 0) {
-      parentvocCompliant = entry['voc-compliant'];
-      parentType = entry.type;
-    }
-    if (entry['sub-title'].length > 0) { parentSubTitle = entry['sub-title']; }
-    if (entry['voc-compliant'].length === 0 && entry.type.length === 0 && entry.title.length === 0) {
-      entry['voc-compliant'] = parentvocCompliant;
-      entry.type = parentType;
-      entry.title = parentTitle;
-      entry['sub-title'] = parentSubTitle;
-    }
-    if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && normalizeString(entry.title) === title) {
-      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage4-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume, entry.code, entry['product-name']);
-      endResult.push(obj);
-    }
+  const typeEntry = data.filter((entry) => entry.field === `${vocCompliant}|${type}`)[0];
+  const subType = data.filter((entry) => entry.field === fieldset)[0];
+  const products = data.filter((entry) => entry.fieldset === fieldset);
+
+  products.forEach((product) => {
+    const obj = new Obj(
+      typeEntry.type,
+      normalizeImage(typeEntry['type-image']),
+      typeEntry['type-label'],
+      normalizeImage(product.image),
+      `/${locale}/products/${vocCompliant}/${normalizeString(typeEntry.type)}/${normalizeString(typeEntry.title)}`,
+      null,
+      subType['title-desc'],
+      'stage4-table',
+      subType['title-label'],
+      normalizeImage(subType['title-image']),
+      subType.title,
+      product['sub-title'],
+      product['item-nr'],
+      product['per-box'],
+      product.volume,
+      product.code,
+      product['product-name'],
+    );
+    endResult.push(obj);
   });
   return endResult;
 };
 
 // Checking 2nd used case - https://www.octoral.com/en/products/non-voc/cleaning_agents
 const tillType = (data, vocCompliant, type, locale) => {
-  const endResultStage3 = [];
-  const endResultStage2 = [];
-  let obj = {};
+  const endResult = [];
+  const fieldset = `${vocCompliant}|${type}`;
 
-  data.forEach((entry) => {
-    if (entry['voc-compliant'].length > 0 && entry.type.length > 0) {
-      parentvocCompliant = entry['voc-compliant'];
-      parentType = entry.type;
-      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
-      endResultStage2.push(obj);
-    }
+  const typeEntry = data.filter((entry) => entry.field === fieldset)[0];
+  const products = data.filter((entry) => entry.fieldset === fieldset);
+  const areSubProducts = products.some((entry) => entry.field !== '');
 
-    if (entry['voc-compliant'].length === 0 && entry.type.length === 0 && entry.title.length === 0) {
-      entry['voc-compliant'] = parentvocCompliant;
-      entry.type = parentType;
-      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['type-label'], entry['type-desc'], 'stage2-table', entry.title, normalizeImage(entry['title-image']), entry['title-label'], entry['sub-title'], entry['item-nr'], entry['per-box'], entry.volume);
-      endResultStage2.push(obj);
-    }
+  if (!areSubProducts) { // usecase-2
+    products.forEach((product) => {
+      const obj = new Obj(
+        typeEntry.type,
+        normalizeImage(typeEntry['type-image']),
+        typeEntry['type-label'],
+        normalizeImage(product.image),
+        `/${locale}/products/${vocCompliant}/${normalizeString(typeEntry.type)}`,
+        typeEntry['type-label'],
+        typeEntry['type-desc'],
+        'stage2-table',
+        null,
+        null,
+        null,
+        product['sub-title'],
+        product['item-nr'],
+        product['per-box'],
+        product.volume,
+        product.code,
+        product['product-name'],
+      );
+      endResult.push(obj);
+    });
+  } else { // usecase-3
+    products.forEach((product) => {
+      const obj = new Obj(
+        typeEntry.type,
+        normalizeImage(typeEntry['type-image']),
+        typeEntry['type-label'],
+        normalizeImage(product.image),
+        `/${locale}/products/${vocCompliant}/${normalizeString(typeEntry.type)}/${normalizeString(product['title-label'])}`,
+        typeEntry['type-label'],
+        typeEntry['type-desc'],
+        'stage3-card',
+        product.title,
+        normalizeImage(product['title-image']),
+        product['title-label'],
+      );
+      endResult.push(obj);
+    });
+  }
 
-    // Checking 3rd used case - https://www.octoral.com/en/products/non-voc/mixing_colour_system
-    if (entry['voc-compliant'] === vocCompliant && normalizeString(entry.type) === type && entry.title.length > 0) {
-      obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`, entry['type-label'], entry['type-desc'], 'stage3-card', entry.title, normalizeImage(entry['title-image']), entry['title-label']);
-      endResultStage3.push(obj);
-    }
-  });
-  const groupByType = groupBy(endResultStage2, 'type');
-  const check = (element) => element.title.length === 0;
-  if (groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`] && groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`].length > 0 && groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`].every(check)) { return groupByType[`${type.replace(/_/g, ' ').toUpperCase()}`]; }
-  return endResultStage3;
+  return endResult;
 };
 
 // Checking 1st used case - https://www.octoral.com/en/products/non-voc/
 const tillVocCompliant = (data, vocCompliant, locale) => {
   const endResult = [];
-  const duplicates = [];
-  let obj = {};
-  data.forEach((entry) => {
-    if (entry['voc-compliant'].length > 0) { parentvocCompliant = entry['voc-compliant']; } else { entry['voc-compliant'] = parentvocCompliant; }
-    if (entry.type.length > 0) { parentType = entry.type; } else { entry.type = parentType; }
 
-    if (entry['voc-compliant'] === vocCompliant) {
-      if (!duplicates.includes(entry.type)) {
-        duplicates.push(entry.type);
-        obj = new Obj(entry.type, normalizeImage(entry['type-image']), entry['type-label'], normalizeImage(entry.image), `/${locale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`, entry['voc-compliant-label'], entry['voc-compliant-desc'], 'stage1-card');
-        endResult.push(obj);
-      }
-    }
+  const entry = data.filter((e) => e.field === vocCompliant)[0];
+  const types = data.filter((e) => e.fieldset === vocCompliant);
+  types.forEach((type) => {
+    const obj = new Obj(
+      type.type,
+      normalizeImage(type['type-image']),
+      type['type-label'],
+      null,
+      `/${locale}/products/${vocCompliant}/${normalizeString(type.type)}`,
+      entry['voc-compliant-label'],
+      entry['voc-compliant-desc'],
+      'stage1-card',
+    );
+    endResult.push(obj);
   });
   return endResult;
 };
-
-let endResult = [];
 
 async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   window.placeholders = window.placeholders || {};
@@ -212,6 +232,7 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   await window.placeholders;
   const json = window.placeholders[`${TRANSLATION_KEY}`][`${locale}`];
 
+  let endResult;
   if (typeof type === 'undefined' && typeof title === 'undefined') {
     endResult = tillVocCompliant(json.data, vocCompliant, locale);
   }
