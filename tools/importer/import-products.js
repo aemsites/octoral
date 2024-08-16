@@ -43,6 +43,20 @@ const extractPageInfo = (url) => fetchAndParseDocument(url).then((doc) => {
   };
 });
 
+function optimizeExcel(results) {
+  const keys = ['voc-compliant', 'voc-compliant-title', 'voc-compliant-label', 'voc-compliant-desc',
+    'type', 'type-image', 'type-label', 'type-desc',
+    'title', 'title-image', 'title-label', 'title-desc'];
+
+  results.forEach((obj, i) => {
+    keys.forEach((key) => {
+      if (i !== 0 && obj.report[key]) {
+        delete obj.report[key];
+      }
+    });
+  });
+}
+
 export default {
   /**
      * Apply DOM operations to the provided document and return
@@ -80,7 +94,7 @@ export default {
       path: WebImporter.FileUtils.sanitizePath(params.originalURL),
       report: {},
     };
-    const [locale, , vocCompliant, parentType, subType] = getPathSegments(params.originalURL);
+    const [locale, , vocCompliant, , , subType] = getPathSegments(params.originalURL);
 
     WebImporter.DOMUtils.remove(main, [
       'header',
@@ -171,9 +185,6 @@ export default {
 
         const temp = structuredClone(result);
         temp.report = {
-          locale,
-          parentType,
-          subType,
           'voc-compliant': vocCompliant,
           'voc-compliant-title': vocCompliantTitle,
           'voc-compliant-label': vocCompliantLabel.toUpperCase(),
@@ -199,17 +210,7 @@ export default {
     });
 
     // perform cleanup for an optimized excel
-    results.forEach((obj, i) => {
-      if (i !== 0 && obj.report['voc-compliant-desc']) {
-        delete obj.report['voc-compliant-desc'];
-      }
-      if (i !== 0 && obj.report['type-desc']) {
-        delete obj.report['type-desc'];
-      }
-      if (i !== 0 && obj.report['title-desc']) {
-        delete obj.report['title-desc'];
-      }
-    });
+    optimizeExcel(results);
 
     // fetch unique images and collect for download
     const uniqueImages = new Map();
