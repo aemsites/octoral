@@ -217,12 +217,10 @@ const createRadio = (fd) => {
   return { field, fieldWrapper };
 };
 
+// Todo: incorporate reCaptcha
 const createRecaptcha = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
   const div = document.createElement('div');
-  console.log(fd.Label);
-  div.innterHTML = replaceHtmlEntities(fd.Label);
-  div.id = fd.Id;
   fieldWrapper.append(div);
   return { field: div, fieldWrapper };
 };
@@ -246,6 +244,5 @@ export default async function createField(fd, form) {
   const type = fd.Type.toLowerCase();
   const createFieldFunc = FIELD_CREATOR_FUNCTIONS[type] || createInput;
   const fieldElements = await createFieldFunc(fd, form);
-
   return fieldElements.fieldWrapper;
 }

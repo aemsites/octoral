@@ -1,13 +1,28 @@
 import createField from './form-fields.js';
+import { div, form as Form, input } from '../../scripts/dom-helpers.js';
+import { getPathSegments, loadTranslations, translate } from '../../scripts/utils.js';
 
 async function createForm(formHref, submitHref) {
   const resp = await fetch(formHref);
   const json = await resp.json();
+  const [locale] = getPathSegments();
+  // get translations
+  await (async () => {
+    await loadTranslations(`${formHref}?sheet=translations`, locale || 'en');
+  })();
 
-  const form = document.createElement('form');
+  const translatedData = json.data.map((fd) => {
+    fd.Label = translate(fd.Label);
+    return fd;
+  });
+
+  const form = Form();
   form.dataset.action = submitHref;
 
-  const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
+  const localeField = input({ hidden: 'hidden', name: 'locale', value: locale || 'en' });
+  form.append(localeField);
+
+  const fields = await Promise.all(translatedData.map((fd) => createField(fd, form)));
 
   fields.forEach((field) => {
     if (field) {
@@ -61,9 +76,10 @@ async function handleSubmit(form) {
       },
     });
     if (response.ok) {
-      if (form.dataset.confirmation) {
-        window.location.href = form.dataset.confirmation;
-      }
+      // confirmation
+      const formEl = document.querySelector('.form');
+      const thankYou = div({ class: 'thank-you' }, 'Thank you for filling out this form. Your form has been sent.');
+      formEl.replaceWith(thankYou);
     } else {
       const error = await response.text();
       throw new Error(error);
