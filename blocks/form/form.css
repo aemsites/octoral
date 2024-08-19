@@ -16,10 +16,19 @@
     flex-direction: row;
     align-items: center;
 
+    @media (width < 800px) {
+      display: block;
+    }
+
     label {
       width: 140px;
       text-align: right;
       margin-right: 10px;
+
+      @media (width < 800px) {
+        display: block;
+        text-align: left;
+      }
 
       &[data-required]::after {
         content: '*';
@@ -37,23 +46,42 @@
       padding: 8px;
       outline: none;
 
+      &[type="checkbox"] {
+        display: inline;
+        float: left;
+        width: auto;
+        margin-right: 6px;
+      }
+
+      @media (width < 800px) {
+        width: 90%;
+      }
+
       &:focus {
         border: 1px solid var(--blue);
       }
     }
 
     &.checkbox-wrapper {
-      padding-left: 140px;
+      padding-left: 146px;
       font-size: 95%;
 
+      @media (width < 800px) {
+        padding: 0;
+      }
+
       label {
-        width: auto;
+        width: 100%;
         text-align: left;
       }
     }
 
     &.plaintext-wrapper {
       padding-left: 140px;
+
+      @media (width < 800px) {
+        padding: 0;
+      }
     }
 
     textarea {
@@ -62,10 +90,14 @@
     }
   }
 
-  .required::before {
-    content: '*';
-    color: red;
-    margin-left: 2px;
+  .required {
+    margin-left: 10px;
+
+    p::before {
+      content: '*';
+      color: red;
+      margin-right: 2px;
+    }
   }
 
   .submit-wrapper {
