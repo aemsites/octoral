@@ -37,6 +37,23 @@
       }
     }
 
+    &.error {
+      position: relative;
+      padding-bottom: 22px;
+
+      .error-message {
+        position: absolute;
+        bottom: 0;
+        left: 150px;
+        color: red;
+
+        @media (width < 800px) {
+          left: 0;
+        }
+      }
+    }
+
+
     input,
     select,
     textarea {

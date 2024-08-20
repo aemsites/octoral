@@ -2,6 +2,19 @@ import createField from './form-fields.js';
 import { div, form as Form, input } from '../../scripts/dom-helpers.js';
 import { getPathSegments, loadTranslations, translate } from '../../scripts/utils.js';
 
+function getCurrentDateTime() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return formattedDateTime;
+}
+
+
 async function createForm(formHref, submitHref) {
   const resp = await fetch(formHref);
   const json = await resp.json();
@@ -21,6 +34,9 @@ async function createForm(formHref, submitHref) {
 
   const localeField = input({ hidden: 'hidden', name: 'locale', value: locale || 'en' });
   form.append(localeField);
+
+  const submittedDate = input({ hidden: 'hidden', name: 'submitted', value: getCurrentDateTime() });
+  form.append(submittedDate);
 
   const fields = await Promise.all(translatedData.map((fd) => createField(fd, form)));
 
@@ -83,6 +99,9 @@ async function handleSubmit(form) {
     } else {
       const error = await response.text();
       throw new Error(error);
+      const formEl = document.querySelector('.form');
+      const errorMsg = div({ class: 'thank-you' }, 'There was an error submitting the form.  Please try again later.');
+      formEl.prepend(errorMsg);
     }
   } catch (e) {
     // eslint-disable-next-line no-console

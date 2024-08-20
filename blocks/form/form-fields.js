@@ -153,6 +153,36 @@ const createInput = (fd) => {
   const label = createLabel(fd);
   field.setAttribute('aria-labelledby', label.id);
   fieldWrapper.append(field);
+
+  // Add error message element if the field is an email input
+  if (fd.Name === 'email') {
+    const errorMessage = document.createElement('div');
+      errorMessage.classList.add('error-message');
+      errorMessage.style.display = 'none';
+      fieldWrapper.prepend(errorMessage);
+
+    // Check email validity
+    const checkEmail = (value) => {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (value === '') {
+        fieldWrapper.classList.remove('error');
+        errorMessage.textContent = '';
+        errorMessage.style.display = 'none';
+      } else if (!emailPattern.test(value)) {
+        fieldWrapper.classList.add('error');
+        errorMessage.textContent = 'Please enter a valid email address.';
+        errorMessage.style.display = 'inline';
+      } else {
+        fieldWrapper.classList.remove('error');
+        errorMessage.textContent = '';
+        errorMessage.style.display = 'none';
+      }
+    };
+
+    field.addEventListener('blur', () => checkEmail(field.value));
+  }
+
+  // Append label based on field type
   if (fd.Type === 'radio' || fd.Type === 'checkbox') {
     label.innerHTML = replaceHtmlEntities(label.innerHTML);
     fieldWrapper.append(label);
