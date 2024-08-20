@@ -15,3 +15,6 @@ indices:
       publishDate:
         select: head > meta[name="publishdatetime"]
         value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
