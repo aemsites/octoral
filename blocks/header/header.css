@@ -1,9 +1,6 @@
 /* stylelint-disable no-descending-specificity */
 
 header {
-  max-width: var(--page-width);
-  margin: auto;
-
   .top-bar {
     display: flex;
     align-items: center;
