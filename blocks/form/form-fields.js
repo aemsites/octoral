@@ -157,9 +157,9 @@ const createInput = (fd) => {
   // Add error message element if the field is an email input
   if (fd.Name === 'email') {
     const errorMessage = document.createElement('div');
-      errorMessage.classList.add('error-message');
-      errorMessage.style.display = 'none';
-      fieldWrapper.prepend(errorMessage);
+    errorMessage.classList.add('error-message');
+    errorMessage.style.display = 'none';
+    fieldWrapper.prepend(errorMessage);
 
     // Check email validity
     const checkEmail = (value) => {

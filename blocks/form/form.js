@@ -14,7 +14,6 @@ function getCurrentDateTime() {
   return formattedDateTime;
 }
 
-
 async function createForm(formHref, submitHref) {
   const resp = await fetch(formHref);
   const json = await resp.json();
@@ -97,11 +96,11 @@ async function handleSubmit(form) {
       const thankYou = div({ class: 'thank-you' }, 'Thank you for filling out this form. Your form has been sent.');
       formEl.replaceWith(thankYou);
     } else {
-      const error = await response.text();
-      throw new Error(error);
       const formEl = document.querySelector('.form');
       const errorMsg = div({ class: 'thank-you' }, 'There was an error submitting the form.  Please try again later.');
       formEl.prepend(errorMsg);
+      const error = await response.text();
+      throw new Error(error);
     }
   } catch (e) {
     // eslint-disable-next-line no-console
