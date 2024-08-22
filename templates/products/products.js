@@ -190,27 +190,25 @@ const groupBy = (array, key) => array.reduce((accum, current) => {
   return accum;
 }, {});
 
-let locale = '';
-let vocCompliant = '';
-let type = '';
-let title = '';
-let products = '';
-
 export default async function decorate(doc) {
+  let locale = '';
+  let vocCompliant = '';
+  let type = '';
+  let title = '';
+
   // extends default template
   await loadTemplate(doc, 'default');
   const $section = doc.querySelector('section');
   let $products = div();
 
   // get path segments for use in product display logic
-  const [rawLocale, rawProducts, rawVocCompliant, rawType, rawTitle] = getPathSegments();
+  const [rawLocale, , rawVocCompliant, rawType, rawTitle] = getPathSegments();
   if (rawLocale) { locale = normalizeString(rawLocale); }
-  if (rawProducts) { products = normalizeString(rawProducts); }
   if (rawVocCompliant) { vocCompliant = normalizeString(rawVocCompliant); }
   if (rawType) { type = normalizeString(rawType); }
   if (rawTitle) { title = normalizeString(rawTitle); }
 
-  const result = await fetchProducts(vocCompliant, type, title, locale, products);
+  const result = await fetchProducts(vocCompliant, type, title, locale);
   const usedCase = result[0].feedType;
 
   // Taking care of the 1st & 3rd used cases
