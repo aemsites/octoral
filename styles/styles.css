@@ -70,8 +70,14 @@ body {
   &.appear { display: block }
 }
 
-/* pushes header down when sidekick is present */
-helix-sidekick[pushdown] ~ header { top: 49px }
+header {
+  max-width: var(--page-width);
+  margin: auto;
+  aspect-ratio: 1030 / 270; /* CLS force height */
+
+  /* pushes header down when sidekick is present */
+  helix-sidekick[pushdown] ~ & { top: 49px }
+}
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font-family);
