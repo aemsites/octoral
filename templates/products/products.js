@@ -167,15 +167,15 @@ async function fetchProducts(vocCompliant, type, title, locale = 'en') {
   await window.placeholders;
   const json = window.placeholders[`${TRANSLATION_KEY}`][`${locale}`];
 
-  if (typeof type === 'undefined' && typeof title === 'undefined') {
+  if (type.length === 0 && title.length === 0) {
     endResult = tillVocCompliant(json.data, vocCompliant, locale);
   }
 
-  if (typeof type !== 'undefined' && typeof title === 'undefined') {
+  if (type.length > 0 && title.length === 0) {
     endResult = tillType(json.data, vocCompliant, type, locale);
   }
 
-  if (typeof title !== 'undefined') {
+  if (title.length > 0) {
     endResult = tillTitle(json.data, vocCompliant, type, title, locale);
   }
   return endResult;
@@ -191,17 +191,27 @@ const groupBy = (array, key) => array.reduce((accum, current) => {
 }, {});
 
 export default async function decorate(doc) {
+  let locale = '';
+  let vocCompliant = '';
+  let type = '';
+  let title = '';
+
   // extends default template
   await loadTemplate(doc, 'default');
   const $section = doc.querySelector('section');
   let $products = div();
 
   // get path segments for use in product display logic
-  const [locale, products, vocCompliant, type, title] = getPathSegments();
-  const result = await fetchProducts(vocCompliant, type, title, locale, products);
+  const [rawLocale, , rawVocCompliant, rawType, rawTitle] = getPathSegments();
+  if (rawLocale) { locale = normalizeString(rawLocale); }
+  if (rawVocCompliant) { vocCompliant = normalizeString(rawVocCompliant); }
+  if (rawType) { type = normalizeString(rawType); }
+  if (rawTitle) { title = normalizeString(rawTitle); }
+
+  const result = await fetchProducts(vocCompliant, type, title, locale);
+  const usedCase = result[0].feedType;
 
   // Taking care of the 1st & 3rd used cases
-  const usedCase = result[0].feedType;
   if (usedCase === 'stage1-card' || usedCase === 'stage3-card') {
     $products = div(
       h1(`${result[0].label}`),
