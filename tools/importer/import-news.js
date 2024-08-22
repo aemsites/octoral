@@ -97,8 +97,7 @@ function fixPdfBrochure(main, results, url) {
         },
       });
 
-      const newHref = new URL(newPath, 'https://main--octoral--aemsites.hlx.page').toString();
-      a.setAttribute('href', newHref);
+      a.setAttribute('href', newPath);
     }
   });
 }
@@ -151,14 +150,10 @@ export default {
     const newsArticle = document.querySelector('.block-newsarticle section article');
     const fields = {};
     if (newsArticle) {
-      fields.newsTitle = newsArticle.querySelector('h1')?.textContent.trim().toUpperCase();
       fields.publishDateTime = newsArticle.querySelector('.entry-meta .published')?.getAttribute('title');
       fields.publishDate = newsArticle.querySelector('.entry-meta .published')?.innerHTML.trim();
       fields.updatedDateTime = newsArticle.querySelector('.entry-meta .updated')?.innerHTML.trim();
-
-      if (newsArticle.querySelector('.entry-content p:last-of-type a') != null) {
-        fields.brochureText = newsArticle.querySelector('.entry-content p:last-of-type a')?.textContent;
-      }
+      fields.image = newsArticle.querySelector('.entry-content img');
     }
     params.preProcessMetadata = fields;
   },
@@ -185,7 +180,7 @@ export default {
 
     results.push({
       element: main,
-      path: WebImporter.FileUtils.sanitizePath(params.originalURL),
+      path: WebImporter.FileUtils.sanitizePath(new URL(params.originalURL).pathname),
       report: {
         redirectPageUrl: params.originalURL,
       },
