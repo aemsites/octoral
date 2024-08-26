@@ -11,7 +11,7 @@ indices:
         value: textContent(el)
       description:
         select: main > div p
-        value: words(textContent(el), 0, 25)
+        value: words(textContent(el), 0, 50)
       publishDate:
         select: head > meta[name="publishdatetime"]
         value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
