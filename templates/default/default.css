@@ -5,6 +5,10 @@ main {
     aside {
         width: 300px;
         box-sizing: border-box;
+
+        @media (width < 800px) {
+            width: 160px;
+        }
     }
 
     /* right content */
