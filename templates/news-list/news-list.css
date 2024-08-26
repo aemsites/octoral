@@ -15,7 +15,16 @@ h1 {
     p {
         font-family: sans-serif;
         font-size: 13px;
-        color: #343534;;
+        color: #343534;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+
+    p::after {
+        content: '...';
     }
 
 }
