@@ -67,3 +67,19 @@ export const fixImageLinks = (originalImagePath) => {
   // return PREVIEW_DOMAIN + WebImporter.FileUtils.sanitizePath(prefix + imageName);
   return PREVIEW_DOMAIN + prefix + imageName;
 };
+
+export const extractShortNewsUrl = (pathname) => {
+  const segments = pathname.split('/').filter(Boolean);
+  let newPath = '';
+
+  segments.forEach((segment) => {
+    if (/^\d/.test(segment)) {
+      const match = segment.match(/\d+/);
+      newPath += `/${match[0]}`;
+      return;
+    }
+    newPath += `/${segment}`;
+  });
+
+  return newPath;
+};

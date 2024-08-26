@@ -12,7 +12,7 @@
 /* global WebImporter */
 
 import {
-  createMetadata,
+  createMetadata, extractShortNewsUrl, getPathSegments,
 } from './utils.js';
 
 function rgbToHex(rgb) {
@@ -71,14 +71,16 @@ function fixHeadings(main) {
   }
 }
 
-function fixPdfBrochure(main, results, url) {
+function fixPdfBrochure(main, results, locale, url) {
   const newsArticle = main.querySelector('.block-newsarticle section article');
   if (newsArticle && newsArticle.querySelector('.entry-content p img[alt="Download Button"]')) {
     const brochureImages = newsArticle.querySelectorAll('.entry-content p img[alt="Download Button"]');
     if (brochureImages) {
       brochureImages.forEach((brochureImage) => {
         const aEl = brochureImage.closest('a');
-        aEl.textContent = 'Download [class:button download]';
+        if (aEl) {
+          aEl.textContent = 'Download [class:button download]';
+        }
       });
     }
   }
@@ -88,12 +90,13 @@ function fixPdfBrochure(main, results, url) {
     const href = a.getAttribute('href');
     if (href && href.endsWith('.pdf')) {
       const u = new URL(href, url);
-      const newPath = WebImporter.FileUtils.sanitizePath(`/assets/${u.pathname.split('/').pop()}`);
+      const newPath = WebImporter.FileUtils.sanitizePath(`/assets/${locale}/${u.pathname.split('/').pop()}`);
       results.push({
         path: newPath,
         from: u.toString(),
         report: {
-          redirectPdfUrl: href.toString(),
+          redirectPdfFrom: href.toString(),
+          redirectPdfTo: newPath,
         },
       });
 
@@ -162,6 +165,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
   }) => {
+    const [locale, , , , ,] = getPathSegments(params.originalURL);
     const main = document.body;
     const results = [];
 
@@ -176,21 +180,33 @@ export default {
       '.lightbox',
       '.entry-meta',
     ]);
-    // create the metadata block and append it to the main element
-
-    results.push({
-      element: main,
-      path: WebImporter.FileUtils.sanitizePath(new URL(params.originalURL).pathname),
-      report: {
-        redirectPageUrl: params.originalURL,
-      },
-    });
 
     fixImage(main);
     handleTable(main, document);
-    fixPdfBrochure(main, results, url);
+    fixPdfBrochure(main, results, locale, url);
     fixHeadings(main);
     createMetadata(main, document, params);
+
+    // create the metadata block and append it to the main element
+    const newPagePath = WebImporter.FileUtils.sanitizePath(new URL(params.originalURL).pathname);
+    results.push(
+      {
+        element: main,
+        path: newPagePath,
+        report: {
+          redirectPageFrom: new URL(params.originalURL).pathname,
+          redirectPageTo: newPagePath,
+        },
+      },
+      {
+        path: newPagePath,
+        report: {
+          redirectPageFrom: extractShortNewsUrl(new URL(params.originalURL).pathname),
+          redirectPageTo: newPagePath,
+        },
+      },
+    );
+
     return results;
   },
 };
