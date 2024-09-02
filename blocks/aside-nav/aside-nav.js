@@ -48,6 +48,9 @@ export async function fetchPlaceholders(locale = 'en') {
 
 let currentPath;
 function expand(element) {
+  if (element.getAttribute('href').length === 0) {
+    return;
+  }
   const urlPathname = new URL(element.href).pathname;
 
   if (urlPathname === currentPath) {
