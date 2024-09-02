@@ -119,13 +119,24 @@ export default async function decorate(block) {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
         replaceEntries(placeholders, a);
+        if (a.getAttribute('href').length === 0) {
+          a.remove();
+        }
       } else {
         replaceEntries(placeholders, a);
+        if (a.getAttribute('href').length === 0) {
+          a.remove();
+        }
       }
     });
     parentDetails.querySelectorAll('p').forEach((p) => {
       if (p.classList.contains('button-container')) {
         p.classList.remove('button-container');
+      }
+    });
+    parentDetails.querySelectorAll('.child-accordion-item summary').forEach((sum) => {
+      if (sum.parentElement.querySelectorAll('.child-accordion-item-body a').length === 0) {
+        sum.classList.add('accordion-item-no-body');
       }
     });
     row.replaceWith(parentDetails);
