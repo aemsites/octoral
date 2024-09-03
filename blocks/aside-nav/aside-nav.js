@@ -137,9 +137,13 @@ export default async function decorate(block) {
         p.classList.remove('button-container');
       }
     });
+    if (parentDetails.querySelectorAll('.accordian-item-body a').length === 0) {
+      parentDetails.querySelector('.accordion-item-label').classList.add('accordion-item-no-body');
+    }
     parentDetails.querySelectorAll('.child-accordion-item summary').forEach((sum) => {
       if (sum.parentElement.querySelectorAll('.child-accordion-item-body a').length === 0) {
         sum.classList.add('accordion-item-no-body');
+        sum.parentElement.querySelector('.child-accordion-item-body').classList.add('child-accordion-item-no-body');
       }
     });
     row.replaceWith(parentDetails);
