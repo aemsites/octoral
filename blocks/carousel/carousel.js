@@ -15,6 +15,7 @@ function updateActiveSlide(slide) {
       } else {
         link.removeAttribute('tabindex');
       }
+      setInterval(block.dataset.activeSlide = parseInt(slideIndex, 10) + 1, 1000);
     });
   });
 
@@ -69,6 +70,11 @@ function bindEvents(block) {
     slideObserver.observe(slide);
   });
 }
+
+function clickButton() {
+  document.querySelector('.slide-next').click();
+}
+setInterval(clickButton, 5000);
 
 function createSlide(row, slideIndex, carouselId) {
   const slide = document.createElement('li');
