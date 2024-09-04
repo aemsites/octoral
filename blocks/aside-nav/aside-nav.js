@@ -137,7 +137,7 @@ export default async function decorate(block) {
         p.classList.remove('button-container');
       }
     });
-    if (parentDetails.querySelectorAll('.accordian-item-body a').length === 0) {
+    if (parentDetails.querySelector('div') && !parentDetails.querySelector('div').querySelector('a')) {
       parentDetails.querySelector('.accordion-item-label').classList.add('accordion-item-no-body');
     }
     parentDetails.querySelectorAll('.child-accordion-item summary').forEach((sum) => {
