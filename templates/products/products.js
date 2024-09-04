@@ -2,7 +2,7 @@
 import { loadTemplate } from '../../scripts/scripts.js';
 import { normalizeString, getPathSegments } from '../../scripts/utils.js';
 import {
-  div, h1, p, a, h2,
+  div, h1, p, a, h2, span,
 } from '../../scripts/dom-helpers.js';
 import {
   createOptimizedPicture, buildBlock, decorateBlock, loadBlock,
@@ -245,8 +245,14 @@ export default async function decorate(doc) {
     $section.append($products);
     result.sort((x, y) => x.subtitle - y.subtitle);
     const subtitleArray = groupBy(result, 'subtitle');
-    Object.keys(subtitleArray).forEach(async (key) => {
+    Object.keys(subtitleArray).forEach(async (key, idx) => {
       const productImage = createOptimizedPicture(subtitleArray[key][0].image);
+
+      if (productImage) {
+        productImage.addEventListener('click', () => {
+          showModal(idx);
+        });
+      }
       subtitleArray[key].sort((x, y) => x.itemnr - y.itemnr);
       const blockContents = resultParsers[blockType](subtitleArray[key]);
       const builtBlock = buildBlock(blockType, blockContents);
@@ -266,3 +272,119 @@ export default async function decorate(doc) {
     });
   }
 }
+
+const showModal = (clickedIndex) => {
+  const modal = document.querySelector('.image-modal');
+  if (!modal) {
+    createModal();
+    createOverlay();
+  }
+  populateCarousel(clickedIndex);
+  document.querySelector('.image-modal').style.display = 'block';
+  document.querySelector('.overlay').style.display = 'block';
+};
+
+// Create modal and carousel structure
+const createModal = () => {
+  const modal = div(
+    { class: 'image-modal' },
+    div(
+      { class: 'image-modal-content' },
+      span({
+        class: 'close',
+        onclick: () => closeModal(),
+      }),
+      a({
+        class: 'carousel-nav carousel-nav-prev',
+        onclick: () => showSlides(-1),
+      }),
+      div({ class: 'image-carousel' }),
+      a({
+          class: 'carousel-nav carousel-nav-next',
+          onclick: () => showSlides(1),
+        }),
+      div({ class: 'carousel-btn-thumbnails' }),
+    ),
+  );
+
+  document.body.append(modal);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeModal();
+    }
+  });
+
+  const thumbnailsContainer = document.createElement('div');
+  thumbnailsContainer.id = 'thumbnailsContainer';
+  thumbnailsContainer.style.textAlign = 'center';
+  thumbnailsContainer.style.marginTop = '20px';
+  thumbnailsContainer.style.display = 'flex';
+  thumbnailsContainer.style.justifyContent = 'center';
+  thumbnailsContainer.style.flexWrap = 'wrap';
+};
+
+const closeModal = () => {
+  document.querySelector('.image-modal').style.display = 'none';
+  const overlay = document.querySelector('.overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+};
+
+const createOverlay = () => {
+  const overlay = div({ class: 'overlay' });
+  document.body.appendChild(overlay);
+};
+
+// Populate carousel with images
+const populateCarousel = (clickedIndex) => {
+  const images = document.querySelectorAll('.product-info img');
+  const carousel = document.querySelector('.image-carousel');
+  const thumbnailsContainer = document.getElementById('thumbnailsContainer');
+  const dotsContainer = document.querySelector('.carousel-btn-thumbnails');
+  images.forEach((img, index) => {
+    const slide = div(
+      { class: `slide slide-${index}` },
+      createOptimizedPicture(img.getAttribute('src'), '', true),
+    );
+    slide.style.display = index === clickedIndex ? 'block' : 'none';
+    carousel.appendChild(slide);
+
+    /*
+    const thumbnail = createOptimizedPicture(img.getAttribute('src'));
+    thumbnail.className = 'thumbnail';
+    thumbnail.style.cursor = 'pointer';
+    thumbnail.style.width = '5%';
+    thumbnail.style.height = '10%';
+    thumbnail.style.margin = '0 2px';
+    thumbnail.onclick = () => { showSlides(index - slideIndex); };
+    thumbnailsContainer.appendChild(thumbnail);
+*/
+
+    const dot = span({ class: `dot dot-${index}`, onclick: () => { showSlides(index - slideIndex); } });
+    dot.style.backgroundColor = index === clickedIndex ? '#717171' : '#bbb';
+    dotsContainer.appendChild(dot);
+  });
+  slideIndex = clickedIndex; // Set the initial slide index to the clicked image
+};
+
+// Show slides and update dots and thumbnails
+let slideIndex = 0;
+const showSlides = (n) => {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const thumbnails = document.querySelectorAll('.thumbnail');
+  slideIndex += n;
+  if (slideIndex >= slides.length) { slideIndex = 0; }
+  if (slideIndex < 0) { slideIndex = slides.length - 1; }
+  slides.forEach((slide, index) => {
+    slide.style.display = index === slideIndex ? 'block' : 'none';
+  });
+  dots.forEach((dot, index) => {
+    dot.style.backgroundColor = index === slideIndex ? '#717171' : '#bbb';
+  });
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.style.opacity = index === slideIndex ? '1' : '0.6';
+  });
+};
