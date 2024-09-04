@@ -12,6 +12,7 @@ import {
   loadCSS,
   sampleRUM,
   getMetadata,
+  loadScript,
 } from './aem.js';
 
 /**
@@ -192,6 +193,11 @@ function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+}
+
+export async function loadConsentManager() {
+  await loadScript('https://nexus.ensighten.com/sherwin/p-octoral_gdpr/Bootstrap.js');
+  window.dispatchEvent(new CustomEvent('consentmanager'));
 }
 
 async function loadPage() {

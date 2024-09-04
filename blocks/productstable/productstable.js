@@ -18,7 +18,7 @@ export default async function decorate(block) {
       col.querySelectorAll('div.heading').forEach((div) => {
         const cell = th({ scope: 'col' });
         cell.innerHTML = div.innerHTML;
-        row.append(cell);
+        row.append(cell); 
         thead.append(row);
       });
       col.querySelectorAll('div.data').forEach((div) => {
