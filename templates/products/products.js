@@ -305,11 +305,13 @@ const createModal = () => {
       a({
         class: 'carousel-nav carousel-nav-prev',
         onclick: () => showSlides(-1),
+        style: 'display: block;',
       }),
       div({ class: 'image-carousel' }),
       a({
           class: 'carousel-nav carousel-nav-next',
           onclick: () => showSlides(1),
+          style: 'display: block;',
         }),
       div({ class: 'carousel-btn-thumbnails' }),
     ),
@@ -318,10 +320,29 @@ const createModal = () => {
   document.body.append(modal);
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      closeModal();
+    if (document.querySelector('.image-modal').style.display != 'block')
+      return;
+    switch (event.key) {
+      case 'ArrowLeft':
+        showSlides(-1);
+        break;
+      case 'Enter':
+      case 'ArrowRight':
+        showSlides(1);
+        break;
+      case 'Escape':
+        closeModal();
+        break;
     }
   });
+
+/*  window.addEventListener('resize', () => {
+    const modal = document.querySelector('.image-modal');
+    if (modal.style.display === 'block') {
+      closeModal();
+      showModal(slideIndex); // Assuming openModal() is a function that opens the modal
+    }
+  });*/
 
   const thumbnailsContainer = document.createElement('div');
   thumbnailsContainer.id = 'thumbnailsContainer';
@@ -354,7 +375,7 @@ const populateCarousel = (clickedIndex) => {
   images.forEach((img, index) => {
     const slide = div(
       { class: `slide slide-${index}` },
-      createOptimizedPicture(img.getAttribute('src'), '', true),
+      createOptimizedPicture(img.getAttribute('src'), '', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]),
     );
     slide.style.display = index === clickedIndex ? 'block' : 'none';
     carousel.appendChild(slide);
@@ -373,12 +394,58 @@ const populateCarousel = (clickedIndex) => {
     const dot = span({ class: `dot dot-${index}`, onclick: () => { showSlides(index - slideIndex); } });
     dot.style.backgroundColor = index === clickedIndex ? '#717171' : '#bbb';
     dotsContainer.appendChild(dot);
+
+    // Adjust modal dimensions based on the image dimensions
+    const imageElement = new Image();
+    imageElement.src = img.getAttribute('src');
+    imageElement.onload = () => {
+      const modal = document.querySelector('.image-modal');
+      modal.style.width = `${imageElement.width}px`;
+      modal.style.height = `${imageElement.height}px`;
+      modal.style.marginTop = `-${Math.ceil(imageElement.height / 2)}px`;
+      modal.style.marginLeft = `-${Math.ceil(imageElement.width / 2)}px`;
+    };
   });
   slideIndex = clickedIndex; // Set the initial slide index to the clicked image
 };
 
 // Show slides and update dots and thumbnails
 let slideIndex = 0;
+
+
+function resizeModal(imgWidth, imgHeight) {
+  // resize the modal based on the available frame and image size
+    const modal = document.querySelector('.image-modal');
+    const modalContent = document.querySelector('.image-modal-content');
+    const modalWidth = modalContent.offsetWidth;
+    const modalHeight = modalContent.offsetHeight;
+    const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, modalWidth, modalHeight);
+
+
+    modal.style.width = newWidth;
+    modal.style.height = newHeight;
+    modal.style['margin-left'] = -(Math.ceil(newWidth / 2) + 20);
+    modal.style['margin-top'] = -(Math.ceil(newHeight / 2) + 20);
+
+    /*const modalAspectRatio = modalWidth / modalHeight;
+    const imgAspectRatio = imgWidth / imgHeight;
+    if (imgAspectRatio > modalAspectRatio) {
+      modalContent.style.width = 'auto';
+      modalContent.style.height = '100%';
+    } else {
+      modalContent.style.width = '100%';
+      modalContent.style.height = 'auto';
+    }*/
+}
+
+function calcAspectRatio(width, height, maxwidth, maxheight) {
+  var ratio = Math.min(maxwidth / width, maxheight / height);
+  var newWidth = width < width * ratio ? width : width * ratio;
+  var newHeight = height < height * ratio ? height : height * ratio;
+  return { newWidth, newHeight };
+}
+
+
 const showSlides = (n) => {
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
@@ -388,6 +455,11 @@ const showSlides = (n) => {
   if (slideIndex < 0) { slideIndex = slides.length - 1; }
   slides.forEach((slide, index) => {
     slide.style.display = index === slideIndex ? 'block' : 'none';
+    if(slide.style.display == 'block') {
+      const imgWidth = slide.querySelector('img').width;
+      const imgHeight = slide.querySelector('img').height;
+      resizeModal(imgWidth, imgHeight);
+    }
   });
   dots.forEach((dot, index) => {
     dot.style.backgroundColor = index === slideIndex ? '#717171' : '#bbb';
