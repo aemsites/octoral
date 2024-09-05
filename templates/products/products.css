@@ -104,23 +104,33 @@
 .image-modal {
     position: fixed;
     display: none;
-    width: 426px;
-    height: 574px;
+    width: 80vw; /* 80% of the viewport width */
+    height: 80vh; /* 80% of the viewport height */
     background: #000;
     top: 50%;
     left: 50%;
-    margin-top: -317px;
-    margin-left: -243px;
+    /*
+    margin-top: -287px; !* Adjusted to center the modal *!
+    margin-left: -213px;
+    */
     z-index: 9999;
     padding: 30px;
     background-color: black;
+    overflow: hidden;
+
+    .image-modal-content:hover .carousel-nav {
+        opacity: 1;
+    }
 
     .image-modal-content {
-        position: relative;
+        margin-top: -287px;
+        margin-left: -213px;
+        /*position: relative;*/
         margin: auto;
-        padding: 10px;
+        /*padding: 10px;*/
         width: 100%;
         max-width: 500px;
+        overflow: hidden;
 
         .close {
             position: absolute;
@@ -138,15 +148,19 @@
         .image-carousel {
             position: relative;
             overflow: hidden;
-            height: 100%;
+            height: calc(100% - 50px);
             z-index: 1;
 
             .slide img {
                 width: 100%;
-                height: 100%;
+                height: auto;
+                object-fit: contain;
                 visibility: visible;
                 zoom: 1;
                 opacity: 1;
+                max-width: 100%;
+                max-height: 100%;
+
             }
         }
 
@@ -165,23 +179,28 @@
             transition: opacity 240ms;
         }
 
-        .image-carousel:hover .carousel-nav {
-            opacity: 1;
-        }
+
 
         .carousel-nav-prev {
             left: 0;
             background: url("../../icons/previous.png") no-repeat center center;
+            display: block;
         }
         .carousel-nav-next {
             right: 0;
             background: url("../../icons/next.png") no-repeat center center;
+            display: block;
         }
 
         .carousel-btn-thumbnails {
             display: flex;
-            justify-content: center;
-            margin-top: 10px;
+            justify-content: center; /* Center the dots horizontally */
+            align-items: center; /* Center the dots vertically */
+            position: absolute;
+            bottom: 5px; /* Position at the bottom of the modal */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust to center */
+            width: auto;
 
             .dot {
                 cursor: pointer;
@@ -197,6 +216,18 @@
                 background-color: #717171;
             }
         }
+    }
+}
+
+@media (max-height: 600px) {
+    .image-modal {
+        height: 70vh; /* 70% of the viewport height for smaller screens */
+    }
+}
+
+@media (min-height: 900px) {
+    .image-modal {
+        height: 90vh; /* 90% of the viewport height for larger screens */
     }
 }
 
