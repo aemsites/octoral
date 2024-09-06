@@ -72,9 +72,6 @@ function replaceEntries(placeholders, element) {
     if (text === key) {
       element.innerText = placeholders[0][key];
       element.setAttribute('href', placeholders[1][key]);
-      if (!placeholders[1][key].startsWith('/')) {
-        element.setAttribute('target', '_blank');
-      }
       expand(element);
     }
   });

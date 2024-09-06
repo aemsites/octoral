@@ -40,9 +40,12 @@ export function translate(key) {
 }
 
 // Links opening in new tab
-export function externalLinks() {
-  const links = document.querySelectorAll('a[href]');
+export function externalLinks(main) {
+  const links = main.querySelectorAll('a[href]');
   links.forEach((linkItem) => {
-    linkItem.setAttribute('target', '_blank');
+    const hrefURL = new URL(linkItem.href);
+    if (hrefURL.pathname.includes('pdf') || hrefURL.hostname !== window.location.hostname) {
+      linkItem.setAttribute('target', '_blank');
+    }
   });
 }
