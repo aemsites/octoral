@@ -38,3 +38,11 @@ export async function loadTranslations(url, locale) {
 export function translate(key) {
   return translations[key] || key;
 }
+
+// Links opening in new tab
+export function externalLinks() {
+  const links = document.querySelectorAll('a[href]');
+  links.forEach((linkItem) => {
+    linkItem.setAttribute('target', '_blank');
+  });
+}

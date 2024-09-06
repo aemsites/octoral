@@ -14,6 +14,8 @@ import {
   getMetadata,
 } from './aem.js';
 
+import { externalLinks } from './utils.js';
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -199,5 +201,8 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed();
 }
+
+// Links opening in new tab
+externalLinks();
 
 loadPage();
