@@ -31,3 +31,31 @@ main {
         }
     }
 }
+
+.block.cards.support {
+    & > ul {
+        grid-template-columns: repeat(2, 50%);
+        grid-auto-rows: 1fr;
+    }
+
+    p picture {
+        display: flex;
+        justify-content: flex-end;
+        top: 15px;
+        position: relative;
+
+        & img {
+            width: auto;
+            height: auto;
+        }
+    }
+}
+
+@media (width >=900px) {
+.block.cards.support {
+        & > ul {
+            grid-template-columns: repeat(3, 33%);
+            grid-auto-rows: 1fr;
+        }
+    }
+}
