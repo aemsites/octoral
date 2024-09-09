@@ -18,3 +18,98 @@ indices:
       image:
         select: head > meta[property="og:image"]
         value: attribute(el, 'content')
+  news-nl:
+    include:
+      - /nl/nieuws/**
+    exclude:
+      - /nl/nieuws/
+    target: /nl/nieuws/query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+  news-de:
+    include:
+      - /de/nachrichten/**
+    exclude:
+      - /de/nachrichten/
+    target: /de/nachrichten/query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+  news-fr:
+    include:
+      - /fr/nouvelles/**
+    exclude:
+      - /fr/nouvelles/
+    target: /fr/nouvelles/query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+  news-it:
+    include:
+      - /it/novita/**
+    exclude:
+      - /it/novita/
+    target: /it/novita/query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+  news-es:
+    include:
+      - /es/noticia/**
+    exclude:
+      - /es/noticia/
+    target: /es/noticia/query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
