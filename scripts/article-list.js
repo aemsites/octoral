@@ -56,8 +56,11 @@ export default class ArticleList {
   renderArticles(articles) {
     this.articleContainer.innerHTML = '';
     const article = document.createDocumentFragment();
-    articles.forEach((card) => {
-      article.appendChild(this.articleCard(card));
+    articles.forEach((card, i) => {
+      // TODO - add condition to check for slide index
+      const articleCard = this.articleCard(card);
+      articleCard.setAttribute('data-slide-index', i);
+      article.appendChild(articleCard);
     });
     this.articleContainer.appendChild(article);
   }
