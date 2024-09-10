@@ -12,6 +12,10 @@
         padding: 0 10px 0 0;
         &::before { display: none }
 
+        .section:not(.left):not(.right) {
+            padding-right: 20px;
+        }
+
         .left {
             flex: 1;
             padding-right: 10px;
@@ -21,6 +25,10 @@
             width: 300px;
             box-sizing: border-box;
             padding: 0 10px;
+
+            h2 {
+                font-size: var(--heading-size-h1);
+            }
         }
     }
 }
