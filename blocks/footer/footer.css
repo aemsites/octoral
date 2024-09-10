@@ -15,7 +15,10 @@ footer {
     white-space: nowrap;
   }
 
-  a, a:hover { text-decoration: underline }
+  a, a:hover { 
+    color: #4b4a4a;
+    text-decoration: underline;
+  }
 
   .links {
     ul {
