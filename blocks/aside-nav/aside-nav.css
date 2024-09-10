@@ -14,11 +14,12 @@
 
   summary {
     position: relative;
-    padding: 0 48px 0 16px;
+    padding: 0 20px 0 16px;
     cursor: pointer;
     list-style: none;
     overflow: hidden;
     transition: background-color 0.2s;
+    font-size: var(--products-label-size);
 
     &:not(.child-accordion-item-label) {
       background: var(--blue);
@@ -70,6 +71,7 @@
   }
 
   .accordion-item-body p a:any-link {
+    display: block;
     background: transparent;
     padding: 7px 20px;
     text-transform: uppercase;
@@ -99,12 +101,12 @@
     content: "";
     position: absolute;
     top: 45%;
-    right: 18px;
+    right: 10px;
     width: 0;
     height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 9px solid #fff;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 7px solid #fff;
     transition: transform 0.2s;
   }
 
