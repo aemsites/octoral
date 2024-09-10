@@ -132,6 +132,10 @@ export default async function decorate(block) {
   });
   await articleList.render();
 
-  block.append($newsArticles, $carouselNav);
-  initAuto(block);
+  if ($newsArticles.children.length === 0) {
+    block.innerHTML = '<p>No articles to show</p>';
+  } else {
+    block.append($newsArticles, $carouselNav);
+    initAuto(block);
+  }
 }
