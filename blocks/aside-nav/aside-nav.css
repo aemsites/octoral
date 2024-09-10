@@ -61,11 +61,11 @@
     background: var(--dark-gray);
   }
 
-  &[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:first-child {
+  &[open] .accordion-item-body details.child-accordion-item[open] div.child-accordion-item-body:not(.child-accordion-item-no-body) p:first-child {
     margin-top: 1em;
   }
 
-  &[open] .accordion-item-body details.child-accordion-item[open] .child-accordion-item-body p:last-child {
+  &[open] .accordion-item-body details.child-accordion-item[open] div.child-accordion-item-body:not(.child-accordion-item-no-body) p:last-child {
     margin-bottom: 1em;
   }
 

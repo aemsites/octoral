@@ -14,6 +14,8 @@ import {
   getMetadata,
 } from './aem.js';
 
+import { externalLinks } from './utils.js';
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -87,6 +89,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  externalLinks(main);
 }
 
 /**

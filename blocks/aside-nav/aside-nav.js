@@ -48,6 +48,9 @@ export async function fetchPlaceholders(locale = 'en') {
 
 let currentPath;
 function expand(element) {
+  if (element.getAttribute('href').length === 0) {
+    return;
+  }
   const urlPathname = new URL(element.href).pathname;
 
   if (urlPathname === currentPath) {
@@ -119,13 +122,28 @@ export default async function decorate(block) {
       if (a.classList.contains('button')) {
         a.classList.remove('button');
         replaceEntries(placeholders, a);
+        if (a.getAttribute('href').length === 0) {
+          a.remove();
+        }
       } else {
         replaceEntries(placeholders, a);
+        if (a.getAttribute('href').length === 0) {
+          a.remove();
+        }
       }
     });
     parentDetails.querySelectorAll('p').forEach((p) => {
       if (p.classList.contains('button-container')) {
         p.classList.remove('button-container');
+      }
+    });
+    if (parentDetails.querySelector('div') && !parentDetails.querySelector('div').querySelector('a')) {
+      parentDetails.querySelector('.accordion-item-label').classList.add('accordion-item-no-body');
+    }
+    parentDetails.querySelectorAll('.child-accordion-item summary').forEach((sum) => {
+      if (sum.parentElement.querySelectorAll('.child-accordion-item-body a').length === 0) {
+        sum.classList.add('accordion-item-no-body');
+        sum.parentElement.querySelector('.child-accordion-item-body').classList.add('child-accordion-item-no-body');
       }
     });
     row.replaceWith(parentDetails);
