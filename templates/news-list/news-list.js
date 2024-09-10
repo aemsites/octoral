@@ -4,6 +4,7 @@ import {
 import { getMetadata } from '../../scripts/aem.js';
 import ArticleList from '../../scripts/article-list.js';
 import { loadTemplate } from '../../scripts/scripts.js';
+import { getPathSegments } from '../../scripts/utils.js';
 
 export default async function decorate(doc) {
   await loadTemplate(doc, 'default');
@@ -23,9 +24,19 @@ export default async function decorate(doc) {
       p(article.description),
     );
 
+  const [locale, news] = getPathSegments();
+  const newsTitle = [
+    { code: 'en', title: 'News' },
+    { code: 'nl', title: 'Nieuws' },
+    { code: 'de', title: 'Nachrichten' },
+    { code: 'fr', title: 'Nouvelles' },
+    { code: 'it', title: 'Novità' },
+    { code: 'es', title: 'Noticia' },
+  ];
+  const localNews = newsTitle.find((entry) => entry.code === locale).title;
   // eslint-disable-next-line object-curly-spacing
   const $newsPage = div(
-    h1('News'),
+    h1(`${localNews}`),
     $articles,
     $pagination,
   );
@@ -33,7 +44,7 @@ export default async function decorate(doc) {
   $page.append($newsPage);
 
   await new ArticleList({
-    jsonPath: '/en/news/query-index.json',
+    jsonPath: `/${locale}/${news}/query-index.json`,
     articleContainer: $articles,
     articleCard: $articleCard,
     articlesPerPage,
