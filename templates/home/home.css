@@ -4,6 +4,13 @@
 .home main {
     /* reverse colum order */
     flex-direction: row-reverse;
+    padding: 40px 25px;
+
+    @media (width >= 900px) {
+        padding: 60px 55px;
+    }
+
+
 
     /* adjust for two columns */
     section {
