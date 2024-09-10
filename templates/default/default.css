@@ -29,5 +29,10 @@ main {
             background: #ccc;
             box-sizing: border-box;
         }
+
+        :not(.product-info) picture img:first-of-type {
+                float: left;
+                margin: 0 1em 1em 0;
+        }
     }
 }
