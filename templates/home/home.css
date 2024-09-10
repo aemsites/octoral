@@ -12,7 +12,7 @@
         padding: 0 10px 0 0;
         &::before { display: none }
 
-        .section:not(.left):not(.right) {
+        .section:not(.left, .right) {
             padding-right: 20px;
         }
 

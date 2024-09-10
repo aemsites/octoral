@@ -6,6 +6,7 @@ import { readBlockConfig, createOptimizedPicture } from '../../scripts/aem.js';
 let autoInterval;
 let autoDuration = 8000; // default if not set in block
 let isInitialLoad = true;
+const scrollSpeed = 1000;
 
 // auto slide functions
 function startAuto(block) {
@@ -64,6 +65,24 @@ function initAuto(block) {
   });
 }
 
+function smoothScrollTo(container, targetPosition, duration) {
+  const startPosition = container.scrollLeft;
+  const distance = targetPosition - startPosition;
+  let startTime = null;
+
+  function animation(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = progress < 0.5 ? 2 * progress * progress : 1 - (-2 * progress + 2) ** 2 / 2;
+    container.scrollLeft = startPosition + (distance * ease);
+    if (elapsed < duration) {
+      requestAnimationFrame(animation); // Continue the animation
+    }
+  }
+  requestAnimationFrame(animation);
+}
+
 function showSlide(block, slideIndex) {
   const $slides = block.querySelector('.carousel-slides');
   const $indicators = block.querySelectorAll('.carousel-nav li');
@@ -72,10 +91,7 @@ function showSlide(block, slideIndex) {
   const activeSlideRect = $activeSlide.getBoundingClientRect();
   const slidesRect = $slides.getBoundingClientRect();
   const scrollPosition = activeSlideRect.left - slidesRect.left + $slides.scrollLeft;
-  $slides.scrollTo({
-    left: scrollPosition,
-    behavior: 'smooth',
-  });
+  smoothScrollTo($slides, scrollPosition, scrollSpeed);
   $indicators.forEach(($li) => { $li.classList.remove('active'); });
   $indicators[slideIndex].classList.add('active');
   block.dataset.activeSlide = slideIndex;

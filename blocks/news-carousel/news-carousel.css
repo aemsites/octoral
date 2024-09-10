@@ -13,6 +13,7 @@
       div { height: 220px }
 
       h3 {
+        margin-top: 0;
         font-size: 19px;
         color: var(--heading-color);
       }
@@ -39,8 +40,9 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 6px 12px;
-    padding: 12px;
+    padding: 12px 0 0;
     list-style: none;
+    margin-bottom: -10px;
 
     li {
       display: inline-block;
