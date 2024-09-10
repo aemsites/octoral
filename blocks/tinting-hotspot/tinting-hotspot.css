@@ -53,7 +53,7 @@
     width: 20px;
     height: 20px;
     z-index: 2;
-    background: url(https://main--octoral--aemsites.hlx.live/assets/media_1685ae5ba269450793ce5abeb51149871c6cb6683.png) no-repeat center center;
+    background: url('https://main--octoral--aemsites.hlx.live/assets/media_1685ae5ba269450793ce5abeb51149871c6cb6683.png') no-repeat center center;
     transition: 100ms all;
 }
 
