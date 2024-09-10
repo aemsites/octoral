@@ -38,3 +38,14 @@ export async function loadTranslations(url, locale) {
 export function translate(key) {
   return translations[key] || key;
 }
+
+// Links opening in new tab
+export function externalLinks(main) {
+  const links = main.querySelectorAll('a[href]');
+  links.forEach((linkItem) => {
+    const hrefURL = new URL(linkItem.href);
+    if (hrefURL.pathname.includes('pdf') || hrefURL.hostname !== window.location.hostname) {
+      linkItem.setAttribute('target', '_blank');
+    }
+  });
+}

@@ -29,3 +29,28 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+.block.cards.support {
+  & > ul {
+    grid-template-columns: repeat(4, 22%);
+
+    & li {
+      text-transform: uppercase;
+      color: #00b0f0;
+      font-size: 11px;
+      cursor: pointer;
+      background: #eee url("../../icons/arrow.png") no-repeat bottom right;
+      width: 125px;
+      height: 75px;
+    }
+  }
+
+  & .cards-card-body {
+    float: left;
+    margin: 5px 20px 20px 5px;
+
+    & p {
+      text-decoration: underline;
+    }
+  }
+}
