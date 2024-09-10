@@ -75,7 +75,7 @@ export default class ArticleList {
     }
 
     // Sort articles by publish date in descending order
-    articles = articles.sort((A, B) => parseInt(B.publisheddate, 10) - parseInt(A.publisheddate, 10));
+    articles = articles.sort((A, B) => parseInt(B.publishDate, 10) - parseInt(A.publishDate, 10));
 
     // Update total articles count and render the current page's articles
     this.totalArticles = articles.length;
