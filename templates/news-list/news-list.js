@@ -32,8 +32,10 @@ export default async function decorate(doc) {
 
   $page.append($newsPage);
 
+  const newsURL = window.location.pathname;
+
   await new ArticleList({
-    jsonPath: '/en/news/query-index.json',
+    jsonPath: `${newsURL}query-index.json`,
     articleContainer: $articles,
     articleCard: $articleCard,
     articlesPerPage,
