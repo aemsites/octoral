@@ -124,13 +124,12 @@ export default async function decorate(block) {
     $carouselNav.append($li);
   });
 
-  const articleList = new ArticleList({
+  await new ArticleList({
     jsonPath: blockConfig['data-source'],
     articleContainer: $newsArticles,
     articleCard: $newsCard,
     articlesPerPage: maxArticles,
-  });
-  await articleList.render();
+  }).render();
 
   if ($newsArticles.children.length === 0) {
     block.innerHTML = '<p>No articles to show</p>';
