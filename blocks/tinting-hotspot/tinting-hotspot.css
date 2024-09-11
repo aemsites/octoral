@@ -1,0 +1,146 @@
+.block.tinting-hotspot {
+    position: relative;
+}
+
+.block.tinting-hotspot .toner-chips {
+    margin: -55% 0 0 -16%;
+}
+
+.block.tinting-hotspot .flop-icon {
+    margin: -43% 0 0 3%;
+}
+
+.block.tinting-hotspot .opaque-toners {
+    margin: 33% 0 0 26%;
+}
+
+.block.tinting-hotspot .metallic-toners {
+    margin: -16% 0 0 -21%;
+}
+
+.block.tinting-hotspot .pearl-effect-toners {
+    margin: 53% 0 0 0%;
+}
+
+.block.tinting-hotspot .viewing-angles {
+    margin: 18% 0 0 -1%;
+}
+
+.block.tinting-hotspot .black-colours-application {
+    margin: 43% 0 0 0%;
+}
+
+.block.tinting-hotspot .iron-effect-toners {
+    margin: -55% 0 0 -10%;
+}
+
+.block.tinting-hotspot .shift-effect-toners {
+    margin: -55% 0 0 41%;
+}
+
+.block.tinting-hotspot .grey-shade-selector  {
+    margin: -82% 0 0 17%;
+}
+
+.block.tinting-hotspot .colour-circles {
+    margin: -55% 0 0 -30%;
+}
+
+.block.tinting-hotspot .lightness-bar {
+    margin: -55% 0 0 38%;
+}
+
+.block.tinting-hotspot .colour-circle-step-by-step {
+    margin: -11% 0 0 -2%;
+}
+
+.block.tinting-hotspot .general-notes {
+    margin: 42% 0 0 11%;
+}
+
+.block.tinting-hotspot .coarseness-selector {
+    margin: -82% 0 0 17%;
+}
+
+.block.tinting-hotspot .evaluation-notes {
+    margin: 42% 0 0 19%;
+}
+
+.block.tinting-hotspot .titled-colour-circle {
+    margin: -82% 0 0 -44%;
+}
+
+.block.tinting-hotspot .face-tone {
+    margin: -40% 0 0 -47%;
+}
+
+
+
+.block.tinting-hotspot img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    position: relative;
+}
+
+
+.block.tinting-hotspot .hotspot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    z-index: 2;
+    background: url('https://main--octoral--aemsites.hlx.live/assets/media_1685ae5ba269450793ce5abeb51149871c6cb6683.png') no-repeat center center;
+    transition: 100ms all;
+}
+
+.block.tinting-hotspot .hotspot:hover, 
+.block.tinting-hotspot .hotspot:active {
+	transform: scale(1.2);
+}
+
+/* .section.right.tinting-hotspot-container {
+    display: flex;
+    flex-direction: column;
+} */
+
+
+@media (width >= 900px) {
+    .section.right.tinting-hotspot-container {
+        display: grid;
+        grid-template-columns: repeat(3, 33%);
+    }
+}
+
+
+/* .block.tinting-hotspot > div:nth-child(n+2) {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background: #f30;
+    position: absolute;
+    cursor: pointer;
+} */
+
+/* .block.tinting-hotspot > div:nth-child(n+2):hover::after,
+.block.tinting-hotspot > div:nth-child(n+2):focus::after,
+.block.tinting-hotspot > div:nth-child(n+2).onclick::after {
+    opacity: 1;
+    content: attr(data);
+    position: absolute;
+    padding: 5px;
+    width: 20vw;
+    left: -150%;
+    bottom: 150%;
+    background-color: var(--text-white);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--text-color);
+    font-size: var(--body-font-size-s);
+    transition: opacity 0.4s linear;
+    z-index: +1;
+} */
