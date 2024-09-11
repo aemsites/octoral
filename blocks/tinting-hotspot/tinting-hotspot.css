@@ -62,6 +62,18 @@
 	transform: scale(1.2);
 }
 
+.section.right.tinting-hotspot-container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+@media (width >= 900px) {
+    .section.right.tinting-hotspot-container {
+        flex-direction: row;
+    }
+}
+
 
 /* .block.tinting-hotspot > div:nth-child(n+2) {
     width: 30px;
