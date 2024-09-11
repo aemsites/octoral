@@ -3,26 +3,24 @@
 /* extends default template css */
 .tintingguide main {
     max-width: 100%;
-    
-    /* reverse colum order */
-    flex-direction: row-reverse;
+    display: flex;
+    flex-direction: row;
+}
 
     /* adjust for two columns */
-    section {
-        display: flex;
-        flex-direction: row;
-        padding: 0 10px 0 0;
-        &::before { display: none }
+main .section.left {
+    padding-right: 10px;
+    position: relative;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
+    box-shadow: 0 0 20px #000;
+    overflow: auto;
+}
 
-        .left {
-            flex: 1;
-            padding-right: 10px;
-        }
-
-        .right {
-            width: 300px;
-            box-sizing: border-box;
-            padding: 0 10px;
-        }
-    }
+   
+main .section.right {
+    position: relative;
+    padding: 0 10px;
 }
