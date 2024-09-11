@@ -26,7 +26,7 @@
     color: var(--blue);
 }
 
-.tintingguide main .section.left p {
+.tintingguide main .section.left p:has(+ ul) {
     font-weight: bold;
 }
    
