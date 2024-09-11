@@ -20,6 +20,7 @@
     overflow: hidden;
     transition: background-color 0.2s;
     font-size: var(--products-label-size);
+    line-height: 1.2;
 
     &:not(.child-accordion-item-label) {
       background: var(--blue);
