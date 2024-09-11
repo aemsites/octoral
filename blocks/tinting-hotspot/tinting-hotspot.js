@@ -14,7 +14,6 @@ export default function decorate(block) {
         leftDiv.classList.remove('hidden');
         rightDiv.classList.add('postclick');
       });
-      console.log(nexticondiv);
       row.after(nexticondiv);
       row.remove();
     }
