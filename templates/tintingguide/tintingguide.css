@@ -10,8 +10,7 @@
 }
 
     /* adjust for two columns */
-main .section.left {
-    padding-right: 5px 5px;
+.tintingguide main .section.left {
     position: relative;
     left: 0;
     top: 0;
@@ -20,8 +19,16 @@ main .section.left {
     max-width: 300px;
     box-shadow: 0 0 20px #000;
     overflow: auto;
+    padding: 50px 20px 20px;
 }
 
+.tintingguide main .section.left h2 {
+    color: var(--blue);
+}
+
+.tintingguide main .section.left p {
+    font-weight: bold;
+}
    
 main .section.right {
     position: relative;
