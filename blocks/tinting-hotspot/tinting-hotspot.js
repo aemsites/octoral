@@ -7,7 +7,7 @@ export default function decorate(block) {
   [...block.children].forEach((row, r) => {
     if (r > 0) {
       const nexticondiv = div({ class: 'hotspot' });
-      nexticondiv.classList.add([...row.children][0].textContent);
+      nexticondiv.style.margin = `${[...row.children][2].textContent} 0 0 ${[...row.children][3].textContent}`;
       const data = [...row.children][1].innerHTML;
       nexticondiv.addEventListener('click', () => {
         leftDiv.innerHTML = data;
