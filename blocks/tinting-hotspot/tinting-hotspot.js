@@ -10,6 +10,7 @@ export default function decorate(block) {
       const data = [...row.children][0].innerHTML;
       nexticondiv.addEventListener('click', () => {
         leftDiv.innerHTML = data;
+        leftDiv.classList.remove('hidden');
       });
       console.log(nexticondiv);
       row.after(nexticondiv);

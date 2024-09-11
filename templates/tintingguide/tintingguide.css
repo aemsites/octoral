@@ -1,6 +1,7 @@
-/* home specific styles */
+.hidden {
+    display: none;
+}
 
-/* extends default template css */
 .tintingguide main {
     max-width: 100%;
     display: flex;
