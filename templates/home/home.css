@@ -4,6 +4,13 @@
 .home main {
     /* reverse colum order */
     flex-direction: row-reverse;
+    padding: 40px 25px;
+
+    @media (width >= 900px) {
+        padding: 60px 55px;
+    }
+
+
 
     /* adjust for two columns */
     section {
@@ -11,6 +18,10 @@
         flex-direction: row;
         padding: 0 10px 0 0;
         &::before { display: none }
+
+        .section:not(.left, .right) {
+            padding-right: 20px;
+        }
 
         .left {
             flex: 1;
@@ -21,6 +32,10 @@
             width: 300px;
             box-sizing: border-box;
             padding: 0 10px;
+
+            h2 {
+                font-size: var(--heading-size-h1);
+            }
         }
     }
 }

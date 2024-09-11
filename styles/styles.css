@@ -34,6 +34,7 @@
 
   /* body sizes */
   --body-font-size: 14px;
+  --products-label-size: 17px;
 
   /* heading sizes mobile */
   --heading-size-h1: 24px;
@@ -90,8 +91,8 @@ h1, h2, h3, h4, h5, h6 {
   scroll-margin: 20px;
 }
 
-h1 { font-size: var(--heading-size-h1); color: var(--blue); }
-h2 { font-size: var(--heading-size-h2); }
+h1 { font-size: var(--heading-size-h1); color: var(--blue); margin-top: 0;}
+h2 { font-size: var(--heading-size-h2); margin-top: 0;}
 h3 { font-size: var(--heading-size-h3); color: #000; }
 h4 { font-size: var(--heading-size-h4); }
 h5 { font-size: var(--heading-size-h5); }
@@ -160,6 +161,6 @@ main {
   border: 1px solid var(--light-gray);
 
   @media (width >= 900px) {
-    padding: 60px 55px;
+    padding: 30px 55px;
   }
 }
