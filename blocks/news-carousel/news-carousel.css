@@ -10,7 +10,11 @@
       flex: 0 0 100%;
       max-width: 100%;
 
-      div { height: 220px }
+      div {
+        height: 220px;
+        overflow: hidden;
+        margin-bottom: 8px;
+      }
 
       h3 {
         margin-top: 0;
@@ -30,6 +34,7 @@
         img {
           width: 290px;
           min-height: 290px;
+          background: gray;
         }
       }
     }
