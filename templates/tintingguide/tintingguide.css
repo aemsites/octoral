@@ -25,6 +25,18 @@
     z-index: 1;
 }
 
+.tintingguide main .section.left .nav {
+    cursor: pointer;
+    position: relative;
+    background: var(--blue);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tintingguide main .section.left .nav > button {
+    padding: 0 20px;
+}
+
 .tintingguide main .section.left .content {
     padding: 30px 20px 20px;
 }
