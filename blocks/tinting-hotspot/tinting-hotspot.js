@@ -7,7 +7,7 @@ export default function decorate(block) {
     if (r > 0) {
       const nexticondiv = div({ class: 'hotspot' });
       nexticondiv.classList.add([...row.children][0].textContent);
-      const data = [...row.children][0].innerHTML;
+      const data = [...row.children][1].innerHTML;
       nexticondiv.addEventListener('click', () => {
         leftDiv.innerHTML = data;
         leftDiv.classList.remove('hidden');

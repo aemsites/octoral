@@ -16,6 +16,7 @@ main .section.left {
     top: 0;
     bottom: 0;
     min-width: 300px;
+    max-width: 300px;
     box-shadow: 0 0 20px #000;
     overflow: auto;
 }
