@@ -2,6 +2,11 @@
     display: none;
 }
 
+.postclick {
+    left: 340px;
+    width: 80%;
+}
+
 .tintingguide main {
     max-width: 100%;
     display: flex;
@@ -32,6 +37,5 @@
 .tintingguide main .section.right {
     position: relative;
     padding: 0 10px;
-    left: 340px;
-    max-width: 80%;
+    max-width: 100%;
 }
