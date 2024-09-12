@@ -36,6 +36,9 @@ export default function decorate(block) {
           rightDiv.classList.add('postclick');
         } else {
           leftDiv.innerHTML = '';
+          block.parentElement.parentElement.querySelectorAll('.popup').forEach((popup) => {
+            popup.remove();
+          });
           const popupDiv = div({ class: 'popup' });
           contentDiv.innerHTML = data;
           popupDiv.appendChild(navDiv);
