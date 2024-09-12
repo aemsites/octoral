@@ -20,9 +20,10 @@
     left: 0;
     top: 0;
     bottom: 0;
-    width: 300px;
+    width: 330px;
     box-shadow: 0 0 20px #000;
     z-index: 1;
+    overflow: scroll;
 }
 
 .tintingguide main .section.left .nav {
@@ -37,17 +38,24 @@
     padding: 0 20px;
 }
 
-.tintingguide main .section.left .content {
-    padding: 30px 20px 20px;
+.tintingguide main .section.left .nav > button:hover {
+    background: var(--blue);
 }
 
-
-.tintingguide main .section.left h2 {
-    color: var(--blue);
+.tintingguide main .section.left .content {
+    padding: 30px 15px 15px;
 }
 
 .tintingguide main .section.left p:has(+ ul) {
     font-weight: bold;
+}
+
+.tintingguide main .section.left .content li, .tintingguide main .section.left .content p {
+    font-size: 13px;
+}
+
+.tintingguide main .section.left h2 {
+    color: var(--blue);
 }
    
 .tintingguide main .section.right {

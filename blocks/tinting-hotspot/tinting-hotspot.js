@@ -4,6 +4,10 @@ export default function decorate(block) {
   const leftDiv = document.querySelector('.left.section');
   const rightDiv = document.querySelector('.right.section');
   const navDiv = div({ class: 'nav' }, button('X'));
+  navDiv.querySelector('button').addEventListener('click', () => {
+    leftDiv.classList.add('hidden');
+    rightDiv.classList.remove('postclick');
+  });
   const contentDiv = div({ class: 'content' });
 
   [...block.children].forEach((row, r) => {
