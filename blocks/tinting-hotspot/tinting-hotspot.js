@@ -40,6 +40,7 @@ export default function decorate(block) {
             popup.remove();
           });
           const popupDiv = div({ class: 'popup' });
+          popupDiv.style.margin = `${(Number([...row.children][2].textContent.replace('%', '')) + 60).toString()}% 0 0 0`;
           contentDiv.innerHTML = data;
           popupDiv.appendChild(navDiv);
           popupDiv.appendChild(contentDiv);

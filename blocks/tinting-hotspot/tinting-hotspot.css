@@ -33,7 +33,6 @@
     background: white;
     left: 0;
     top: 10px;
-    bottom: 0;
 
     .nav {
         cursor: pointer;
@@ -56,7 +55,7 @@
     }
 
     .content {
-        padding: 30px 15px 15px;
+        padding: 30px 15px;
 
         li, p {
             font-size: 13px;
