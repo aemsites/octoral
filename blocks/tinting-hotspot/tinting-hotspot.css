@@ -26,11 +26,49 @@
 	transform: scale(1.2);
 }
 
-/* .section.right.tinting-hotspot-container {
-    display: flex;
-    flex-direction: column;
-} */
+.section.right .tinting-hotspot.block .popup {
+    position: absolute;
+    width: 100%;
+    box-shadow: 0 0 20px #000;
+    z-index: 10;
+    overflow: scroll;
+    background: white;
+    left: 0;
+    top: 10px;
+    bottom: 0;
+}
 
+.section.right .tinting-hotspot.block .popup .nav {
+    cursor: pointer;
+    position: relative;
+    background: var(--blue);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.section.right .tinting-hotspot.block .popup .nav > button {
+    padding: 0 20px;
+}
+
+.section.right .tinting-hotspot.block .popup .nav > button:hover {
+    background: var(--blue);
+}
+
+.section.right .tinting-hotspot.block .popup .content {
+    padding: 30px 15px 15px;
+}
+
+.section.right .tinting-hotspot.block .popup p:has(+ ul) {
+    font-weight: bold;
+}
+
+.section.right .tinting-hotspot.block .popup .content li, .section.right .tinting-hotspot.block .popup .content p {
+    font-size: 13px;
+}
+
+.section.right .tinting-hotspot.block .popup h2 {
+    color: var(--blue);
+}
 
 @media (width >= 900px) {
     .section.right.tinting-hotspot-container {

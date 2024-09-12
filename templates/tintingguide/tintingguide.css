@@ -16,9 +16,6 @@
 
 .tintingguide main .section.left {
     position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
     width: 100%;
     box-shadow: 0 0 20px #000;
     z-index: 10;
@@ -73,5 +70,8 @@
     .tintingguide main .section.left {
         position: fixed;
         width: 340px;
+        left: 0;
+        top: 0;
+        bottom: 0;
     }
 }

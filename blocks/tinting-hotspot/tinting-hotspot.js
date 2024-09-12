@@ -8,8 +8,12 @@ export default function decorate(block) {
   const rightDiv = document.querySelector('.right.section');
   const navDiv = div({ class: 'nav' }, button('X'));
   navDiv.querySelector('button').addEventListener('click', () => {
-    leftDiv.classList.add('hidden');
-    rightDiv.classList.remove('postclick');
+    if (isDesktop.matches) {
+      leftDiv.classList.add('hidden');
+      rightDiv.classList.remove('postclick');
+    } else {
+      navDiv.parentElement.remove();
+    }
   });
   const contentDiv = div({ class: 'content' });
 
@@ -25,7 +29,18 @@ export default function decorate(block) {
         leftDiv.appendChild(contentDiv);
         leftDiv.classList.remove('hidden');
         if (isDesktop.matches) {
+          leftDiv.innerHTML = '';
+          contentDiv.innerHTML = data;
+          leftDiv.appendChild(navDiv);
+          leftDiv.appendChild(contentDiv);
           rightDiv.classList.add('postclick');
+        } else {
+          leftDiv.innerHTML = '';
+          const popupDiv = div({ class: 'popup' });
+          contentDiv.innerHTML = data;
+          popupDiv.appendChild(navDiv);
+          popupDiv.appendChild(contentDiv);
+          nexticondiv.after(popupDiv);
         }
       });
       row.after(nexticondiv);
