@@ -12,66 +12,67 @@
     display: flex;
     flex-direction: column;
     padding: 0;
-}
 
-.tintingguide main .section.left {
-    position: absolute;
-    width: 100%;
-    box-shadow: 0 0 20px #000;
-    z-index: 10;
-    overflow: scroll;
-    background: white;
-}
+    .section.left {
+        position: absolute;
+        width: 100%;
+        box-shadow: 0 0 20px #000;
+        z-index: 10;
+        overflow: scroll;
+        background: white;
 
-.tintingguide main .section.left .nav {
-    cursor: pointer;
-    position: relative;
-    background: var(--blue);
-    display: flex;
-    justify-content: flex-end;
-}
+        .nav {
+            cursor: pointer;
+            position: relative;
+            background: var(--blue);
+            display: flex;
+            justify-content: flex-end;
 
-.tintingguide main .section.left .nav > button {
-    padding: 0 20px;
-}
+            & > button {
+                padding: 0 20px;
+            }
 
-.tintingguide main .section.left .nav > button:hover {
-    background: var(--blue);
-}
+            & > button:hover {
+                background: var(--blue);
+            }
+        }
 
-.tintingguide main .section.left .content {
-    padding: 30px 15px 15px;
-}
+        p:has(+ ul) {
+            font-weight: bold;
+        }
 
-.tintingguide main .section.left p:has(+ ul) {
-    font-weight: bold;
-}
+        .content {
+            padding: 30px 15px 15px;
 
-.tintingguide main .section.left .content li, .tintingguide main .section.left .content p {
-    font-size: 13px;
-}
+            li, p {
+                font-size: 13px;
+            }
+        }
 
-.tintingguide main .section.left h2 {
-    color: var(--blue);
-}
-   
-.tintingguide main .section.right {
-    position: relative;
-    padding: 0 10px;
-    max-width: 100%;
+        h2 {
+            color: var(--blue);
+        }
+
+    }
+
+    .section.right {
+        position: relative;
+        padding: 0 10px;
+        max-width: 100%;
+    }
 }
 
 @media (width >=900px) {
     .tintingguide main {
         display: flex;
         flex-direction: row;
-    }
 
-    .tintingguide main .section.left {
-        position: fixed;
-        width: 340px;
-        left: 0;
-        top: 0;
-        bottom: 0;
+        .section.left {
+            position: fixed;
+            width: 340px;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
     }
 }

@@ -1,29 +1,27 @@
 .block.tinting-hotspot {
     position: relative;
-}
 
-.block.tinting-hotspot img {
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    position: relative;
-}
+    img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        position: relative;
+    }
 
+    .hotspot {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 20px;
+        height: 20px;
+        z-index: 2;
+        background: url('https://main--octoral--aemsites.hlx.live/assets/media_1685ae5ba269450793ce5abeb51149871c6cb6683.png') no-repeat center center;
+        transition: 100ms all;
 
-.block.tinting-hotspot .hotspot {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 20px;
-    height: 20px;
-    z-index: 2;
-    background: url('https://main--octoral--aemsites.hlx.live/assets/media_1685ae5ba269450793ce5abeb51149871c6cb6683.png') no-repeat center center;
-    transition: 100ms all;
-}
-
-.block.tinting-hotspot .hotspot:hover, 
-.block.tinting-hotspot .hotspot:active {
-	transform: scale(1.2);
+        &:hover, &:active {
+            transform: scale(1.2);
+        }
+    }
 }
 
 .section.right .tinting-hotspot.block .popup {
@@ -36,38 +34,39 @@
     left: 0;
     top: 10px;
     bottom: 0;
-}
 
-.section.right .tinting-hotspot.block .popup .nav {
-    cursor: pointer;
-    position: relative;
-    background: var(--blue);
-    display: flex;
-    justify-content: flex-end;
-}
+    .nav {
+        cursor: pointer;
+        position: relative;
+        background: var(--blue);
+        display: flex;
+        justify-content: flex-end;
 
-.section.right .tinting-hotspot.block .popup .nav > button {
-    padding: 0 20px;
-}
+        & > button {
+            padding: 0 20px;
 
-.section.right .tinting-hotspot.block .popup .nav > button:hover {
-    background: var(--blue);
-}
+            &:hover {
+                background-color: var(--blue);
+            }
+        }
+    }
 
-.section.right .tinting-hotspot.block .popup .content {
-    padding: 30px 15px 15px;
-}
+    p:has(+ ul) {
+        font-weight: bold;
+    }
 
-.section.right .tinting-hotspot.block .popup p:has(+ ul) {
-    font-weight: bold;
-}
+    .content {
+        padding: 30px 15px 15px;
 
-.section.right .tinting-hotspot.block .popup .content li, .section.right .tinting-hotspot.block .popup .content p {
-    font-size: 13px;
-}
+        li, p {
+            font-size: 13px;
+        }
+    }
 
-.section.right .tinting-hotspot.block .popup h2 {
-    color: var(--blue);
+    h2 {
+        color: var(--blue);
+    }
+    
 }
 
 @media (width >= 900px) {
