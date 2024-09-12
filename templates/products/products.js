@@ -286,13 +286,14 @@ const showModal = (clickedIndex) => {
   if (!modal) {
     createModal();
     createOverlay();
+    populateCarousel(clickedIndex);
+  } else {
+    setSlideIndex(clickedIndex);
   }
-  populateCarousel(clickedIndex);
   document.querySelector('.image-modal').style.display = 'block';
   document.querySelector('.overlay').style.display = 'block';
 };
 
-// Create modal and carousel structure
 const createModal = () => {
   const modal = div(
     { class: 'image-modal' },
@@ -307,12 +308,15 @@ const createModal = () => {
         onclick: () => showSlides(-1),
         style: 'display: block;',
       }),
-      div({ class: 'image-carousel' }),
+      div(
+        { class: 'image-carousel' },
+        div({ class: 'slides' }),
+      ),
       a({
-          class: 'carousel-nav carousel-nav-next',
-          onclick: () => showSlides(1),
-          style: 'display: block;',
-        }),
+        class: 'carousel-nav carousel-nav-next',
+        onclick: () => showSlides(1),
+        style: 'display: block;',
+      }),
       div({ class: 'carousel-btn-thumbnails' }),
     ),
   );
@@ -320,8 +324,7 @@ const createModal = () => {
   document.body.append(modal);
 
   document.addEventListener('keydown', (event) => {
-    if (document.querySelector('.image-modal').style.display != 'block')
-      return;
+    if (document.querySelector('.image-modal').style.display !== 'block') return;
     switch (event.key) {
       case 'ArrowLeft':
         showSlides(-1);
@@ -333,24 +336,10 @@ const createModal = () => {
       case 'Escape':
         closeModal();
         break;
+      default:
+        break;
     }
   });
-
-/*  window.addEventListener('resize', () => {
-    const modal = document.querySelector('.image-modal');
-    if (modal.style.display === 'block') {
-      closeModal();
-      showModal(slideIndex); // Assuming openModal() is a function that opens the modal
-    }
-  });*/
-
-  const thumbnailsContainer = document.createElement('div');
-  thumbnailsContainer.id = 'thumbnailsContainer';
-  thumbnailsContainer.style.textAlign = 'center';
-  thumbnailsContainer.style.marginTop = '20px';
-  thumbnailsContainer.style.display = 'flex';
-  thumbnailsContainer.style.justifyContent = 'center';
-  thumbnailsContainer.style.flexWrap = 'wrap';
 };
 
 const closeModal = () => {
@@ -369,102 +358,88 @@ const createOverlay = () => {
 // Populate carousel with images
 const populateCarousel = (clickedIndex) => {
   const images = document.querySelectorAll('.product-info img');
-  const carousel = document.querySelector('.image-carousel');
-  const thumbnailsContainer = document.getElementById('thumbnailsContainer');
   const dotsContainer = document.querySelector('.carousel-btn-thumbnails');
+  const slides = document.querySelector('.slides');
   images.forEach((img, index) => {
     const slide = div(
       { class: `slide slide-${index}` },
       createOptimizedPicture(img.getAttribute('src'), '', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]),
     );
     slide.style.display = index === clickedIndex ? 'block' : 'none';
-    carousel.appendChild(slide);
+    slides.appendChild(slide);
 
-    /*
-    const thumbnail = createOptimizedPicture(img.getAttribute('src'));
-    thumbnail.className = 'thumbnail';
-    thumbnail.style.cursor = 'pointer';
-    thumbnail.style.width = '5%';
-    thumbnail.style.height = '10%';
-    thumbnail.style.margin = '0 2px';
-    thumbnail.onclick = () => { showSlides(index - slideIndex); };
-    thumbnailsContainer.appendChild(thumbnail);
-*/
-
-    const dot = span({ class: `dot dot-${index}`, onclick: () => { showSlides(index - slideIndex); } });
+    const dot = span(
+      {
+        class: `dot dot-${index}`,
+        onclick: () => { showSlides(index - slideIndex); },
+      },
+    );
     dot.style.backgroundColor = index === clickedIndex ? '#717171' : '#bbb';
     dotsContainer.appendChild(dot);
 
-    // Adjust modal dimensions based on the image dimensions
-    const imageElement = new Image();
-    imageElement.src = img.getAttribute('src');
-    imageElement.onload = () => {
-      const modal = document.querySelector('.image-modal');
-      modal.style.width = `${imageElement.width}px`;
-      modal.style.height = `${imageElement.height}px`;
-      modal.style.marginTop = `-${Math.ceil(imageElement.height / 2)}px`;
-      modal.style.marginLeft = `-${Math.ceil(imageElement.width / 2)}px`;
-    };
+    if (index === clickedIndex) {
+      resizeModal(img);
+    }
   });
-  slideIndex = clickedIndex; // Set the initial slide index to the clicked image
+  slideIndex = clickedIndex;
 };
 
-// Show slides and update dots and thumbnails
 let slideIndex = 0;
 
-
-function resizeModal(imgWidth, imgHeight) {
+function resizeModal(image) {
   // resize the modal based on the available frame and image size
-    const modal = document.querySelector('.image-modal');
-    const modalContent = document.querySelector('.image-modal-content');
-    const modalWidth = modalContent.offsetWidth;
-    const modalHeight = modalContent.offsetHeight;
-    const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, modalWidth, modalHeight);
+  const { width: imgWidth, height: imgHeight } = image;
 
+  const modal = document.querySelector('.image-modal');
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  let maxHeight = parseInt(window.getComputedStyle(modal).maxHeight, 10);//700;
+  let maxWidth = parseInt(window.getComputedStyle(modal).maxWidth, 10);//980;
 
-    modal.style.width = newWidth;
-    modal.style.height = newHeight;
-    modal.style['margin-left'] = -(Math.ceil(newWidth / 2) + 20);
-    modal.style['margin-top'] = -(Math.ceil(newHeight / 2) + 20);
+  if(maxWidth > viewportWidth) maxWidth = viewportWidth - 30;
+  if(maxHeight > viewportHeight) maxHeight = viewportHeight - 30;
 
-    /*const modalAspectRatio = modalWidth / modalHeight;
-    const imgAspectRatio = imgWidth / imgHeight;
-    if (imgAspectRatio > modalAspectRatio) {
-      modalContent.style.width = 'auto';
-      modalContent.style.height = '100%';
-    } else {
-      modalContent.style.width = '100%';
-      modalContent.style.height = 'auto';
-    }*/
+  const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, maxWidth, maxHeight);
+
+  const finalWidth = newWidth;
+  const finalHeight = newHeight;
+  modal.style.width = `${finalWidth}px`;
+  modal.style.height = `${finalHeight}px`;
+  modal.style.marginLeft = `-${Math.ceil(finalWidth / 2)}px`;
+  modal.style.marginTop = `-${Math.ceil(finalHeight / 2)}px`;
+
+  image.style.maxWidth = `${finalWidth}px`;
+  image.style.maxHeight = `${finalHeight}px`;
 }
 
-function calcAspectRatio(width, height, maxwidth, maxheight) {
-  var ratio = Math.min(maxwidth / width, maxheight / height);
-  var newWidth = width < width * ratio ? width : width * ratio;
-  var newHeight = height < height * ratio ? height : height * ratio;
+function calcAspectRatio(width, height, maxWidth, maxHeight) {
+  const ratio = Math.min(maxWidth / width, maxHeight / height);
+  const newWidth = width * ratio;
+  const newHeight = height * ratio;
   return { newWidth, newHeight };
 }
-
 
 const showSlides = (n) => {
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.dot');
-  const thumbnails = document.querySelectorAll('.thumbnail');
+  const prevSlideIndex = slideIndex;
   slideIndex += n;
   if (slideIndex >= slides.length) { slideIndex = 0; }
   if (slideIndex < 0) { slideIndex = slides.length - 1; }
-  slides.forEach((slide, index) => {
-    slide.style.display = index === slideIndex ? 'block' : 'none';
-    if(slide.style.display == 'block') {
-      const imgWidth = slide.querySelector('img').width;
-      const imgHeight = slide.querySelector('img').height;
-      resizeModal(imgWidth, imgHeight);
-    }
-  });
-  dots.forEach((dot, index) => {
-    dot.style.backgroundColor = index === slideIndex ? '#717171' : '#bbb';
-  });
-  thumbnails.forEach((thumbnail, index) => {
-    thumbnail.style.opacity = index === slideIndex ? '1' : '0.6';
-  });
+  const slide = slides[slideIndex];
+  slides[prevSlideIndex].style.display = 'none';
+  slide.style.display = 'block';
+  resizeModal(slide.querySelector('img'));
+  dots[prevSlideIndex].style.backgroundColor = '#bbb';
+  dots[slideIndex].style.backgroundColor = '#717171';
+};
+
+const setSlideIndex = (index) => {
+  if (index > slideIndex) {
+    const difference = index - slideIndex;
+    showSlides(difference);
+  } else {
+    const difference = slideIndex - index;
+    showSlides(-difference);
+  }
 };

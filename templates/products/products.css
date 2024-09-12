@@ -108,46 +108,37 @@
 
 .image-modal {
     position: fixed;
-    display: none;
-    width: 80vw; /* 80% of the viewport width */
-    height: 80vh; /* 80% of the viewport height */
-    background: #000;
-    top: 50%;
     left: 50%;
-    /*
-    margin-top: -287px; !* Adjusted to center the modal *!
-    margin-left: -213px;
-    */
+    top: 50%;
+    display: none;
     z-index: 9999;
-    padding: 30px;
+    padding: 20px;
     background-color: black;
     overflow: hidden;
+    max-width: 950px;
+    max-height: 680px;
 
     .image-modal-content:hover .carousel-nav {
         opacity: 1;
     }
 
     .image-modal-content {
-        margin-top: -287px;
-        margin-left: -213px;
-        /*position: relative;*/
         margin: auto;
-        /*padding: 10px;*/
         width: 100%;
-        max-width: 500px;
         overflow: hidden;
 
         .close {
             position: absolute;
             display: block;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             top: 0;
             right: 0;
             z-index: 5;
             background: url("../../icons/close.png") no-repeat center center;
             overflow: hidden;
             text-indent: 2000px;
+            cursor: pointer;
         }
 
         .image-carousel {
@@ -155,17 +146,17 @@
             overflow: hidden;
             height: calc(100% - 50px);
             z-index: 1;
+            transition: transform 0.5s ease-in-out;
 
             .slide img {
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                visibility: visible;
-                zoom: 1;
-                opacity: 1;
-                max-width: 100%;
-                max-height: 100%;
-
+                    width: 100%;
+                    height: auto;
+                    object-fit: cover;
+                    visibility: visible;
+                    zoom: 1;
+                    opacity: 1;
+                    max-width: 100%;
+                    max-height: 100%;
             }
         }
 
@@ -178,19 +169,15 @@
             outline: 0;
             z-index: 3;
             opacity: 0;
-            -webkit-transition: opacity 240ms;
-            -moz-transition: opacity 240ms;
-            -o-transition: opacity 240ms;
             transition: opacity 240ms;
         }
-
-
 
         .carousel-nav-prev {
             left: 0;
             background: url("../../icons/previous.png") no-repeat center center;
             display: block;
         }
+
         .carousel-nav-next {
             right: 0;
             background: url("../../icons/next.png") no-repeat center center;
@@ -199,13 +186,14 @@
 
         .carousel-btn-thumbnails {
             display: flex;
-            justify-content: center; /* Center the dots horizontally */
-            align-items: center; /* Center the dots vertically */
+            justify-content: center;
+            align-items: center;
             position: absolute;
-            bottom: 5px; /* Position at the bottom of the modal */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust to center */
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
             width: auto;
+            z-index: 2000;
 
             .dot {
                 cursor: pointer;
@@ -224,18 +212,6 @@
     }
 }
 
-@media (max-height: 600px) {
-    .image-modal {
-        height: 70vh; /* 70% of the viewport height for smaller screens */
-    }
-}
-
-@media (min-height: 900px) {
-    .image-modal {
-        height: 90vh; /* 90% of the viewport height for larger screens */
-    }
-}
-
 .overlay {
     position: fixed;
     top: 0;
@@ -248,14 +224,3 @@
     z-index: 9998;
     filter: alpha(opacity=50);
 }
-
-/*
-.dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-}*/
