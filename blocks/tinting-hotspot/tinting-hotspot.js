@@ -1,5 +1,8 @@
 import { div, button } from '../../scripts/dom-helpers.js';
 
+// media query match that indicates mobile/tablet width
+const isDesktop = window.matchMedia('(min-width: 900px)');
+
 export default function decorate(block) {
   const leftDiv = document.querySelector('.left.section');
   const rightDiv = document.querySelector('.right.section');
@@ -21,7 +24,9 @@ export default function decorate(block) {
         leftDiv.appendChild(navDiv);
         leftDiv.appendChild(contentDiv);
         leftDiv.classList.remove('hidden');
-        rightDiv.classList.add('postclick');
+        if (isDesktop.matches) {
+          rightDiv.classList.add('postclick');
+        }
       });
       row.after(nexticondiv);
       row.remove();

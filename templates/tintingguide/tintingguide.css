@@ -10,13 +10,12 @@
 .tintingguide main {
     max-width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 0;
 }
 
-    /* adjust for two columns */
 .tintingguide main .section.left {
-    position: fixed;
+    position: relative;
     left: 0;
     top: 0;
     bottom: 0;
@@ -24,6 +23,7 @@
     box-shadow: 0 0 20px #000;
     z-index: 1;
     overflow: scroll;
+    background: white;
 }
 
 .tintingguide main .section.left .nav {
@@ -62,4 +62,15 @@
     position: relative;
     padding: 0 10px;
     max-width: 100%;
+}
+
+@media (width >=900px) {
+    .tintingguide main {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .tintingguide main .section.left {
+        position: fixed;
+    }
 }
