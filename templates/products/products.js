@@ -80,22 +80,30 @@ const resultParsers = {
     trowhead.append(cellhead4);
     const cellhead5 = div({ class: 'heading' }, 'Volume');
     trowhead.append(cellhead5);
+    const productnameStatus = results.filter((result) => result.productname);
+    const codeStatus = results.filter((result) => result.code);
     results.forEach((result) => {
       const trow = div();
-      const createCell = (data, className, heading) => {
+      const createCell = (data, className) => {
         if (data) {
           const cell = div({ class: className });
           cell.textContent = data;
           trow.append(cell);
         } else {
-          heading.remove();
+          const cell = div({ class: className });
+          cell.textContent = '';
+          trow.append(cell);
         }
       };
-      createCell(result.itemnr, 'data', cellhead1);
-      createCell(result.code, 'data', cellhead2);
-      createCell(result.productname, 'data', cellhead3);
-      createCell(result.perbox, 'data', cellhead4);
-      createCell(result.volume, 'data', cellhead5);
+      createCell(result.itemnr, 'data');
+      if (codeStatus.length > 0) {
+        createCell(result.code, 'data');
+      } else cellhead2.remove();
+      if (productnameStatus.length > 0) {
+        createCell(result.productname, 'data');
+      } else cellhead3.remove();
+      createCell(result.perbox, 'data');
+      createCell(result.volume, 'data');
 
       row.push(trowhead);
       row.push(trow);
