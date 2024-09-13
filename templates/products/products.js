@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars,no-empty-function
+/* eslint-disable no-use-before-define */
 import { loadTemplate } from '../../scripts/scripts.js';
 import { normalizeString, getPathSegments } from '../../scripts/utils.js';
 import {
@@ -281,17 +281,79 @@ export default async function decorate(doc) {
   }
 }
 
-const showModal = (clickedIndex) => {
+function calcAspectRatio(width, height, maxWidth, maxHeight) {
+  const ratio = Math.min(maxWidth / width, maxHeight / height);
+  const newWidth = width * ratio;
+  const newHeight = height * ratio;
+  return { newWidth, newHeight };
+}
+
+let slideIndex = 0;
+
+function resizeModal(image) {
+  // resize the modal based on the available frame and image size
+  const { width: imgWidth, height: imgHeight } = image;
+
   const modal = document.querySelector('.image-modal');
-  if (!modal) {
-    createModal();
-    createOverlay();
-    populateCarousel(clickedIndex);
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  let maxHeight = parseInt(window.getComputedStyle(modal).maxHeight, 10);
+  let maxWidth = parseInt(window.getComputedStyle(modal).maxWidth, 10);
+  const minWidth = parseInt(window.getComputedStyle(modal).minWidth, 10);
+
+  if (maxWidth > viewportWidth) maxWidth = viewportWidth - 30;
+  if (maxHeight > viewportHeight) maxHeight = viewportHeight - 30;
+
+  const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, maxWidth, maxHeight);
+
+  const finalWidth = newWidth;
+  const finalHeight = newHeight;
+
+  modal.style.width = `${Math.max(finalWidth, minWidth)}px`;
+  modal.style.height = `${finalHeight}px`;
+  modal.style.marginLeft = `-${Math.ceil(Math.max(finalWidth, minWidth) / 2)}px`;
+  modal.style.marginTop = `-${Math.ceil(finalHeight / 2)}px`;
+
+  image.style.width = `${finalWidth}px`;
+  image.style.height = `${finalHeight}px`;
+}
+
+const showSlides = (n) => {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const prevSlideIndex = slideIndex;
+  slideIndex += n;
+  if (slideIndex >= slides.length) { slideIndex = 0; }
+  if (slideIndex < 0) { slideIndex = slides.length - 1; }
+  const slide = slides[slideIndex];
+  slides[prevSlideIndex].style.display = 'none';
+  slide.style.display = '';
+  resizeModal(slide.querySelector('img'));
+  dots[prevSlideIndex].style.backgroundColor = '#bbb';
+  dots[slideIndex].style.backgroundColor = '#717171';
+};
+
+const setSlideIndex = (index) => {
+  if (index > slideIndex) {
+    const difference = index - slideIndex;
+    showSlides(difference);
   } else {
-    setSlideIndex(clickedIndex);
+    const difference = slideIndex - index;
+    showSlides(-difference);
   }
-  document.querySelector('.image-modal').style.display = 'block';
-  document.querySelector('.overlay').style.display = 'block';
+};
+
+const createOverlay = () => {
+  const overlay = div({ class: 'overlay' });
+  document.body.appendChild(overlay);
+};
+
+const closeModal = () => {
+  document.querySelector('.image-modal').style.display = 'none';
+  const overlay = document.querySelector('.overlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
 };
 
 const createModal = () => {
@@ -342,19 +404,6 @@ const createModal = () => {
   });
 };
 
-const closeModal = () => {
-  document.querySelector('.image-modal').style.display = 'none';
-  const overlay = document.querySelector('.overlay');
-  if (overlay) {
-    overlay.style.display = 'none';
-  }
-};
-
-const createOverlay = () => {
-  const overlay = div({ class: 'overlay' });
-  document.body.appendChild(overlay);
-};
-
 // Populate carousel with images
 const populateCarousel = (clickedIndex) => {
   const images = document.querySelectorAll('.product-info img');
@@ -365,7 +414,7 @@ const populateCarousel = (clickedIndex) => {
       { class: `slide slide-${index}` },
       createOptimizedPicture(img.getAttribute('src'), '', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]),
     );
-    slide.style.display = index === clickedIndex ? 'block' : 'none';
+    slide.style.display = index === clickedIndex ? '' : 'none';
     slides.appendChild(slide);
 
     const dot = span(
@@ -384,62 +433,15 @@ const populateCarousel = (clickedIndex) => {
   slideIndex = clickedIndex;
 };
 
-let slideIndex = 0;
-
-function resizeModal(image) {
-  // resize the modal based on the available frame and image size
-  const { width: imgWidth, height: imgHeight } = image;
-
+const showModal = (clickedIndex) => {
   const modal = document.querySelector('.image-modal');
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-  let maxHeight = parseInt(window.getComputedStyle(modal).maxHeight, 10);//700;
-  let maxWidth = parseInt(window.getComputedStyle(modal).maxWidth, 10);//980;
-
-  if(maxWidth > viewportWidth) maxWidth = viewportWidth - 30;
-  if(maxHeight > viewportHeight) maxHeight = viewportHeight - 30;
-
-  const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, maxWidth, maxHeight);
-
-  const finalWidth = newWidth;
-  const finalHeight = newHeight;
-  modal.style.width = `${finalWidth}px`;
-  modal.style.height = `${finalHeight}px`;
-  modal.style.marginLeft = `-${Math.ceil(finalWidth / 2)}px`;
-  modal.style.marginTop = `-${Math.ceil(finalHeight / 2)}px`;
-
-  image.style.maxWidth = `${finalWidth}px`;
-  image.style.maxHeight = `${finalHeight}px`;
-}
-
-function calcAspectRatio(width, height, maxWidth, maxHeight) {
-  const ratio = Math.min(maxWidth / width, maxHeight / height);
-  const newWidth = width * ratio;
-  const newHeight = height * ratio;
-  return { newWidth, newHeight };
-}
-
-const showSlides = (n) => {
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.dot');
-  const prevSlideIndex = slideIndex;
-  slideIndex += n;
-  if (slideIndex >= slides.length) { slideIndex = 0; }
-  if (slideIndex < 0) { slideIndex = slides.length - 1; }
-  const slide = slides[slideIndex];
-  slides[prevSlideIndex].style.display = 'none';
-  slide.style.display = 'block';
-  resizeModal(slide.querySelector('img'));
-  dots[prevSlideIndex].style.backgroundColor = '#bbb';
-  dots[slideIndex].style.backgroundColor = '#717171';
-};
-
-const setSlideIndex = (index) => {
-  if (index > slideIndex) {
-    const difference = index - slideIndex;
-    showSlides(difference);
+  if (!modal) {
+    createModal();
+    createOverlay();
+    populateCarousel(clickedIndex);
   } else {
-    const difference = slideIndex - index;
-    showSlides(-difference);
+    setSlideIndex(clickedIndex);
   }
+  document.querySelector('.image-modal').style.display = 'block';
+  document.querySelector('.overlay').style.display = 'block';
 };
