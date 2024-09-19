@@ -16,6 +16,7 @@ async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
   console.log(tokenizedSearchWords);
   console.log(rawLocale);
   console.log(window.location.hostname);
+  console.log(resultsDiv);
 }
 
 export default async function decorate(block) {
