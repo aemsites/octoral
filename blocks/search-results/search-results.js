@@ -7,9 +7,30 @@ function searchItems(searchTerm) {
   return tokenizedSearchWords;
 }
 
+function filterMatches(tokenizedSearchWords, jsonData) {
+  const allMatches = [];
+  tokenizedSearchWords.forEach((searchTerm) => {
+    const matches = jsonData.filter((entry) => (
+      entry.path
+      + entry.title
+      + entry.description
+    )
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()));
+    allMatches.push(...matches);
+  });
+  // remove duplicates:
+  return [...new Set(allMatches)];
+}
+
 async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
   const [rawLocale, , , ,] = getPathSegments();
-  const jsonData = await ffetch(`/${rawLocale}/news/query-index.json`)
+  window.placeholders = window.placeholders || {};
+  const TRANSLATION_KEY = 'translations';
+  const newsTranslation = window.placeholders[`${TRANSLATION_KEY}`][`${rawLocale}`].news;
+
+  await window.placeholders;
+  const jsonData = await ffetch(`/${rawLocale}/${newsTranslation}/query-index.json`)
     .chunks(1000)
     .all();
   console.log(jsonData);
@@ -17,6 +38,9 @@ async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
   console.log(rawLocale);
   console.log(window.location.hostname);
   console.log(resultsDiv);
+
+  const matches = filterMatches(tokenizedSearchWords, jsonData);
+  console.log(matches);
 }
 
 export default async function decorate(block) {
