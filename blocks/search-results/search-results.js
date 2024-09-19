@@ -24,23 +24,25 @@ function filterMatches(tokenizedSearchWords, jsonData) {
 }
 
 async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
+  console.log(resultsDiv);
   const [rawLocale, , , ,] = getPathSegments();
   window.placeholders = window.placeholders || {};
   const TRANSLATION_KEY = 'translations';
   const newsTranslation = window.placeholders[`${TRANSLATION_KEY}`][`${rawLocale}`].news;
 
   await window.placeholders;
-  const jsonData = await ffetch(`/${rawLocale}/${newsTranslation}/query-index.json`)
+
+  const jsonDataNews = await ffetch(`/${rawLocale}/${newsTranslation}/query-index.json`)
     .chunks(1000)
     .all();
-  console.log(jsonData);
-  console.log(tokenizedSearchWords);
-  console.log(rawLocale);
-  console.log(window.location.hostname);
-  console.log(resultsDiv);
+  const jsonDataOthers = await ffetch('/query-index.json')
+    .chunks(1000)
+    .all();
 
-  const matches = filterMatches(tokenizedSearchWords, jsonData);
-  console.log(matches);
+  const matchesNews = filterMatches(tokenizedSearchWords, jsonDataNews);
+  console.log(matchesNews);
+  const matchesOthers = filterMatches(tokenizedSearchWords, jsonDataOthers);
+  console.log(matchesOthers);
 }
 
 export default async function decorate(block) {
