@@ -25,19 +25,21 @@ const resultParsers = {
     results.forEach((result) => {
       const row = [];
       const cardBody = div();
-      const divTitle = div({ class: 'title' });
-      divTitle.textContent = result.searchTitle;
-      const pathv1 = a();
+      const divTitle = div();
+      divTitle.textContent = result.searchTitle.toUpperCase();
+      const pathv1 = a({ class: 'title' });
       pathv1.href = window.location.origin + result.searchPath;
       pathv1.append(divTitle);
       cardBody.appendChild(pathv1);
       const divPublishedDate = div({ class: 'publisheddate' });
-      divPublishedDate.textContent = result.searchPublished;
+      if (result.searchPublished.length > 0) {
+        divPublishedDate.textContent = new Date(result.searchPublished * 1000).toDateString();
+      }
       const divDescription = div({ class: 'description' });
       divDescription.textContent = result.searchDescription;
-      const divPath = div({ class: 'path' });
+      const divPath = div();
       divPath.textContent = result.searchPath;
-      const pathv2 = a();
+      const pathv2 = a({ class: 'path' });
       pathv2.href = pathv1.href;
       pathv2.append(divPath);
       cardBody.appendChild(divPublishedDate);
@@ -136,7 +138,7 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
     // Get description of the search Products
     let description = entry['title-desc'] || entry['type-desc'] || entry['voc-compliant-desc'] || '';
     if (description.length === 0) {
-      description = `${entry['voc-compliant']} .. ${entry.type} .. ${entry.title} .. ${entry['sub-title']} .. ${entry['item-nr']} .. ${entry['product-name']}`;
+      description = `${entry['voc-compliant'].toUpperCase()} .. ${entry.type} .. ${entry.title} .. ${entry['sub-title']} .. ${entry['item-nr']} .. ${entry['product-name']}`;
     }
     // Get title of the search Products
     const title = entry['product-name'] || entry['sub-title'] || entry.title || entry.type || entry['voc-compliant'] || '';

@@ -1,1 +1,19 @@
 /* Adding CSS */
+div:has(+ .section.search-results-container) p a {
+    text-decoration: underline;
+}
+
+.block.search-results .cards ul {
+    grid-template-columns: repeat(1, 100%);
+}
+
+.block.search-results .cards ul a.title {
+    text-decoration: underline;
+    color: #0f7cc1;
+    font-weight: bold;
+    font-size: var(--search-results-label-size);
+}
+
+.block.search-results .cards ul a.path {
+    text-decoration: underline;
+}
