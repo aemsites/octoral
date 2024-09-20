@@ -7,6 +7,10 @@ div:has(+ .section.search-results-container) p a {
     grid-template-columns: repeat(1, 100%);
 }
 
+.block.search-results .cards ul li {
+    background: none;
+}
+
 .block.search-results .cards ul a.title {
     text-decoration: underline;
     color: #0f7cc1;
