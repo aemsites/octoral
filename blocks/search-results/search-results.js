@@ -106,7 +106,6 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
   const searchResults = [];
   const searchResultsProducts = [];
   let path = '';
-  console.log(resultsDiv);
   const [rawLocale, , , ,] = getPathSegments();
   window.placeholders = window.placeholders || {};
   const TRANSLATION_KEY = 'translations';
@@ -128,7 +127,6 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
     searchResults.push(obj);
   });
   searchResults.sort((x, y) => y.searchPublished - x.searchPublished);
-  console.log(searchResults);
 
   // Logic to search from Products
   const json = window.placeholders.products[`${rawLocale}`];
@@ -153,7 +151,6 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
     const obj = new SearchObj(title, description, path, '');
     searchResultsProducts.push(obj);
   });
-  console.log(searchResultsProducts);
 
   const blockType = 'cards';
   const blockContents = resultParsers[blockType]([...searchResults, ...searchResultsProducts]);
