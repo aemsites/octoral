@@ -1,8 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
-import { getPathSegments } from '../../scripts/utils.js';
+import { getPathSegments, normalizeString } from '../../scripts/utils.js';
 
 class SearchObj {
-  // eslint-disable-next-line max-len
   constructor(searchTitle, searchDescription, searchPath, searchPublished) {
     this.searchTitle = searchTitle;
     this.searchDescription = searchDescription;
@@ -60,8 +59,10 @@ function filterProductMatches(tokenizedSearchWords, jsonData) {
   return [...new Set(allMatches)];
 }
 
-async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
+async function loadResults(tokenizedSearchWords, resultsDiv) {
   const searchResults = [];
+  const searchResultsProducts = [];
+  let path = '';
   console.log(resultsDiv);
   const [rawLocale, , , ,] = getPathSegments();
   window.placeholders = window.placeholders || {};
@@ -87,7 +88,26 @@ async function loadResultsFromNews(tokenizedSearchWords, resultsDiv) {
   });
   console.log(searchResults);
   const matchesProducts = filterProductMatches(tokenizedSearchWords, jsonDataProducts);
-  console.log(matchesProducts);
+  matchesProducts.forEach((entry) => {
+    // Get description of the search Products
+    let description = entry['title-desc'] || entry['type-desc'] || entry['voc-compliant-desc'] || '';
+    if (description.length === 0) {
+      description = `${entry['voc-compliant']} .. ${entry.type} .. ${entry.title} .. ${entry['sub-title']} .. ${entry['item-nr']} .. ${entry['product-name']}`;
+    }
+    // Get title of the search Products
+    const title = entry['product-name'] || entry['sub-title'] || entry.title || entry.type || entry['voc-compliant'] || '';
+    // Get path of the search Products
+    if (entry.type.length === 0 && entry.title.length === 0) {
+      path = `/${rawLocale}/products/${entry['voc-compliant']}`;
+    } else if (entry.type.length > 0 && entry.title.length === 0) {
+      path = `/${rawLocale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}`;
+    } else if (title.length > 0) {
+      path = `/${rawLocale}/products/${entry['voc-compliant']}/${normalizeString(entry.type)}/${normalizeString(entry.title)}`;
+    }
+    const obj = new SearchObj(title, description, path, '');
+    searchResultsProducts.push(obj);
+  });
+  console.log(searchResultsProducts);
 }
 
 export default async function decorate(block) {
@@ -95,6 +115,6 @@ export default async function decorate(block) {
   const searchTerm = new URLSearchParams(window.location.search).get('query');
   if (searchTerm) {
     const tokenizedSearchWords = searchItems(searchTerm);
-    loadResultsFromNews(tokenizedSearchWords, block);
+    loadResults(tokenizedSearchWords, block);
   }
 }
