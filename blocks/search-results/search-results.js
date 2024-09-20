@@ -1,5 +1,11 @@
 import ffetch from '../../scripts/ffetch.js';
 import { getPathSegments, normalizeString } from '../../scripts/utils.js';
+import {
+  div, a,
+} from '../../scripts/dom-helpers.js';
+import {
+  buildBlock, decorateBlock, loadBlock,
+} from '../../scripts/aem.js';
 
 class SearchObj {
   constructor(searchTitle, searchDescription, searchPath, searchPublished) {
@@ -9,6 +15,41 @@ class SearchObj {
     this.searchPublished = searchPublished;
   }
 }
+
+// Result parsers parse the query results into a format that can be used by the block builder for
+// the specific block types
+const resultParsers = {
+  // Parse results into a cards block
+  cards: (results) => {
+    const blockContents = [];
+    results.forEach((result) => {
+      const row = [];
+      const cardBody = div();
+      const divTitle = div({ class: 'title' });
+      divTitle.textContent = result.searchTitle;
+      const pathv1 = a();
+      pathv1.href = window.location.origin + result.searchPath;
+      pathv1.append(divTitle);
+      cardBody.appendChild(pathv1);
+      const divPublishedDate = div({ class: 'publisheddate' });
+      divPublishedDate.textContent = result.searchPublished;
+      const divDescription = div({ class: 'description' });
+      divDescription.textContent = result.searchDescription;
+      const divPath = div({ class: 'path' });
+      divPath.textContent = result.searchPath;
+      const pathv2 = a();
+      pathv2.href = pathv1.href;
+      pathv2.append(divPath);
+      cardBody.appendChild(divPublishedDate);
+      cardBody.appendChild(divDescription);
+      cardBody.appendChild(pathv2);
+      row.push(cardBody);
+
+      blockContents.push(row);
+    });
+    return blockContents;
+  },
+};
 
 function searchItems(searchTerm) {
   const tokenizedSearchWords = searchTerm.split(' ');
@@ -77,8 +118,6 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
   const jsonDataOthers = await ffetch('/query-index.json')
     .chunks(1000)
     .all();
-  const json = window.placeholders.products[`${rawLocale}`];
-  const jsonDataProducts = json.data;
 
   const matchesNews = filterMatches(tokenizedSearchWords, jsonDataNews);
   const matchesOthers = filterMatches(tokenizedSearchWords, jsonDataOthers);
@@ -86,7 +125,12 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
     const obj = new SearchObj(entry.title, entry.description, entry.path, entry.publishDate);
     searchResults.push(obj);
   });
+  searchResults.sort((x, y) => y.searchPublished - x.searchPublished);
   console.log(searchResults);
+
+  // Logic to search from Products
+  const json = window.placeholders.products[`${rawLocale}`];
+  const jsonDataProducts = json.data;
   const matchesProducts = filterProductMatches(tokenizedSearchWords, jsonDataProducts);
   matchesProducts.forEach((entry) => {
     // Get description of the search Products
@@ -108,6 +152,17 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
     searchResultsProducts.push(obj);
   });
   console.log(searchResultsProducts);
+
+  const blockType = 'cards';
+  const blockContents = resultParsers[blockType]([...searchResults, ...searchResultsProducts]);
+  const builtBlock = buildBlock(blockType, blockContents);
+  const parentDiv = div(
+    builtBlock,
+  );
+  resultsDiv.append(parentDiv);
+  decorateBlock(builtBlock);
+  await loadBlock(builtBlock);
+  builtBlock.classList.add('searchItems');
 }
 
 export default async function decorate(block) {
