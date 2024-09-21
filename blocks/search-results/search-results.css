@@ -14,6 +14,7 @@ div:has(+ .section.search-results-container) p a {
     margin-bottom: 100px;
     list-style: none;
     flex-wrap: wrap;
+    gap: 1px;
   }
 
   .block.search-results ul.pagination a {
@@ -38,11 +39,24 @@ div:has(+ .section.search-results-container) p a {
     mask: url('/icons/search-arrow.svg') no-repeat center;
   }
 
+  .block.search-results ul.pagination li.prev.page {
+    /* Horizontal flip the image */
+    transform: scaleX(-1);
+  }
 
+  .block.search-results ul.pagination li.page.disabled {
+    background-color: #bcbcbc;
+  }
 
+  .block.search-results ul.pagination li a:hover, .block.search-results ul.pagination li.active a {
+    background-color: #0f7cc1;
+    border-color: #0f7cc1;
+    color: #fff;
+  }
 
-
-
+  .block.search-results ul.pagination li.page.disabled a:hover {
+    background-color: inherit;
+  }
 
 
 .block.search-results .cards ul li {
