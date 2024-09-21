@@ -7,6 +7,44 @@ div:has(+ .section.search-results-container) p a {
     grid-template-columns: repeat(1, 100%);
 }
 
+.block.search-results ul.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .block.search-results ul.pagination a {
+    border-right: 1px solid #eee;
+    padding: 7px 20px;
+  }
+
+  .block.search-results ul.pagination .notvisible {
+    display: none;
+  }
+
+  .block.search-results ul.pagination li:nth-of-type(2) a {
+    border-left: 1px solid #eee;
+  }
+
+  .block.search-results ul.pagination li.page {
+    background-color: #6c757d;
+    background-repeat: no-repeat;
+    background-position: center;
+     /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-mask: url('/icons/search-arrow.svg') no-repeat center;
+    mask: url('/icons/search-arrow.svg') no-repeat center;
+  }
+
+
+
+
+
+
+
+
 .block.search-results .cards ul li {
     background: none;
 }
@@ -29,4 +67,6 @@ div:has(+ .section.search-results-container) p a {
     overflow: hidden;
     line-clamp: 2;
 }
+
+
 
