@@ -1,4 +1,19 @@
 /* Adding CSS */
+
+aside {
+    display: none;
+}
+
+main {
+    & section {
+        padding: 0;
+
+        &::before {
+            display: none;
+        }
+    }
+}
+
 header, main {
     --page-width: 100%;
 }
@@ -87,6 +102,20 @@ div:has(+ .section.search-results-container) p a {
 }
 
 @media (width >= 900px) {
+    aside {
+        display: block;
+    }
+
+    main {
+        & section {
+            padding: 0 0 0 40px;
+
+            &::before {
+                display: block;
+            }
+        }
+    }
+
     header, main {
         --page-width: 1030px;
     }
