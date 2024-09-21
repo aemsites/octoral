@@ -1,7 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { getPathSegments, normalizeString } from '../../scripts/utils.js';
 import {
-  div, a,
+  div, a, li,
 } from '../../scripts/dom-helpers.js';
 import {
   buildBlock, decorateBlock, loadBlock,
@@ -180,6 +180,7 @@ async function loadResults(tokenizedSearchWords, resultsDiv, page) {
     builtBlock,
   );
 
+  // Pagination logic
   const totalResults = [...searchResults, ...searchResultsProducts].length;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
   addPagingWidget(parentDiv, page, totalPages);
@@ -187,13 +188,13 @@ async function loadResults(tokenizedSearchWords, resultsDiv, page) {
   const paginationLimit = 5;
   if (totalPages > paginationLimit) {
     let elementForward = 0;
-    const threeDotsAfter = document.createElement('li');
-    const ata = document.createElement('a');
+    const threeDotsAfter = li();
+    const ata = a();
     ata.innerText = '...';
     threeDotsAfter.appendChild(ata);
 
-    const threeDotsBefore = document.createElement('li');
-    const atb = document.createElement('a');
+    const threeDotsBefore = li();
+    const atb = a();
     atb.innerText = '...';
     threeDotsBefore.appendChild(atb);
 
