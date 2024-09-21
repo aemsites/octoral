@@ -116,7 +116,7 @@ function filterProductMatches(tokenizedSearchWords, jsonData) {
   return [...new Set(allMatches)];
 }
 
-async function loadResults(tokenizedSearchWords, resultsDiv) {
+async function loadResults(tokenizedSearchWords, resultsDiv, page) {
   const searchResults = [];
   const searchResultsProducts = [];
   let path = '';
@@ -167,11 +167,81 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
   });
 
   const blockType = 'cards';
-  const blockContents = resultParsers[blockType]([...searchResults, ...searchResultsProducts]);
+  const resultsPerPage = 10;
+  const startResult = page * resultsPerPage;
+
+  // eslint-disable-next-line max-len
+  const curPage = [...searchResults, ...searchResultsProducts].slice(startResult, startResult + resultsPerPage);
+
+  const blockContents = resultParsers[blockType](curPage);
   const builtBlock = buildBlock(blockType, blockContents);
+
   const parentDiv = div(
     builtBlock,
   );
+
+  const totalResults = [...searchResults, ...searchResultsProducts].length;
+  const totalPages = Math.ceil(totalResults / resultsPerPage);
+  addPagingWidget(parentDiv, page, totalPages);
+  console.log(parentDiv);
+  const paginationblock = parentDiv.querySelector('ul');
+  const paginationLimit = 5;
+  if (totalPages > paginationLimit) {
+    let elementForward = 0;
+    const threeDotsAfter = document.createElement('li');
+    const ata = document.createElement('a');
+    ata.innerText = '...';
+    threeDotsAfter.appendChild(ata);
+
+    const threeDotsBefore = document.createElement('li');
+    const atb = document.createElement('a');
+    atb.innerText = '...';
+    threeDotsBefore.appendChild(atb);
+
+    const firstElement = paginationblock.querySelector('.prev.page').nextElementSibling;
+    const lastElement = paginationblock.querySelector('.next.page').previousElementSibling;
+    firstElement.after(threeDotsBefore);
+    lastElement.before(threeDotsAfter);
+
+    if (page < (paginationLimit - 1)) {
+      firstElement.nextElementSibling.classList.add('notvisible');
+      const currentElement = paginationblock.querySelector('.active');
+      // eslint-disable-next-line max-len
+      elementForward = (page === 0) ? currentElement.nextElementSibling.nextElementSibling.nextElementSibling : currentElement.nextElementSibling.nextElementSibling;
+      while (elementForward) {
+        elementForward.classList.add('notvisible');
+        elementForward = elementForward.nextElementSibling;
+        if (elementForward.innerText === '...') break;
+      }
+    }
+    if (page > (paginationLimit - 2) && (page < (totalPages - 3))) {
+      const currentElement = paginationblock.querySelector('.active');
+      elementForward = currentElement.nextElementSibling.nextElementSibling;
+      while (elementForward) {
+        elementForward.classList.add('notvisible');
+        elementForward = elementForward.nextElementSibling;
+        if (elementForward.innerText === '...') break;
+      }
+      // eslint-disable-next-line max-len
+      let elementBefore = currentElement.previousElementSibling.previousElementSibling.previousElementSibling;
+      while (elementBefore) {
+        elementBefore.classList.add('notvisible');
+        elementBefore = elementBefore.previousElementSibling;
+        if (elementBefore.innerText === '...') break;
+      }
+    } else if (page > (totalPages - 4)) {
+      const currentElement = paginationblock.querySelector('.active');
+      lastElement.previousElementSibling.classList.add('notvisible');
+      // eslint-disable-next-line max-len
+      let elementBefore = currentElement.previousElementSibling.previousElementSibling.previousElementSibling;
+      while (elementBefore) {
+        elementBefore.classList.add('notvisible');
+        elementBefore = elementBefore.previousElementSibling;
+        if (elementBefore.innerText === '...') break;
+      }
+    }
+  }
+
   resultsDiv.append(parentDiv);
   decorateBlock(builtBlock);
   await loadBlock(builtBlock);
@@ -185,6 +255,6 @@ export default async function decorate(block) {
   console.log(curPage);
   if (searchTerm) {
     const tokenizedSearchWords = searchItems(searchTerm);
-    loadResults(tokenizedSearchWords, block);
+    loadResults(tokenizedSearchWords, block, curPage);
   }
 }
