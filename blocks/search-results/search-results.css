@@ -1,4 +1,8 @@
 /* Adding CSS */
+header, main {
+    --page-width: 100%;
+}
+
 div:has(+ .section.search-results-container) p a {
     text-decoration: underline;
 }
@@ -80,6 +84,12 @@ div:has(+ .section.search-results-container) p a {
     -webkit-line-clamp: 2;
     overflow: hidden;
     line-clamp: 2;
+}
+
+@media (width >= 900px) {
+    header, main {
+        --page-width: 1030px;
+    }
 }
 
 

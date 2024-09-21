@@ -183,7 +183,6 @@ async function loadResults(tokenizedSearchWords, resultsDiv, page) {
   const totalResults = [...searchResults, ...searchResultsProducts].length;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
   addPagingWidget(parentDiv, page, totalPages);
-  console.log(parentDiv);
   const paginationblock = parentDiv.querySelector('ul');
   const paginationLimit = 5;
   if (totalPages > paginationLimit) {
@@ -252,7 +251,6 @@ export default async function decorate(block) {
   block.innerHTML = '';
   const curLocation = window.location;
   const { searchTerm, curPage } = getSearchParams(curLocation.search);
-  console.log(curPage);
   if (searchTerm) {
     const tokenizedSearchWords = searchItems(searchTerm);
     loadResults(tokenizedSearchWords, block, curPage);
