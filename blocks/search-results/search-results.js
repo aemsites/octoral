@@ -6,6 +6,7 @@ import {
 import {
   buildBlock, decorateBlock, loadBlock,
 } from '../../scripts/aem.js';
+import addPagingWidget from '../../scripts/scripts.js';
 
 class SearchObj {
   constructor(searchTitle, searchDescription, searchPath, searchPublished) {
@@ -52,6 +53,19 @@ const resultParsers = {
     return blockContents;
   },
 };
+
+export function getSearchParams(searchParams) {
+  let curPage = new URLSearchParams(searchParams).get('pg');
+  if (!curPage) {
+    curPage = 0;
+  } else {
+    // convert the current page to a number
+    curPage = parseInt(curPage, 10);
+  }
+
+  const searchTerm = new URLSearchParams(searchParams).get('query');
+  return { searchTerm, curPage };
+}
 
 function searchItems(searchTerm) {
   const tokenizedSearchWords = searchTerm.split(' ');
@@ -166,7 +180,9 @@ async function loadResults(tokenizedSearchWords, resultsDiv) {
 
 export default async function decorate(block) {
   block.innerHTML = '';
-  const searchTerm = new URLSearchParams(window.location.search).get('query');
+  const curLocation = window.location;
+  const { searchTerm, curPage } = getSearchParams(curLocation.search);
+  console.log(curPage);
   if (searchTerm) {
     const tokenizedSearchWords = searchItems(searchTerm);
     loadResults(tokenizedSearchWords, block);
