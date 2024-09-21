@@ -1,12 +1,11 @@
 import ffetch from '../../scripts/ffetch.js';
-import { getPathSegments, normalizeString } from '../../scripts/utils.js';
+import { getPathSegments, normalizeString, addPagingWidget } from '../../scripts/utils.js';
 import {
   div, a, li,
 } from '../../scripts/dom-helpers.js';
 import {
   buildBlock, decorateBlock, loadBlock,
 } from '../../scripts/aem.js';
-import addPagingWidget from '../../scripts/scripts.js';
 
 class SearchObj {
   constructor(searchTitle, searchDescription, searchPath, searchPublished) {
