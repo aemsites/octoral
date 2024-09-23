@@ -1,4 +1,6 @@
 import { toClassName } from '../../scripts/aem.js';
+import { script } from '../../scripts/dom-helpers.js';
+import { getPathSegments } from '../../scripts/utils.js';
 
 function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
@@ -247,11 +249,22 @@ const createRadio = (fd) => {
   return { field, fieldWrapper };
 };
 
-// Todo: incorporate reCaptcha
+const loadRecaptcha = () => {
+  const [locale] = getPathSegments();
+  const recaptchaScript = script({ src: `https://www.google.com/recaptcha/api.js?&hl=${locale}`, async: true, defer: true });
+  document.querySelector('head').append(recaptchaScript);
+};
+
+const SITE_KEY = '6LfhyCwqAAAAAJiGCdbFxthzTja3wPiY5PBxnGsl';
+
 const createRecaptcha = (fd) => {
   const fieldWrapper = createFieldWrapper(fd);
   const div = document.createElement('div');
+  div.classList.add('g-recaptcha');
+  div.dataset.sitekey = SITE_KEY;
   fieldWrapper.append(div);
+  // todo: fix temp delay to load recaptcha
+  setTimeout(loadRecaptcha, 1000);
   return { field: div, fieldWrapper };
 };
 
