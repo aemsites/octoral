@@ -121,4 +121,13 @@
     display: flex;
     justify-content: center;
   }
+
+  .g-recaptcha {
+    height: 76px;
+    margin-left: 150px;
+
+    @media (width < 800px) {
+      margin-left: 0;
+    }
+  }
 }
