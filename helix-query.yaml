@@ -121,6 +121,12 @@ indices:
       - '/fragments/**'
       - '/products/**'
       - '/tools/**'
+      - '/en/news/**'
+      - '/nl/nieuws/**'
+      - '/de/nachrichten/**'
+      - '/fr/nouvelles/**'
+      - '/it/novita/**'
+      - '/es/noticia/**'
     target: /query-index.json
     properties:
       title:
