@@ -1,4 +1,6 @@
 import { toClassName } from '../../scripts/aem.js';
+import { script } from '../../scripts/dom-helpers.js';
+import { getPathSegments } from '../../scripts/utils.js';
 
 function createFieldWrapper(fd) {
   const fieldWrapper = document.createElement('div');
@@ -116,11 +118,24 @@ const createConfirmation = (fd, form) => {
   return {};
 };
 
-const createSubmit = (fd) => {
+const createSubmit = (fd, form) => {
   const button = document.createElement('button');
   button.textContent = fd.Label || fd.Name;
   button.classList.add('button');
   button.type = 'submit';
+  // check if reCAPTCHA is enabled
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      // get the reCAPTCHA response value
+      const recaptchaResponse = form.querySelector('.g-recaptcha-response');
+      if (recaptchaResponse && !recaptchaResponse.value) {
+        // prevent form submission if reCAPTCHA is not completed
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+      }
+    });
+  }
 
   const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.append(button);
@@ -247,11 +262,20 @@ const createRadio = (fd) => {
   return { field, fieldWrapper };
 };
 
-// Todo: incorporate reCaptcha
+const loadRecaptcha = () => {
+  const [locale] = getPathSegments();
+  const recaptchaScript = script({ src: `https://www.google.com/recaptcha/api.js?&hl=${locale}`, async: true, defer: true });
+  document.querySelector('head').append(recaptchaScript);
+};
+
 const createRecaptcha = (fd) => {
+  const SITE_KEY = '6Ldp-0wqAAAAALUD3unWSSW8gHW9ZDdMzvSFSyIR';
   const fieldWrapper = createFieldWrapper(fd);
   const div = document.createElement('div');
+  div.classList.add('g-recaptcha');
+  div.dataset.sitekey = SITE_KEY;
   fieldWrapper.append(div);
+  setTimeout(loadRecaptcha, 1000);
   return { field: div, fieldWrapper };
 };
 
