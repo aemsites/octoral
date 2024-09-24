@@ -136,6 +136,9 @@ export default async function decorate(block) {
       if (p.classList.contains('button-container')) {
         p.classList.remove('button-container');
       }
+      if (p.children.length === 0 && p.innerText.trim().length === 0) {
+        p.remove();
+      }
     });
     if (parentDetails.querySelector('div') && !parentDetails.querySelector('div').querySelector('a')) {
       parentDetails.querySelector('.accordion-item-label').classList.add('accordion-item-no-body');
@@ -148,4 +151,8 @@ export default async function decorate(block) {
     });
     row.replaceWith(parentDetails);
   });
+
+  // perform cleanup for navigation items that are not available in current locale
+  block.querySelectorAll('summary:empty').forEach((elem) => elem.remove());
+  block.querySelectorAll('details:empty').forEach((elem) => elem.remove());
 }
