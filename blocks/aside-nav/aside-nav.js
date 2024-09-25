@@ -153,6 +153,7 @@ export default async function decorate(block) {
   });
 
   // perform cleanup for navigation items that are not available in current locale
+  block.querySelectorAll('div.child-accordion-item-body:empty').forEach((elem) => elem.remove());
   block.querySelectorAll('summary:empty').forEach((elem) => elem.remove());
   block.querySelectorAll('details:empty').forEach((elem) => elem.remove());
 }
