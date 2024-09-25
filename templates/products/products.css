@@ -2,8 +2,12 @@
 
 .product-info {
     margin: 0 0 2em;
+    text-align: center;
 
     & picture {
+        display: inline-block;
+        width: 160px;
+        height: 260px;
         clear: both;
 
         & img {
@@ -94,17 +98,21 @@
        }
     }
 
-    .product-info picture {
-        position: relative;
-        float: left;
-        width: 80px;
-        height: 130px;
-        display: flex;
-        justify-content: center;
-        margin-right: 20px;
-        text-align: right;
+    .product-info {
+        text-align: left;
+    
+        picture {
+            position: relative;
+            float: left;
+            width: 80px;
+            height: 130px;
+            display: flex;
+            justify-content: center;
+            margin-right: 20px;
+            text-align: right;
+        }
     }
-}
+ }
 
 .image-modal {
     position: fixed;
@@ -119,6 +127,7 @@
     max-height: 600px;
     transition: width 0.1s ease-out, height 0.1s ease-out, margin-left 0.1s ease-out, margin-top 0.1s ease-out;
     min-width: 400px;
+    
     .image-modal-content:hover .carousel-nav {
         opacity: 1;
     }
