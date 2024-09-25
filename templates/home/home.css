@@ -4,10 +4,10 @@
 .home main {
     /* reverse colum order */
     flex-direction: row-reverse;
-    padding: 40px 25px;
+    padding: 60px 55px;
 
-    @media (width >= 900px) {
-        padding: 60px 55px;
+    @media (width < 860px) {
+        padding: 40px 25px;
     }
 
 
@@ -20,6 +20,12 @@
         padding: 0 10px 0 0;
         &::before { display: none }
 
+        @media (width < 900px) {
+            flex-direction: column;
+            min-width: auto;
+            width: 0;
+        }
+
         .section:not(.left, .right) {
             padding-right: 20px;
         }
@@ -28,12 +34,22 @@
             max-width: 300px;
             flex: 1;
             padding-right: 10px;
+
+            @media (width < 900px) {
+                max-width: 100%;
+            }
         }
 
         .right {
             width: 300px;
             box-sizing: border-box;
             padding: 0 10px;
+
+            @media (width < 900px) {
+                width: 100%;
+                margin-top: 40px;
+                padding: 0;
+            }
 
             h2 {
                 font-size: var(--heading-size-h1);
