@@ -15,6 +15,7 @@
             max-height: 100%;
             width: auto;
             margin: unset;
+            cursor: pointer;
         }
     }
 }
@@ -187,6 +188,7 @@
             z-index: 3;
             opacity: 0;
             transition: opacity 240ms;
+            cursor: pointer;
         }
 
         .carousel-nav-prev {

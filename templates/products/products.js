@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define */
+/* eslint-disable no-use-before-define, no-param-reassign */
 import { loadTemplate } from '../../scripts/scripts.js';
 import { normalizeString, getPathSegments } from '../../scripts/utils.js';
 import {
@@ -290,10 +290,11 @@ function calcAspectRatio(width, height, maxWidth, maxHeight) {
 
 let slideIndex = 0;
 
-function resizeModal(image) {
+function resizeModal(image, imageWidth, imageHeight) {
   // resize the modal based on the available frame and image size
   const { width: imgWidth, height: imgHeight } = image;
-
+  imageWidth = imgWidth || imageWidth;
+  imageHeight = imgHeight || imageHeight;
   const modal = document.querySelector('.image-modal');
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
@@ -304,10 +305,10 @@ function resizeModal(image) {
   if (maxWidth > viewportWidth) maxWidth = viewportWidth - 30;
   if (maxHeight > viewportHeight) maxHeight = viewportHeight - 30;
 
-  const { newWidth, newHeight } = calcAspectRatio(imgWidth, imgHeight, maxWidth, maxHeight);
+  const { newWidth, newHeight } = calcAspectRatio(imageWidth, imageHeight, maxWidth, maxHeight);
 
-  const finalWidth = newWidth;
-  const finalHeight = newHeight;
+  const finalWidth = Math.ceil(newWidth);
+  const finalHeight = Math.ceil(newHeight);
 
   modal.style.width = `${Math.max(finalWidth, minWidth)}px`;
   modal.style.height = `${finalHeight}px`;
@@ -410,10 +411,9 @@ const populateCarousel = (clickedIndex) => {
   const dotsContainer = document.querySelector('.carousel-btn-thumbnails');
   const slides = document.querySelector('.slides');
   images.forEach((img, index) => {
-    const slide = div(
-      { class: `slide slide-${index}` },
-      createOptimizedPicture(img.getAttribute('src'), '', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]),
-    );
+    const productPicture = img.closest('picture');
+    const slidePicture = productPicture.cloneNode(true);
+    const slide = div({ class: `slide slide-${index}` }, slidePicture);
     slide.style.display = index === clickedIndex ? '' : 'none';
     slides.appendChild(slide);
 
@@ -427,7 +427,7 @@ const populateCarousel = (clickedIndex) => {
     dotsContainer.appendChild(dot);
 
     if (index === clickedIndex) {
-      resizeModal(img);
+      resizeModal(slidePicture.querySelector('img'), img.width, img.height);
     }
   });
   slideIndex = clickedIndex;
