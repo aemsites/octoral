@@ -188,6 +188,7 @@
             z-index: 3;
             opacity: 0;
             transition: opacity 240ms;
+            cursor: pointer;
         }
 
         .carousel-nav-prev {
