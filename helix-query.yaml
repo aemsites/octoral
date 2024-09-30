@@ -1,4 +1,35 @@
 indices:
+  site:
+    include:
+      - '/**'
+    exclude:
+      - '/drafts/**'
+      - '/fragments/**'
+      - '/products/**'
+      - '/tools/**'
+      - '/en/news/**'
+      - '/nl/nieuws/**'
+      - '/de/nachrichten/**'
+      - '/fr/nouvelles/**'
+      - '/it/novita/**'
+      - '/es/noticia/**'
+    target: /query-index.json
+    properties:
+      title:
+        select: h1
+        value: textContent(el)
+      description:
+        select: main > div p
+        value: words(textContent(el), 0, 50)
+      publishDate:
+        select: head > meta[name="publishdatetime"]
+        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: attribute(el, "content")
   news:
     include:
       - /en/news/**
@@ -113,32 +144,5 @@ indices:
       image:
         select: head > meta[property="og:image"]
         value: attribute(el, 'content')
-  site:
-    include:
-      - '/**'
-    exclude:
-      - '/drafts/**'
-      - '/fragments/**'
-      - '/products/**'
-      - '/tools/**'
-      - '/en/news/**'
-      - '/nl/nieuws/**'
-      - '/de/nachrichten/**'
-      - '/fr/nouvelles/**'
-      - '/it/novita/**'
-      - '/es/noticia/**'
-    target: /query-index.json
-    properties:
-      title:
-        select: h1
-        value: textContent(el)
-      description:
-        select: main > div p
-        value: words(textContent(el), 0, 50)
-      publishDate:
-        select: head > meta[name="publishdatetime"]
-        value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
-      image:
-        select: head > meta[property="og:image"]
-        value: attribute(el, 'content')
+      
       
