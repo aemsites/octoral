@@ -1,5 +1,7 @@
 // eslint-disable-next-line no-unused-vars,no-empty-function
-import { aside, section, span, div, nav } from '../../scripts/dom-helpers.js';
+import {
+  aside, section, span, div,
+} from '../../scripts/dom-helpers.js';
 import { loadFragment } from '../../blocks/fragment/fragment.js';
 
 const isDesktop = window.matchMedia('(min-width: 800px)');
@@ -16,8 +18,7 @@ export default async function decorate(doc) {
   const asideNavFrag = await loadFragment('/aside-nav');
   const $asideNav = asideNavFrag.querySelector('.aside-nav-wrapper').cloneNode(true);
   const $aside = aside($asideNav);
-  const $divleft = div( { class: 'mobilemenu' });
-
+  const $divleft = div({ class: 'mobilemenu' });
 
   // Creation of Hamburger Menu
   const $hamburger = div({ class: 'ham-menu' }, span(), span(), span());
@@ -32,5 +33,5 @@ export default async function decorate(doc) {
       $hamburger.classList.toggle('active');
       $aside.classList.toggle('active');
     });
-  } 
+  }
 }
