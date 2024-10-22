@@ -1,38 +1,117 @@
+.noOverflow {
+    overflow: hidden;
+}
+
+.off-screen-menu {
+    height: 100vh;
+    width: 95%;
+    position: fixed;
+    right: -450px;
+    transition: .3s ease;
+    z-index: 1000;
+    background-color: white;
+}
+
+.off-screen-menu.active {
+    right: 10px;
+}
+
+
+.ham-menu {
+    height: 30px;
+    width: 30px;
+    margin-left: auto;
+    cursor: pointer;
+    position: relative;
+    opacity: 1;
+    margin-bottom: 2vh;
+}
+
+.ham-menu span {
+    height: 3px;
+    width: 100%;
+    background-color: black;
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: .3s ease;
+}
+
 main {
-    display: flex;
+    display: block;
+    position: relative;
+}
 
-    /* left nav */
-    aside {
-        width: 300px;
-        box-sizing: border-box;
+.ham-menu span:nth-child(1) {
+    top: 25%;
+}
 
-        @media (width < 800px) {
-            width: 160px;
-        }
+.ham-menu span:nth-child(3) {
+    top: 75%;
+}
+
+.ham-menu:active {
+    opacity: 1;
+}
+
+.ham-menu:active span:nth-child(1) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.ham-menu:active span:nth-child(2) {
+    opacity: 0;
+}
+
+.ham-menu:active span:nth-child(3) {
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+main div.mobilemenu:has(.ham-menu.active) + section {
+    opacity: .2;
+}
+
+
+@media (width >= 800px) {
+    .ham-menu {
+        display: none;
     }
 
-    /* right content */
-    section {
-        position: relative;
-        flex: 1;
-        padding: 0 0 0 40px;
-        box-sizing: border-box;
-
-        /* border */
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 10px;
-            width: 1px;
-            height: 100%;
-            background: #ccc;
+    main {
+        display: flex;
+    
+        /* left nav */
+        aside {
+            width: 300px;
             box-sizing: border-box;
         }
-
-        :not(.product-info) picture img:first-of-type {
-                float: left;
-                margin: 0 1em 1em 0;
+    
+        /* right content */
+        section {
+            position: relative;
+            flex: 1;
+            padding: 0 0 0 40px;
+            box-sizing: border-box;
+    
+            /* border */
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 10px;
+                width: 1px;
+                height: 100%;
+                background: #ccc;
+                box-sizing: border-box;
+            }
+    
+            :not(.product-info) picture img:first-of-type {
+                    float: left;
+                    margin: 0 1em 1em 0;
+            }
         }
     }
 }
