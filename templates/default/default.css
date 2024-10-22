@@ -6,7 +6,7 @@
     height: 100vh;
     width: 95%;
     position: fixed;
-    right: -450px;
+    right: -100vw;
     transition: .3s ease;
     z-index: 1000;
     background-color: white;
