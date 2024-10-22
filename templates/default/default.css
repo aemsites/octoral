@@ -52,26 +52,30 @@ main {
     top: 75%;
 }
 
-.ham-menu:active {
+.ham-menu.active {
     opacity: 1;
 }
 
-.ham-menu:active span:nth-child(1) {
+.ham-menu.active span:nth-child(1) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.ham-menu:active span:nth-child(2) {
+.ham-menu.active span:nth-child(2) {
     opacity: 0;
 }
 
-.ham-menu:active span:nth-child(3) {
+.ham-menu.active span:nth-child(3) {
     top: 50%;
     transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 main div.mobilemenu:has(.ham-menu.active) + section {
     opacity: .2;
+}
+
+body:has(.ham-menu.active) {
+    overflow: hidden;
 }
 
 
