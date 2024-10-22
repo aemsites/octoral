@@ -23,7 +23,7 @@
         @media (width < 900px) {
             flex-direction: column;
             min-width: auto;
-            width: 0;
+            width: 100%;
         }
 
         .section:not(.left, .right) {
