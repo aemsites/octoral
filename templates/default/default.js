@@ -10,15 +10,9 @@ let $hamburger = '';
 
 const mobileAction = function() {
     $aside.classList.add('off-screen-menu');
-    $hamburger.addEventListener('click', () => {
-      console.log($hamburger);
-      $hamburger.classList.toggle('active');
-      console.log($hamburger);
-      $aside.classList.toggle('active');
-    });
 }
 
-const resizeAction = function () {
+const resizeAction = function() {
   if (isDesktop.matches) {
     if ($aside.classList.contains('off-screen-menu')) {
       $aside.classList.remove('off-screen-menu');
@@ -50,6 +44,10 @@ export default async function decorate(doc) {
 
   // Creation of Hamburger Menu
   $hamburger = div({ class: 'ham-menu' }, span(), span(), span());
+  $hamburger.addEventListener('click', () => {
+    $hamburger.classList.toggle('active');
+    $aside.classList.toggle('active');
+  });
 
   $main.innerHTML = '';
   $divleft.append($hamburger, $aside);
@@ -58,5 +56,5 @@ export default async function decorate(doc) {
   if (!isDesktop.matches) {
     mobileAction();
   }
-  window.addEventListener('resize', resizeAction);
+   window.addEventListener('resize', resizeAction);
 }
