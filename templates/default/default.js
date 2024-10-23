@@ -8,11 +8,11 @@ const isDesktop = window.matchMedia('(min-width: 800px)');
 let $aside = '';
 let $hamburger = '';
 
-const mobileAction = function() {
-    $aside.classList.add('off-screen-menu');
+function mobileAction() {
+  $aside.classList.add('off-screen-menu');
 }
 
-const resizeAction = function() {
+function resizeAction() {
   if (isDesktop.matches) {
     if ($aside.classList.contains('off-screen-menu')) {
       $aside.classList.remove('off-screen-menu');
@@ -56,5 +56,5 @@ export default async function decorate(doc) {
   if (!isDesktop.matches) {
     mobileAction();
   }
-   window.addEventListener('resize', resizeAction);
+  window.addEventListener('resize', resizeAction);
 }
